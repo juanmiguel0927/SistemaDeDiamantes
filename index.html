@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tiro Maestro | Sistema de Diamantes</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -12,9 +12,9 @@
             background-color: #0f172a; 
             color: #f8fafc;
             overflow-x: hidden;
-            touch-action: pan-y; 
         }
         
+        /* CSS Corregido para los botones Toggle (Izquierda=Apagado / Derecha=Encendido) */
         .toggle-checkbox:checked { transform: translateX(100%); border-color: #22d3ee; }
         .toggle-checkbox:checked + .toggle-label { background-color: #0891b2; }
         .toggle-checkbox { left: 0; top: 0; z-index: 1; border-color: #64748b; transition: transform 0.3s, border-color 0.3s; }
@@ -105,7 +105,7 @@
                     🎱 Disparar
                 </button>
                 <div class="w-full relative shadow-[0_15px_40px_rgba(0,0,0,0.6)] sm:rounded-2xl overflow-hidden bg-[#78350f]">
-                    <canvas id="canvasSimetria" class="w-full block cursor-crosshair touch-none"></canvas>
+                    <canvas id="canvasSimetria" class="w-full block cursor-crosshair"></canvas>
                 </div>
                 <div class="mt-4 flex flex-wrap justify-between items-center w-full px-4 gap-4">
                     <select id="mitadesSelect" class="flex-1 bg-slate-800 border border-slate-600 text-cyan-300 rounded-xl px-4 py-3 focus:outline-none focus:border-cyan-500 transition-colors cursor-pointer font-bold text-center sm:text-left shadow-lg">
@@ -168,7 +168,7 @@
                     🎱 Ejecutar Tiro
                 </button>
                 <div class="w-full relative shadow-[0_15px_40px_rgba(0,0,0,0.6)] sm:rounded-2xl overflow-hidden bg-[#78350f]">
-                    <canvas id="canvasTriangulacion" class="w-full block cursor-crosshair touch-none"></canvas>
+                    <canvas id="canvasTriangulacion" class="w-full block cursor-crosshair"></canvas>
                 </div>
                 <div class="mt-4 flex flex-wrap justify-between w-full px-4 gap-4 items-center">
                     <select id="bandaSelect" class="flex-1 bg-slate-800 border border-slate-600 text-emerald-300 rounded-xl px-4 py-3 focus:outline-none focus:border-emerald-500 transition-colors cursor-pointer font-bold text-center sm:text-left shadow-lg">
@@ -249,7 +249,7 @@
                     🎱 Ejecutar Tiro
                 </button>
                 <div class="w-full relative shadow-[0_15px_40px_rgba(0,0,0,0.6)] sm:rounded-2xl overflow-hidden bg-[#78350f]">
-                    <canvas id="canvasPlus" class="w-full block cursor-crosshair touch-none"></canvas>
+                    <canvas id="canvasPlus" class="w-full block cursor-crosshair"></canvas>
                 </div>
                 <div class="mt-4 flex flex-wrap justify-between w-full px-4 gap-4 items-center">
                     <select id="plusSelect" class="flex-1 bg-slate-800 border border-slate-600 text-purple-300 rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 transition-colors cursor-pointer font-bold text-center sm:text-left shadow-lg">
@@ -315,7 +315,7 @@
                     🎱 Ejecutar Bricole
                 </button>
                 <div class="w-full relative shadow-[0_15px_40px_rgba(0,0,0,0.6)] sm:rounded-2xl overflow-hidden bg-[#78350f]">
-                    <canvas id="canvasSid" class="w-full block cursor-crosshair touch-none"></canvas>
+                    <canvas id="canvasSid" class="w-full block cursor-crosshair"></canvas>
                 </div>
                 <div class="mt-4 flex flex-wrap justify-between w-full px-4 gap-4 items-center">
                     <select id="sidSelect" class="flex-1 bg-slate-800 border border-slate-600 text-orange-300 rounded-xl px-4 py-3 focus:outline-none focus:border-orange-500 transition-colors cursor-pointer font-bold text-center sm:text-left shadow-lg">
@@ -381,7 +381,7 @@
                     🎱 Tiro a 3/4 Bandas
                 </button>
                 <div class="w-full relative shadow-[0_15px_40px_rgba(0,0,0,0.6)] sm:rounded-2xl overflow-hidden bg-[#78350f]">
-                    <canvas id="canvasBase50" class="w-full block cursor-crosshair touch-none"></canvas>
+                    <canvas id="canvasBase50" class="w-full block cursor-crosshair"></canvas>
                 </div>
                 <div class="mt-4 flex flex-wrap justify-between w-full px-4 gap-4 items-center">
                     <label for="cuartaBandaToggle" class="flex items-center glass-panel px-4 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition touch-manipulation justify-center">
@@ -464,13 +464,11 @@
         let globalGripColor = '#cbd5e1';
 
         function getRecommendedGripColor(hexCloth) {
-            // Predeterminados para colores exactos
-            if (hexCloth.toLowerCase() === '#047857') return '#cbd5e1'; // Verde -> Gris Claro
-            if (hexCloth.toLowerCase() === '#0284c7') return '#ffffff'; // Azul -> Blanco
-            if (hexCloth.toLowerCase() === '#be185d') return '#fef08a'; // Rojo -> Amarillo
-            if (hexCloth.toLowerCase() === '#ea580c') return '#1e293b'; // Naranja -> Oscuro
+            if (hexCloth.toLowerCase() === '#047857') return '#cbd5e1'; 
+            if (hexCloth.toLowerCase() === '#0284c7') return '#ffffff'; 
+            if (hexCloth.toLowerCase() === '#be185d') return '#fef08a'; 
+            if (hexCloth.toLowerCase() === '#ea580c') return '#1e293b'; 
             
-            // Cálculo de luminosidad para colores personalizados
             let hex = hexCloth.replace('#', '');
             if (hex.length === 3) hex = hex.split('').map(char => char + char).join('');
             let r = parseInt(hex.substring(0, 2), 16);
@@ -478,15 +476,12 @@
             let b = parseInt(hex.substring(4, 6), 16);
             let luminance = 0.299 * r + 0.587 * g + 0.114 * b;
             
-            // Si el paño es claro, grip oscuro. Si es oscuro, grip blanco.
             return luminance > 130 ? '#1e293b' : '#ffffff';
         }
 
         function changeClothColor(color) {
             globalClothColor = color;
             document.getElementById('customColorPicker').value = color;
-            
-            // Recomendar y aplicar el color del grip automáticamente
             let recommendedGrip = getRecommendedGripColor(color);
             changeGripColor(recommendedGrip, false);
         }
@@ -535,7 +530,6 @@
         const CanvasUtils = {
             setupRetina: (canvas, ctx, logicalWidth, logicalHeight) => {
                 const dpr = window.devicePixelRatio || 1;
-                // No fijamos style.width/height en px para que Tailwind (w-full) haga su trabajo responsivo
                 canvas.width = logicalWidth * dpr;
                 canvas.height = logicalHeight * dpr;
                 ctx.scale(dpr, dpr);
@@ -570,18 +564,55 @@
                     ctx.lineWidth = 1;
                     for(let i=1; i<=7; i++) { ctx.beginPath(); ctx.moveTo(playX + i*diaX, playY); ctx.lineTo(playX + i*diaX, playY + playH); ctx.stroke(); }
                     for(let i=1; i<=3; i++) { ctx.beginPath(); ctx.moveTo(playX, playY + i*diaY); ctx.lineTo(playX + playW, playY + i*diaY); ctx.stroke(); }
+                    
+                    // Líneas de la mitad (cuadrícula)
+                    ctx.strokeStyle = '#ef4444'; // Rojo
+                    ctx.setLineDash([4, 4]);
+                    for(let i=0; i<=7; i++) { ctx.beginPath(); ctx.moveTo(playX + (i+0.5)*diaX, playY); ctx.lineTo(playX + (i+0.5)*diaX, playY + playH); ctx.stroke(); }
+                    for(let i=0; i<=3; i++) { ctx.beginPath(); ctx.moveTo(playX, playY + (i+0.5)*diaY); ctx.lineTo(playX + playW, playY + (i+0.5)*diaY); ctx.stroke(); }
                     ctx.restore();
                 }
-                ctx.fillStyle = globalGripColor;
-                for(let i=1; i<=7; i++) {
-                    let px = playX + i * diaX;
-                    ctx.beginPath(); ctx.arc(px, playY - 15, 4, 0, Math.PI*2); ctx.fill();
-                    ctx.beginPath(); ctx.arc(px, playY + playH + 15, 4, 0, Math.PI*2); ctx.fill();
+                
+                // Función para dibujar subdivisiones (1 a 10) entre dos puntos
+                const drawSubs = (x1, y1, x2, y2) => {
+                    ctx.lineWidth = 1.5;
+                    for(let j=1; j<10; j++) {
+                        let px = x1 + (x2 - x1) * (j/10);
+                        let py = y1 + (y2 - y1) * (j/10);
+                        if (j === 5) {
+                            ctx.fillStyle = '#ef4444'; // Rojo intenso para la mitad
+                            ctx.beginPath(); ctx.arc(px, py, 2.5, 0, Math.PI*2); ctx.fill();
+                        } else {
+                            ctx.strokeStyle = '#38bdf8'; // Azul brillante para las subdivisiones
+                            ctx.beginPath();
+                            if (y1 === y2) { ctx.moveTo(px, py - 3); ctx.lineTo(px, py + 3); }
+                            else { ctx.moveTo(px - 3, py); ctx.lineTo(px + 3, py); }
+                            ctx.stroke();
+                        }
+                    }
+                };
+
+                for(let i=0; i<8; i++) {
+                    let px1 = playX + i * diaX;
+                    let px2 = playX + (i+1) * diaX;
+                    drawSubs(px1, playY - 15, px2, playY - 15);
+                    drawSubs(px1, playY + playH + 15, px2, playY + playH + 15);
+                    if (i > 0) {
+                        ctx.fillStyle = globalGripColor;
+                        ctx.beginPath(); ctx.arc(px1, playY - 15, 4, 0, Math.PI*2); ctx.fill();
+                        ctx.beginPath(); ctx.arc(px1, playY + playH + 15, 4, 0, Math.PI*2); ctx.fill();
+                    }
                 }
-                for(let i=1; i<=3; i++) {
-                    let py = playY + i * diaY;
-                    ctx.beginPath(); ctx.arc(playX - 15, py, 4, 0, Math.PI*2); ctx.fill();
-                    ctx.beginPath(); ctx.arc(playX + playW + 15, py, 4, 0, Math.PI*2); ctx.fill();
+                for(let i=0; i<4; i++) {
+                    let py1 = playY + i * diaY;
+                    let py2 = playY + (i+1) * diaY;
+                    drawSubs(playX - 15, py1, playX - 15, py2);
+                    drawSubs(playX + playW + 15, py1, playX + playW + 15, py2);
+                    if (i > 0) {
+                        ctx.fillStyle = globalGripColor;
+                        ctx.beginPath(); ctx.arc(playX - 15, py1, 4, 0, Math.PI*2); ctx.fill();
+                        ctx.beginPath(); ctx.arc(playX + playW + 15, py1, 4, 0, Math.PI*2); ctx.fill();
+                    }
                 }
             },
             drawPostImpact: (ctx, x1, y1, x2, y2) => {
@@ -1151,7 +1182,7 @@
             }
 
             canvas.addEventListener('mousedown', handleDown); window.addEventListener('mousemove', handleMove); window.addEventListener('mouseup', () => draggedItem = null);
-            canvas.addEventListener('touchstart', handleDown, {passive: false}); window.addEventListener('touchmove', handleMove, {passive: false}); window.addEventListener('touchmove', handleMove, {passive: false}); window.addEventListener('touchend', () => draggedItem = null);
+            canvas.addEventListener('touchstart', handleDown, {passive: false}); window.addEventListener('touchmove', handleMove, {passive: false}); window.addEventListener('touchmove', handleMove, {passive: false}); window.addEventListener('touch সম্মেলন', () => draggedItem = null);
             plusSelect.addEventListener('change', resetPositions);
             gridToggle.addEventListener('change', e => { showGrid = e.target.checked; updateMath(); });
             btnAnimar.addEventListener('click', () => { if(isAnimating || !isPossible) return; isAnimating = true; animProgress = 0; trail = []; originalBallPos = {x: ball.x, y: ball.y}; btnAnimar.classList.add('hidden'); });
@@ -1343,15 +1374,20 @@
             function animate() {
                 if (!isAnimating || !isActive || !isPossible) return;
                 animProgress += 0.03; trail.push({x: ball.x, y: ball.y}); if (trail.length > 25) trail.shift(); 
+                const lerp = (s, e, a) => s + (e - s) * easeOut(a);
                 
                 if (animProgress <= 1) { 
                     ball.x = MathUtils.lerp(originalBallPos.x, ptAttack.x, animProgress); 
                     ball.y = MathUtils.lerp(originalBallPos.y, ptAttack.y, animProgress); 
                 } 
                 else if (animProgress <= 2) { 
-                    ball.x = MathUtils.lerp(ptAttack.x, targetObj.x, animProgress - 1); 
-                    ball.y = MathUtils.lerp(ptAttack.y, targetObj.y, animProgress - 1); 
+                    ball.x = MathUtils.lerp(ptAttack.x, ptLlegada_phys.x, animProgress - 1); 
+                    ball.y = MathUtils.lerp(ptAttack.y, ptLlegada_phys.y, animProgress - 1); 
                 } 
+                else if (animProgress <= 3) { 
+                    ball.x = MathUtils.lerp(ptLlegada_phys.x, targetObj.x, animProgress - 2); 
+                    ball.y = MathUtils.lerp(ptLlegada_phys.y, targetObj.y, animProgress - 2); 
+                }
                 else {
                     isAnimating = false; ball.x = targetObj.x; ball.y = targetObj.y;
                     setTimeout(() => { ball.x = originalBallPos.x; ball.y = originalBallPos.y; trail = []; animProgress = 0; isAnimating = false; btnAnimar.classList.remove('hidden'); updateMath(); }, 1200);
@@ -1568,12 +1604,13 @@
             function animate() {
                 if (!isAnimating || !isActive || !isPossible) return;
                 animProgress += 0.03; trail.push({x: ball.x, y: ball.y}); if (trail.length > 25) trail.shift(); 
+                const lerp = (s, e, a) => s + (e - s) * MathUtils.easeOut(a);
                 
-                if (animProgress <= 1) { ball.x = MathUtils.lerp(originalBallPos.x, ptAttack.x, animProgress); ball.y = MathUtils.lerp(originalBallPos.y, ptAttack.y, animProgress); } 
-                else if (animProgress <= 2) { let ap2 = animProgress - 1; ball.x = MathUtils.lerp(ptAttack.x, ptSecondRail.x, ap2); ball.y = MathUtils.lerp(ptAttack.y, ptSecondRail.y, ap2); } 
-                else if (animProgress <= 3) { let ap3 = animProgress - 2; ball.x = MathUtils.lerp(ptSecondRail.x, ptThirdRail.x, ap3); ball.y = MathUtils.lerp(ptSecondRail.y, ptThirdRail.y, ap3); }
-                else if (animProgress <= 4 && show4thRail) { let ap4 = animProgress - 3; ball.x = MathUtils.lerp(ptThirdRail.x, ptFourthRail.x, ap4); ball.y = MathUtils.lerp(ptThirdRail.y, ptFourthRail.y, ap4); }
-                else if (animProgress <= 4 && !show4thRail) { let ap4 = animProgress - 3; ball.x = MathUtils.lerp(ptThirdRail.x, targetObj.x, ap4); ball.y = MathUtils.lerp(ptThirdRail.y, targetObj.y, ap4); }
+                if (animProgress <= 1) { ball.x = lerp(originalBallPos.x, ptAttack.x, animProgress); ball.y = lerp(originalBallPos.y, ptAttack.y, animProgress); } 
+                else if (animProgress <= 2) { let ap2 = animProgress - 1; ball.x = lerp(ptAttack.x, ptSecondRail.x, ap2); ball.y = lerp(ptAttack.y, ptSecondRail.y, ap2); } 
+                else if (animProgress <= 3) { let ap3 = animProgress - 2; ball.x = lerp(ptSecondRail.x, ptThirdRail.x, ap3); ball.y = lerp(ptSecondRail.y, ptThirdRail.y, ap3); }
+                else if (animProgress <= 4 && show4thRail) { let ap4 = animProgress - 3; ball.x = lerp(ptThirdRail.x, ptFourthRail.x, ap4); ball.y = lerp(ptThirdRail.y, ptFourthRail.y, ap4); }
+                else if (animProgress <= 4 && !show4thRail) { let ap4 = animProgress - 3; ball.x = lerp(ptThirdRail.x, targetObj.x, ap4); ball.y = lerp(ptThirdRail.y, targetObj.y, ap4); }
                 else {
                     isAnimating = false; ball.x = show4thRail ? ptFourthRail.x : targetObj.x; ball.y = show4thRail ? ptFourthRail.y : targetObj.y;
                     setTimeout(() => { ball.x = originalBallPos.x; ball.y = originalBallPos.y; trail = []; animProgress = 0; isAnimating = false; btnAnimar.classList.remove('hidden'); updateMath(); }, 1200);
