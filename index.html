@@ -178,6 +178,11 @@
                         <option value="right">Banda Derecha (Rebote)</option>
                     </select>
                     
+                    <select id="triEscalaSelect" class="flex-1 bg-slate-800 border border-slate-600 text-emerald-300 rounded-xl px-4 py-3 focus:outline-none focus:border-emerald-500 transition-colors cursor-pointer font-bold text-center sm:text-left shadow-lg">
+                        <option value="10" selected>Escala: 10 a 80</option>
+                        <option value="1">Escala: 1 a 8</option>
+                    </select>
+
                     <label for="gridToggle" class="flex items-center glass-panel px-4 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition touch-manipulation justify-center">
                         <span class="mr-3 text-xs sm:text-sm font-bold text-slate-200 uppercase tracking-wider text-center">Grip (Cuadrícula)</span>
                         <div class="relative inline-block w-12 mr-1 align-middle select-none">
@@ -196,30 +201,29 @@
                         <button onclick="showHelp('triangulacion')" class="p-1.5 bg-slate-700 hover:bg-slate-600 rounded shadow transition-colors text-sm text-cyan-400 font-bold" title="Ayuda">❓</button>
                     </div>
                 </div>
-                
-                <div class="mb-5">
-                    <h3 class="text-emerald-300 text-sm font-bold uppercase mb-1">1. Conexión Visual (La "X")</h3>
-                    <p class="text-[12px] text-slate-300 font-medium leading-relaxed">
-                        Visualmente, traza una "X" desde cada bola hasta el reflejo en banda de la otra. El cruce central marca tu ataque exacto.
-                    </p>
-                </div>
 
                 <div class="bg-slate-900 rounded-2xl p-4 border border-emerald-800 mb-6 relative overflow-hidden shadow-inner flex flex-col items-start" id="triBox">
                     <div class="absolute top-0 left-0 w-2 h-full bg-emerald-500" id="triDecor"></div>
-                    <h3 class="text-emerald-400 text-[11px] font-bold uppercase tracking-widest mb-3 w-full text-center border-b border-slate-800 pb-2" id="triTitle">2. Coordenada Exacta (Diamantes)</h3>
+                    <h3 class="text-emerald-400 text-[11px] font-bold uppercase tracking-widest mb-3 w-full text-center border-b border-slate-800 pb-2" id="triTitle">Cálculo Numérico</h3>
                     
+                    <!-- FÓRMULA DESTACADA -->
+                    <div class="w-full bg-emerald-900/40 border border-emerald-700/50 rounded-lg p-2 mb-3 text-center">
+                        <span class="block text-[10px] text-emerald-400/80 uppercase font-bold mb-1">Fórmula General</span>
+                        <span class="text-emerald-300 font-mono text-sm font-black">Desplaz. = L × [ A ÷ (A+B) ]</span>
+                    </div>
+
                     <div class="flex flex-col gap-2 w-full text-sm">
                         <div class="flex justify-between items-center bg-slate-800/50 p-1.5 rounded">
                             <span class="text-slate-400 text-xs">Separación (L):</span> 
-                            <span id="triBase" class="text-white font-bold text-xs">0.00 D</span>
+                            <span id="triBase" class="text-white font-bold text-xs">0.00</span>
                         </div>
                         <div class="flex justify-between items-center bg-slate-800/50 p-1.5 rounded">
                             <span class="text-slate-400 text-xs">Alt. Blanca (A):</span> 
-                            <span id="triAlt1" class="text-white font-bold text-xs">0.00 D</span>
+                            <span id="triAlt1" class="text-white font-bold text-xs">0.00</span>
                         </div>
                         <div class="flex justify-between items-center bg-slate-800/50 p-1.5 rounded">
                             <span class="text-slate-400 text-xs">Alt. Objetivo (B):</span> 
-                            <span id="triAlt2" class="text-white font-bold text-xs">0.00 D</span>
+                            <span id="triAlt2" class="text-white font-bold text-xs">0.00</span>
                         </div>
                         
                         <div class="mt-2 pt-2 border-t border-emerald-900/50">
@@ -902,6 +906,7 @@
             const uiStep1 = document.getElementById('triStep1'); const uiStep2 = document.getElementById('triStep2'); const uiStep3 = document.getElementById('triStep3');
             const uiDecor = document.getElementById('triDecor'); const uiTitle = document.getElementById('triTitle');
             const gridToggle = document.getElementById('gridToggle');
+            const escalaSelect = document.getElementById('triEscalaSelect');
 
             const padding = 80; const playW = 840; const playH = 420; const playX = padding; const playY = padding; const dia = playW / 8;
             let isActive = false; let isAnimating = false; let animProgress = 0; let trail = []; let loopId; let isPossible = true;
@@ -940,6 +945,7 @@
 
             let calcData = { base: 0, h1: 0, h2: 0, shift: 0, banda: 'bottom', ataqueCoord: 0 };
             function updateMath() {
+                let scale = parseInt(escalaSelect.value);
                 calcData.banda = selectBanda.value; let mirrorX = targetObj.x, mirrorY = targetObj.y; let h1Px = 0, h2Px = 0, basePx = 0;
                 if (calcData.banda === 'bottom') {
                     mirrorY = (playY + playH) + ((playY + playH) - targetObj.y); h1Px = (playY + playH) - ball.y; h2Px = (playY + playH) - targetObj.y; basePx = Math.abs(targetObj.x - ball.x);
@@ -954,6 +960,7 @@
                     mirrorX = (playX + playW) + ((playX + playW) - targetObj.x); h1Px = (playX + playW) - ball.x; h2Px = (playX + playW) - targetObj.x; basePx = Math.abs(targetObj.y - ball.y);
                     let dx = mirrorX - ball.x; let dy = mirrorY - ball.y; ptAttack.x = playX + playW; ptAttack.y = ball.y + (ptAttack.x - ball.x) * (dy / dx);
                 }
+                
                 calcData.h1 = h1Px / dia; calcData.h2 = h2Px / dia; calcData.base = basePx / dia; calcData.shift = calcData.base * (calcData.h1 / (calcData.h1 + calcData.h2));
                 
                 if(calcData.banda === 'bottom' || calcData.banda === 'top') { 
@@ -965,21 +972,28 @@
                     calcData.ataqueCoord = (ptAttack.y - playY) / dia;
                 }
 
-                let suma = calcData.h1 + calcData.h2;
-                let fraccion = suma === 0 ? 0 : calcData.h1 / suma;
+                // Aplicar escala (x1 o x10)
+                let s_h1 = calcData.h1 * scale;
+                let s_h2 = calcData.h2 * scale;
+                let s_base = calcData.base * scale;
+                let s_shift = calcData.shift * scale;
+                let s_ataque = calcData.ataqueCoord * scale;
 
-                uiBase.textContent = calcData.base.toFixed(0) + " D"; uiAlt1.textContent = calcData.h1.toFixed(0) + " D"; uiAlt2.textContent = calcData.h2.toFixed(0) + " D";
+                let suma = s_h1 + s_h2;
+                let fraccion = suma === 0 ? 0 : s_h1 / suma;
+
+                uiBase.textContent = s_base.toFixed(0); uiAlt1.textContent = s_h1.toFixed(0); uiAlt2.textContent = s_h2.toFixed(0);
                 
-                uiStep1.textContent = `${calcData.h1.toFixed(1)} + ${calcData.h2.toFixed(1)} = ${suma.toFixed(1)}`;
-                uiStep2.textContent = `${calcData.h1.toFixed(1)} ÷ ${suma.toFixed(1)} = ${fraccion.toFixed(2)}`;
-                uiStep3.textContent = `${calcData.base.toFixed(1)} × ${fraccion.toFixed(2)} = ${calcData.shift.toFixed(1)}`;
+                uiStep1.textContent = `${s_h1.toFixed(0)} + ${s_h2.toFixed(0)} = ${suma.toFixed(0)}`;
+                uiStep2.textContent = `${s_h1.toFixed(0)} ÷ ${suma.toFixed(0)} = ${fraccion.toFixed(2)}`;
+                uiStep3.textContent = `${s_base.toFixed(0)} × ${fraccion.toFixed(2)} = ${s_shift.toFixed(0)}`;
 
-                uiFormula.textContent = `Cálculo: ${calcData.base.toFixed(0)} × [${calcData.h1.toFixed(0)} ÷ ${(calcData.h1 + calcData.h2).toFixed(0)}]`; 
-                uiPunto.textContent = calcData.ataqueCoord.toFixed(1);
+                uiFormula.textContent = `Cálculo: ${s_base.toFixed(0)} × [${s_h1.toFixed(0)} ÷ ${(s_h1 + s_h2).toFixed(0)}]`; 
+                uiPunto.textContent = s_ataque.toFixed(scale === 10 ? 0 : 1);
 
                 btnAnimar.disabled = !isPossible;
                 uiPunto.style.color = isPossible ? '' : '#ef4444'; uiTitle.style.color = isPossible ? '' : '#ef4444';
-                uiTitle.textContent = isPossible ? '2. Cálculo Numérico (Diamantes)' : 'TIRO IMPOSIBLE'; uiDecor.style.backgroundColor = isPossible ? '' : '#ef4444';
+                uiTitle.textContent = isPossible ? 'Cálculo Numérico' : 'TIRO IMPOSIBLE'; uiDecor.style.backgroundColor = isPossible ? '' : '#ef4444';
             }
 
             function draw() {
@@ -988,15 +1002,16 @@
                 CanvasUtils.drawBaseTable(ctx, playX, playY, playW, playH);
                 CanvasUtils.drawStandardDiamonds(ctx, playX, playY, playW, playH, showGrid);
 
-                // NÚMEROS DE DIAMANTES PARA TRIANGULACIÓN
+                // NÚMEROS DE DIAMANTES PARA TRIANGULACIÓN (CON ESCALA)
+                let scale = parseInt(escalaSelect.value);
                 ctx.font = 'bold 16px Inter'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#fde047';
                 for(let i=0; i<=8; i++) {
-                    ctx.fillText(i, playX + i * dia, playY + playH + 35);
-                    ctx.fillText(i, playX + i * dia, playY - 35);
+                    ctx.fillText(i * scale, playX + i * dia, playY + playH + 35);
+                    ctx.fillText(i * scale, playX + i * dia, playY - 35);
                 }
                 for(let i=0; i<=4; i++) {
-                    ctx.fillText(i, playX - 35, playY + i * dia);
-                    ctx.fillText(i, playX + playW + 35, playY + i * dia);
+                    ctx.fillText(i * scale, playX - 35, playY + i * dia);
+                    ctx.fillText(i * scale, playX + playW + 35, playY + i * dia);
                 }
 
                 if (!isAnimating && animProgress === 0) {
@@ -1050,6 +1065,7 @@
             canvas.addEventListener('mousedown', handleDown); window.addEventListener('mousemove', handleMove); window.addEventListener('mouseup', () => draggedItem = null);
             canvas.addEventListener('touchstart', handleDown, {passive: false}); window.addEventListener('touchmove', handleMove, {passive: false}); window.addEventListener('touchmove', handleMove, {passive: false}); window.addEventListener('touchend', () => draggedItem = null);
             selectBanda.addEventListener('change', updateMath);
+            escalaSelect.addEventListener('change', updateMath);
             gridToggle.addEventListener('change', e => { showGrid = e.target.checked; updateMath(); });
             btnAnimar.addEventListener('click', () => { if(isAnimating || !isPossible) return; isAnimating = true; animProgress = 0; trail = []; originalBallPos = {x: ball.x, y: ball.y}; btnAnimar.classList.add('hidden'); });
             function loop() { if(isActive) { if(isAnimating) animate(); draw(); } loopId = requestAnimationFrame(loop); }
@@ -1216,9 +1232,9 @@
                 if (!isAnimating || !isActive || !isPossible) return;
                 animProgress += 0.03; trail.push({x: ball.x, y: ball.y}); if (trail.length > 25) trail.shift(); 
                 const lerp = (s, e, a) => s + (e - s) * MathUtils.easeOut(a);
-                if (animProgress <= 1) { ball.x = MathUtils.lerp(originalBallPos.x, ptAttack.x, animProgress); ball.y = MathUtils.lerp(originalBallPos.y, ptAttack.y, animProgress); } 
-                else if (animProgress <= 2) { let ap2 = animProgress - 1; ball.x = MathUtils.lerp(ptAttack.x, ptTopRail.x, ap2); ball.y = MathUtils.lerp(ptAttack.y, ptTopRail.y, ap2); } 
-                else if (animProgress <= 3) { let ap3 = animProgress - 2; ball.x = MathUtils.lerp(ptTopRail.x, targetObj.x, ap3); ball.y = MathUtils.lerp(ptTopRail.y, targetObj.y, ap3); }
+                if (animProgress <= 1) { ball.x = lerp(originalBallPos.x, ptAttack.x, animProgress); ball.y = lerp(originalBallPos.y, ptAttack.y, animProgress); } 
+                else if (animProgress <= 2) { let ap2 = animProgress - 1; ball.x = lerp(ptAttack.x, ptTopRail.x, ap2); ball.y = lerp(ptAttack.y, ptTopRail.y, ap2); } 
+                else if (animProgress <= 3) { let ap3 = animProgress - 2; ball.x = lerp(ptTopRail.x, targetObj.x, ap3); ball.y = lerp(ptTopRail.y, targetObj.y, ap3); }
                 else {
                     isAnimating = false; ball.x = targetObj.x; ball.y = targetObj.y;
                     setTimeout(() => {
