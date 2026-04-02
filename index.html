@@ -200,13 +200,13 @@
                 <div class="mb-5">
                     <h3 class="text-emerald-300 text-sm font-bold uppercase mb-1">1. Conexión Visual (La "X")</h3>
                     <p class="text-[12px] text-slate-300 font-medium leading-relaxed">
-                        Traza una línea visual cruzada. El <b>cruce proyectado perpendicularmente</b> marca tu ataque exacto en la banda.
+                        Visualmente, traza una "X" desde cada bola hasta el reflejo en banda de la otra. El cruce central marca tu ataque exacto.
                     </p>
                 </div>
 
                 <div class="bg-slate-900 rounded-2xl p-4 border border-emerald-800 mb-6 relative overflow-hidden shadow-inner flex flex-col items-start" id="triBox">
                     <div class="absolute top-0 left-0 w-2 h-full bg-emerald-500" id="triDecor"></div>
-                    <h3 class="text-emerald-400 text-[11px] font-bold uppercase tracking-widest mb-3 w-full text-center border-b border-slate-800 pb-2" id="triTitle">2. Cálculo Numérico (Diamantes)</h3>
+                    <h3 class="text-emerald-400 text-[11px] font-bold uppercase tracking-widest mb-3 w-full text-center border-b border-slate-800 pb-2" id="triTitle">2. Coordenada Exacta (Diamantes)</h3>
                     
                     <div class="flex flex-col gap-2 w-full text-sm">
                         <div class="flex justify-between items-center bg-slate-800/50 p-1.5 rounded">
@@ -222,14 +222,32 @@
                             <span id="triAlt2" class="text-white font-bold text-xs">0.00 D</span>
                         </div>
                         
-                        <div class="mt-3 pt-3 border-t border-emerald-900/50">
-                            <span class="block text-[10px] text-emerald-400/80 mb-1 font-bold text-center">Desplazamiento = L × [A ÷ (A+B)]</span>
-                            <div class="flex flex-col items-center bg-black/40 p-3 rounded-lg border border-emerald-900/30">
-                                <span class="text-slate-300 font-mono text-xs mb-2" id="triFormula">0.0 × [0.0 ÷ 0.0]</span>
-                                <div class="flex items-center gap-3 w-full justify-between px-2">
-                                    <span class="text-slate-400 text-[10px] text-left leading-tight">Desplázate<br>desde la blanca:</span>
-                                    <span id="triPunto" class="text-emerald-400 font-black text-2xl drop-shadow-[0_0_10px_rgba(52,211,153,0.4)] transition-colors">0.00 D</span>
+                        <div class="mt-2 pt-2 border-t border-emerald-900/50">
+                            <span class="block text-[10px] text-emerald-400/80 mb-1.5 font-bold uppercase tracking-wider">Paso a Paso</span>
+                            <div class="flex flex-col gap-1 text-[10px] font-mono">
+                                <div class="flex justify-between bg-black/20 p-1 rounded">
+                                    <span class="text-slate-400">1. A + B (Suma)</span>
+                                    <span id="triStep1" class="text-emerald-300">0.0</span>
                                 </div>
+                                <div class="flex justify-between bg-black/20 p-1 rounded">
+                                    <span class="text-slate-400">2. A ÷ Suma (Fracción)</span>
+                                    <span id="triStep2" class="text-emerald-300">0.00</span>
+                                </div>
+                                <div class="flex justify-between bg-black/20 p-1 rounded">
+                                    <span class="text-slate-400">3. L × Fracc (Desplaz.)</span>
+                                    <span id="triStep3" class="text-emerald-300">0.0</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-2 pt-2 border-t border-emerald-900/50">
+                            <span class="block text-[10px] text-emerald-400/80 mb-1 font-bold text-center">Punto de Ataque Exacto</span>
+                            <div class="flex flex-col items-center bg-black/40 p-3 rounded-lg border border-emerald-900/30">
+                                <div class="flex items-center gap-3 w-full justify-between px-2 mb-2">
+                                    <span class="text-slate-400 text-[11px] text-left leading-tight">Apunta al<br>Diamante:</span>
+                                    <span id="triPunto" class="text-emerald-400 font-black text-4xl drop-shadow-[0_0_15px_rgba(52,211,153,0.6)] transition-colors">0.0</span>
+                                </div>
+                                <span class="text-slate-500 font-mono text-[9px] text-center" id="triFormula">Cálculo: L × [A ÷ (A+B)]</span>
                             </div>
                         </div>
                     </div>
@@ -494,7 +512,7 @@
         // Sistema de Ayuda
         const helpData = {
             'mitades': { title: 'Sistema de Mitades (Simetría)', content: '<p>Este sistema se utiliza para calcular tiros buscando el punto medio geométrico entre la bola blanca y la bola objetivo.</p><p>Arrastra la bola blanca o el objetivo para ver cómo la línea de ataque siempre incide exactamente en el punto medio de la separación geométrica (ya sea hacia la banda larga o corta).</p>' },
-            'triangulacion': { title: 'Proporciones por Triangulación', content: '<p>Un método visual y matemático (usando diamantes) para encontrar el punto exacto de rebote sin usar efectos.</p><p>La fórmula <b>L × [A ÷ (A+B)]</b> calcula la desviación precisa desde la base perpendicular de la bola blanca, permitiéndote trazar una "X" perfecta mentalmente.</p>' },
+            'triangulacion': { title: 'Proporciones por Triangulación', content: '<p><b>Solución de la fórmula:</b><br>1. Suma la distancia a la banda de ambas bolas (A+B).<br>2. Divide la altura de la blanca (A) entre esa suma.<br>3. Multiplica por la separación lateral (L).</p><div class="mt-3 p-3 bg-emerald-900/50 rounded-lg border border-emerald-700"><p class="text-emerald-300 font-bold mb-1">💡 ¿Cómo evitar fracciones complejas jugando?</p><p class="mb-2"><b>1. Método de la "X" (Sin números):</b> Imagina una línea de la Blanca al reflejo del Objetivo en la banda, y otra del Objetivo al reflejo de la Blanca. Donde se cruzan, traza una línea recta a la banda. ¡Ese es el ataque exacto!</p><p><b>2. Proporciones a ojo:</b><br>- Ambas a la misma distancia = Ataca a la <b>mitad</b>.<br>- Blanca al doble de lejos = Ataca a <b>2/3</b> de la separación.<br>- Blanca a la mitad de distancia = Ataca a <b>1/3</b>.</p></div>' },
             'plus': { title: 'Sistema Plus (2 Bandas)', content: '<p>Diseñado para tiros en donde necesitas rebotar en dos bandas consecutivas antes de llegar al objetivo.</p><p>La fórmula es estricta: <b>Llegada - Salida = Ataque</b>. Con este sistema puedes saber a qué diamante de la primera banda debes apuntar para alcanzar cualquier punto de la mesa.</p>' },
             'sid': { title: 'Sistema SID (Bricole Múltiple)', content: '<p>Este es un sistema multiplicativo especializado en tiros de bricole (donde tocas banda antes que a cualquier bola).</p><p>La fórmula <b>Salida × Llegada = Ataque</b> te indica el punto proyectado exacto. En esta app, la simulación calcula el punto real de ataque (1ra banda) para lograr la llegada deseada (3ra banda).</p>' },
             'base50': { title: 'Sistema Base 50 (LKL Diamantes)', content: '<p>El sistema más famoso del billar a tres bandas. Se le llama "Base 50" porque la esquina inferior derecha vale 50 puntos de salida.</p><p>La fórmula clásica es: <b>Salida (Bola Blanca) - Llegada (3ra Banda) = Ataque (1ra Banda)</b>. Activa las líneas de la 4ta banda para predecir recorridos más largos.</p>' }
@@ -879,7 +897,9 @@
             const canvas = document.getElementById('canvasTriangulacion'); const ctx = canvas.getContext('2d');
             const btnAnimar = document.getElementById('btnAnimarTri'); const selectBanda = document.getElementById('bandaSelect');
             const uiBase = document.getElementById('triBase'); const uiAlt1 = document.getElementById('triAlt1');
-            const uiAlt2 = document.getElementById('triAlt2'); const uiFormula = document.getElementById('triFormula'); const uiPunto = document.getElementById('triPunto');
+            const uiAlt2 = document.getElementById('triAlt2'); const uiFormula = document.getElementById('triFormula'); 
+            const uiPunto = document.getElementById('triPunto'); 
+            const uiStep1 = document.getElementById('triStep1'); const uiStep2 = document.getElementById('triStep2'); const uiStep3 = document.getElementById('triStep3');
             const uiDecor = document.getElementById('triDecor'); const uiTitle = document.getElementById('triTitle');
             const gridToggle = document.getElementById('gridToggle');
 
@@ -918,7 +938,7 @@
                 updateMath();
             }
 
-            let calcData = { base: 0, h1: 0, h2: 0, shift: 0, banda: 'bottom' };
+            let calcData = { base: 0, h1: 0, h2: 0, shift: 0, banda: 'bottom', ataqueCoord: 0 };
             function updateMath() {
                 calcData.banda = selectBanda.value; let mirrorX = targetObj.x, mirrorY = targetObj.y; let h1Px = 0, h2Px = 0, basePx = 0;
                 if (calcData.banda === 'bottom') {
@@ -936,11 +956,26 @@
                 }
                 calcData.h1 = h1Px / dia; calcData.h2 = h2Px / dia; calcData.base = basePx / dia; calcData.shift = calcData.base * (calcData.h1 / (calcData.h1 + calcData.h2));
                 
-                if(calcData.banda === 'bottom' || calcData.banda === 'top') { isPossible = (ptAttack.x >= playX && ptAttack.x <= playX + playW); }
-                else { isPossible = (ptAttack.y >= playY && ptAttack.y <= playY + playH); }
+                if(calcData.banda === 'bottom' || calcData.banda === 'top') { 
+                    isPossible = (ptAttack.x >= playX && ptAttack.x <= playX + playW); 
+                    calcData.ataqueCoord = (ptAttack.x - playX) / dia;
+                }
+                else { 
+                    isPossible = (ptAttack.y >= playY && ptAttack.y <= playY + playH); 
+                    calcData.ataqueCoord = (ptAttack.y - playY) / dia;
+                }
+
+                let suma = calcData.h1 + calcData.h2;
+                let fraccion = suma === 0 ? 0 : calcData.h1 / suma;
 
                 uiBase.textContent = calcData.base.toFixed(0) + " D"; uiAlt1.textContent = calcData.h1.toFixed(0) + " D"; uiAlt2.textContent = calcData.h2.toFixed(0) + " D";
-                uiFormula.textContent = `${calcData.base.toFixed(0)} × [${calcData.h1.toFixed(0)} ÷ ${(calcData.h1 + calcData.h2).toFixed(0)}]`; uiPunto.textContent = calcData.shift.toFixed(0) + " D";
+                
+                uiStep1.textContent = `${calcData.h1.toFixed(1)} + ${calcData.h2.toFixed(1)} = ${suma.toFixed(1)}`;
+                uiStep2.textContent = `${calcData.h1.toFixed(1)} ÷ ${suma.toFixed(1)} = ${fraccion.toFixed(2)}`;
+                uiStep3.textContent = `${calcData.base.toFixed(1)} × ${fraccion.toFixed(2)} = ${calcData.shift.toFixed(1)}`;
+
+                uiFormula.textContent = `Cálculo: ${calcData.base.toFixed(0)} × [${calcData.h1.toFixed(0)} ÷ ${(calcData.h1 + calcData.h2).toFixed(0)}]`; 
+                uiPunto.textContent = calcData.ataqueCoord.toFixed(1);
 
                 btnAnimar.disabled = !isPossible;
                 uiPunto.style.color = isPossible ? '' : '#ef4444'; uiTitle.style.color = isPossible ? '' : '#ef4444';
@@ -952,6 +987,17 @@
                 ctx.save(); ctx.clearRect(0, 0, canvas.width, canvas.height); ctx.fillStyle = '#0f172a'; ctx.fillRect(0, 0, canvas.width, canvas.height);
                 CanvasUtils.drawBaseTable(ctx, playX, playY, playW, playH);
                 CanvasUtils.drawStandardDiamonds(ctx, playX, playY, playW, playH, showGrid);
+
+                // NÚMEROS DE DIAMANTES PARA TRIANGULACIÓN
+                ctx.font = 'bold 16px Inter'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#fde047';
+                for(let i=0; i<=8; i++) {
+                    ctx.fillText(i, playX + i * dia, playY + playH + 35);
+                    ctx.fillText(i, playX + i * dia, playY - 35);
+                }
+                for(let i=0; i<=4; i++) {
+                    ctx.fillText(i, playX - 35, playY + i * dia);
+                    ctx.fillText(i, playX + playW + 35, playY + i * dia);
+                }
 
                 if (!isAnimating && animProgress === 0) {
                     let bx = ball.x, by = ball.y, tx = targetObj.x, ty = targetObj.y, ax = ptAttack.x, ay = ptAttack.y;
@@ -991,8 +1037,9 @@
             function animate() {
                 if (!isAnimating || !isActive || !isPossible) return;
                 animProgress += 0.03; trail.push({x: ball.x, y: ball.y}); if (trail.length > 25) trail.shift(); 
-                if (animProgress <= 1) { ball.x = MathUtils.lerp(originalBallPos.x, ptAttack.x, animProgress); ball.y = MathUtils.lerp(originalBallPos.y, ptAttack.y, animProgress); } 
-                else if (animProgress <= 2) { let ap2 = animProgress - 1; ball.x = MathUtils.lerp(ptAttack.x, targetObj.x, ap2); ball.y = MathUtils.lerp(ptAttack.y, targetObj.y, ap2); } 
+                const lerp = (s, e, a) => s + (e - s) * MathUtils.easeOut(a);
+                if (animProgress <= 1) { ball.x = lerp(originalBallPos.x, ptAttack.x, animProgress); ball.y = lerp(originalBallPos.y, ptAttack.y, animProgress); } 
+                else if (animProgress <= 2) { let ap2 = animProgress - 1; ball.x = lerp(ptAttack.x, targetObj.x, ap2); ball.y = lerp(ptAttack.y, targetObj.y, ap2); } 
                 else {
                     isAnimating = false; ball.x = targetObj.x; ball.y = targetObj.y; 
                     setTimeout(() => { ball.x = originalBallPos.x; ball.y = originalBallPos.y; trail = []; animProgress = 0; isAnimating = false; btnAnimar.classList.remove('hidden'); updateMath(); }, 1200);
@@ -1168,6 +1215,7 @@
             function animate() {
                 if (!isAnimating || !isActive || !isPossible) return;
                 animProgress += 0.03; trail.push({x: ball.x, y: ball.y}); if (trail.length > 25) trail.shift(); 
+                const lerp = (s, e, a) => s + (e - s) * MathUtils.easeOut(a);
                 if (animProgress <= 1) { ball.x = MathUtils.lerp(originalBallPos.x, ptAttack.x, animProgress); ball.y = MathUtils.lerp(originalBallPos.y, ptAttack.y, animProgress); } 
                 else if (animProgress <= 2) { let ap2 = animProgress - 1; ball.x = MathUtils.lerp(ptAttack.x, ptTopRail.x, ap2); ball.y = MathUtils.lerp(ptAttack.y, ptTopRail.y, ap2); } 
                 else if (animProgress <= 3) { let ap3 = animProgress - 2; ball.x = MathUtils.lerp(ptTopRail.x, targetObj.x, ap3); ball.y = MathUtils.lerp(ptTopRail.y, targetObj.y, ap3); }
@@ -1182,7 +1230,7 @@
             }
 
             canvas.addEventListener('mousedown', handleDown); window.addEventListener('mousemove', handleMove); window.addEventListener('mouseup', () => draggedItem = null);
-            canvas.addEventListener('touchstart', handleDown, {passive: false}); window.addEventListener('touchmove', handleMove, {passive: false}); window.addEventListener('touchmove', handleMove, {passive: false}); window.addEventListener('touch সম্মেলন', () => draggedItem = null);
+            canvas.addEventListener('touchstart', handleDown, {passive: false}); window.addEventListener('touchmove', handleMove, {passive: false}); window.addEventListener('touchmove', handleMove, {passive: false}); window.addEventListener('touchend', () => draggedItem = null);
             plusSelect.addEventListener('change', resetPositions);
             gridToggle.addEventListener('change', e => { showGrid = e.target.checked; updateMath(); });
             btnAnimar.addEventListener('click', () => { if(isAnimating || !isPossible) return; isAnimating = true; animProgress = 0; trail = []; originalBallPos = {x: ball.x, y: ball.y}; btnAnimar.classList.add('hidden'); });
@@ -1374,19 +1422,19 @@
             function animate() {
                 if (!isAnimating || !isActive || !isPossible) return;
                 animProgress += 0.03; trail.push({x: ball.x, y: ball.y}); if (trail.length > 25) trail.shift(); 
-                const lerp = (s, e, a) => s + (e - s) * easeOut(a);
+                const lerp = (s, e, a) => s + (e - s) * MathUtils.easeOut(a);
                 
                 if (animProgress <= 1) { 
-                    ball.x = MathUtils.lerp(originalBallPos.x, ptAttack.x, animProgress); 
-                    ball.y = MathUtils.lerp(originalBallPos.y, ptAttack.y, animProgress); 
+                    ball.x = lerp(originalBallPos.x, ptAttack.x, animProgress); 
+                    ball.y = lerp(originalBallPos.y, ptAttack.y, animProgress); 
                 } 
                 else if (animProgress <= 2) { 
-                    ball.x = MathUtils.lerp(ptAttack.x, ptLlegada_phys.x, animProgress - 1); 
-                    ball.y = MathUtils.lerp(ptAttack.y, ptLlegada_phys.y, animProgress - 1); 
+                    ball.x = lerp(ptAttack.x, ptLlegada_phys.x, animProgress - 1); 
+                    ball.y = lerp(ptAttack.y, ptLlegada_phys.y, animProgress - 1); 
                 } 
                 else if (animProgress <= 3) { 
-                    ball.x = MathUtils.lerp(ptLlegada_phys.x, targetObj.x, animProgress - 2); 
-                    ball.y = MathUtils.lerp(ptLlegada_phys.y, targetObj.y, animProgress - 2); 
+                    ball.x = lerp(ptLlegada_phys.x, targetObj.x, animProgress - 2); 
+                    ball.y = lerp(ptLlegada_phys.y, targetObj.y, animProgress - 2); 
                 }
                 else {
                     isAnimating = false; ball.x = targetObj.x; ball.y = targetObj.y;
