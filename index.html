@@ -930,14 +930,8 @@
             function handleMove(e) {
                 if (!draggedItem || isAnimating || !isActive) return; e.preventDefault(); const pos = CanvasUtils.getTouchPos(canvas, e);
                 pos.x = Math.max(playX + 15, Math.min(playX + playW - 15, pos.x)); pos.y = Math.max(playY + 15, Math.min(playY + playH - 15, pos.y));
-                
-                if (showGrid) {
-                    pos.x = MathUtils.applySnapping(pos.x - playX, dia / 2) + playX;
-                    pos.y = MathUtils.applySnapping(pos.y - playY, dia / 2) + playY;
-                    pos.x = Math.max(playX, Math.min(playX + playW, pos.x));
-                    pos.y = Math.max(playY, Math.min(playY + playH, pos.y));
-                }
 
+                // Se elimina el snapping (MathUtils.applySnapping) para permitir movimiento libre
                 if (draggedItem === 'ball') { ball.x = pos.x; ball.y = pos.y; } 
                 else if (draggedItem === 'target') { targetObj.x = pos.x; targetObj.y = pos.y; }
                 updateMath();
@@ -1232,9 +1226,9 @@
                 if (!isAnimating || !isActive || !isPossible) return;
                 animProgress += 0.03; trail.push({x: ball.x, y: ball.y}); if (trail.length > 25) trail.shift(); 
                 const lerp = (s, e, a) => s + (e - s) * MathUtils.easeOut(a);
-                if (animProgress <= 1) { ball.x = lerp(originalBallPos.x, ptAttack.x, animProgress); ball.y = lerp(originalBallPos.y, ptAttack.y, animProgress); } 
-                else if (animProgress <= 2) { let ap2 = animProgress - 1; ball.x = lerp(ptAttack.x, ptTopRail.x, ap2); ball.y = lerp(ptAttack.y, ptTopRail.y, ap2); } 
-                else if (animProgress <= 3) { let ap3 = animProgress - 2; ball.x = lerp(ptTopRail.x, targetObj.x, ap3); ball.y = lerp(ptTopRail.y, targetObj.y, ap3); }
+                if (animProgress <= 1) { ball.x = MathUtils.lerp(originalBallPos.x, ptAttack.x, animProgress); ball.y = MathUtils.lerp(originalBallPos.y, ptAttack.y, animProgress); } 
+                else if (animProgress <= 2) { let ap2 = animProgress - 1; ball.x = MathUtils.lerp(ptAttack.x, ptTopRail.x, ap2); ball.y = MathUtils.lerp(ptAttack.y, ptTopRail.y, ap2); } 
+                else if (animProgress <= 3) { let ap3 = animProgress - 2; ball.x = MathUtils.lerp(ptTopRail.x, targetObj.x, ap3); ball.y = MathUtils.lerp(ptTopRail.y, targetObj.y, ap3); }
                 else {
                     isAnimating = false; ball.x = targetObj.x; ball.y = targetObj.y;
                     setTimeout(() => {
