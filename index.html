@@ -14,6 +14,7 @@
             overflow-x: hidden;
         }
         
+        /* CSS Corregido para los botones Toggle (Izquierda=Apagado / Derecha=Encendido) */
         .toggle-checkbox:checked { transform: translateX(100%); border-color: #22d3ee; }
         .toggle-checkbox:checked + .toggle-label { background-color: #0891b2; }
         .toggle-checkbox { left: 0; top: 0; z-index: 1; border-color: #64748b; transition: transform 0.3s, border-color 0.3s; }
@@ -50,11 +51,9 @@
         }
         @media (min-width: 640px) { .game-canvas { max-height: 60vh; } }
         
-        /* Pseudo-Fullscreen Rules */
+        /* Pseudo-Fullscreen Rules (Modificado para permitir zoom nativo) */
         body.is-fullscreen {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            overflow: hidden; z-index: 9999;
+            min-height: 100vh;
             background-color: #0f172a;
             padding: 0 !important; margin: 0 !important;
             display: flex; flex-direction: column; justify-content: flex-start;
@@ -72,18 +71,18 @@
         
         body.is-fullscreen .canvas-section {
             width: 100% !important;
-            height: 100vh !important;
-            display: flex; flex-direction: column; justify-content: center;
-            padding-top: 50px;
+            min-height: calc(100vh - 50px);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding-top: 10px;
         }
 
         body.is-fullscreen .tabs-container {
-            position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+            position: sticky; top: 0; z-index: 50;
             border-radius: 0; margin: 0 !important; width: 100% !important; max-width: 100% !important;
             background: rgba(15, 23, 42, 0.95); padding: 4px;
         }
         
-        body.is-fullscreen .game-canvas { max-height: 70vh !important; }
+        body.is-fullscreen .game-canvas { max-height: 80vh !important; }
         body.is-fullscreen .btn-disparar { margin-top: 15px; max-width: 300px; padding: 12px; font-size: 1.1rem; }
         
         .exit-fs-btn { display: none !important; }
@@ -275,6 +274,7 @@
                     <div class="absolute top-0 left-0 w-2 h-full bg-emerald-500" id="triDecor"></div>
                     <h3 class="text-emerald-400 text-[11px] font-bold uppercase tracking-widest mb-3 w-full text-center border-b border-slate-800 pb-2" id="triTitle">Cálculo Numérico</h3>
                     
+                    <!-- FÓRMULA DESTACADA -->
                     <div class="w-full bg-emerald-900/40 border border-emerald-700/50 rounded-lg p-2 mb-3 text-center">
                         <span class="block text-[10px] text-emerald-400/80 uppercase font-bold mb-1">Fórmula General</span>
                         <span class="text-emerald-300 font-mono text-sm font-black">Desplaz. = L × [ A ÷ (A+B) ]</span>
@@ -1068,7 +1068,6 @@
                     calcData.ataqueCoord = (ptAttack.y - playY) / dia;
                 }
 
-                // Aplicar escala (x1 o x10)
                 let s_h1 = calcData.h1 * scale;
                 let s_h2 = calcData.h2 * scale;
                 let s_base = calcData.base * scale;
@@ -1555,7 +1554,7 @@
             }
 
             canvas.addEventListener('mousedown', handleDown); window.addEventListener('mousemove', handleMove); window.addEventListener('mouseup', () => draggedItem = null);
-            canvas.addEventListener('touchstart', handleDown, {passive: false}); window.addEventListener('touchmove', handleMove, {passive: false}); window.addEventListener('touchend', () => draggedItem = null);
+            canvas.addEventListener('touchstart', handleDown, {passive: false}); window.addEventListener('touchmove', handleMove, {passive: false}); window.addEventListener('touchmove', handleMove, {passive: false}); window.addEventListener('touchend', () => draggedItem = null);
             sidSelect.addEventListener('change', resetPositions);
             gridToggle.addEventListener('change', e => { showGrid = e.target.checked; updateMath(); });
             btnAnimar.addEventListener('click', () => { if(isAnimating || !isPossible) return; isAnimating = true; animProgress = 0; trail = []; originalBallPos = {x: ball.x, y: ball.y}; btnAnimar.classList.add('hidden'); });
@@ -1733,7 +1732,7 @@
 
             function draw() {
                 if(!isActive) return;
-                ctx.save(); ctx.clearRect(0, 0, canvas.width, canvas.height); 
+                ctx.save(); ctx.clearRect(0, 0, canvas.width, canvas.height); ctx.fillStyle = '#0f172a'; ctx.fillRect(0, 0, canvas.width, canvas.height);
                 drawTable();
 
                 if (!isAnimating && animProgress === 0) {
