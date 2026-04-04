@@ -14,7 +14,6 @@
             overflow-x: hidden;
         }
         
-        /* CSS Corregido para los botones Toggle (Izquierda=Apagado / Derecha=Encendido) */
         .toggle-checkbox:checked { transform: translateX(100%); border-color: #22d3ee; }
         .toggle-checkbox:checked + .toggle-label { background-color: #0891b2; }
         .toggle-checkbox { left: 0; top: 0; z-index: 1; border-color: #64748b; transition: transform 0.3s, border-color 0.3s; }
@@ -40,7 +39,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Responsive Canvas Scaling */
         .game-canvas {
             width: 100%;
             height: auto !important;
@@ -51,42 +49,35 @@
         }
         @media (min-width: 640px) { .game-canvas { max-height: 60vh; } }
         
-        /* Pseudo-Fullscreen Rules (Modificado para permitir zoom nativo) */
         body.is-fullscreen {
             min-height: 100vh;
             background-color: #0f172a;
             padding: 0 !important; margin: 0 !important;
             display: flex; flex-direction: column; justify-content: flex-start;
         }
-
         body.is-fullscreen header,
         body.is-fullscreen .global-options,
         body.is-fullscreen footer,
         body.is-fullscreen .info-panel,
-        body.is-fullscreen .extra-controls {
-            display: none !important;
-        }
+        body.is-fullscreen .extra-controls { display: none !important; }
 
         body.is-fullscreen .tab-content { max-width: 100% !important; width: 100% !important; margin: 0 !important; }
-        
         body.is-fullscreen .canvas-section {
-            width: 100% !important;
-            min-height: calc(100vh - 50px);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            padding-top: 10px;
+            width: 100% !important; min-height: calc(100vh - 50px);
+            display: flex; flex-direction: column; justify-content: center; align-items: center; padding-top: 10px;
         }
-
         body.is-fullscreen .tabs-container {
             position: sticky; top: 0; z-index: 50;
             border-radius: 0; margin: 0 !important; width: 100% !important; max-width: 100% !important;
             background: rgba(15, 23, 42, 0.95); padding: 4px;
         }
-        
         body.is-fullscreen .game-canvas { max-height: 80vh !important; }
         body.is-fullscreen .btn-disparar { margin-top: 15px; max-width: 300px; padding: 12px; font-size: 1.1rem; }
         
         .exit-fs-btn { display: none !important; }
         body.is-fullscreen .exit-fs-btn { display: flex !important; }
+
+        .shot-item:hover { background-color: #1e293b; border-color: #3b82f6; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center py-4 sm:py-6 px-0 sm:px-6 w-full">
@@ -100,7 +91,7 @@
         </p>
     </header>
 
-    <!-- Opciones Generales (Color y Fullscreen) -->
+    <!-- Opciones Generales Avanzadas -->
     <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-4 w-full max-w-4xl px-4 global-options">
         <div class="flex flex-col gap-2">
             <div class="flex items-center gap-3">
@@ -125,10 +116,12 @@
             </div>
         </div>
 
-        <button onclick="toggleFullscreen()" class="flex items-center gap-2 bg-slate-700 hover:bg-slate-600 text-white font-bold py-2.5 px-5 rounded-xl shadow-lg transition-all active:scale-95 border border-slate-500">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg>
-            Jugar (Pantalla Completa)
-        </button>
+        <div class="flex flex-wrap gap-2 justify-center sm:justify-end w-full sm:w-auto max-w-full">
+            <button id="btnAudio" onclick="toggleAudio()" class="flex items-center justify-center bg-slate-700 hover:bg-slate-600 text-white font-bold py-2 px-3 rounded-xl shadow-lg transition-all text-xs border border-slate-500 active:scale-95 w-full sm:w-auto">🔊 Sonido</button>
+            <button id="btnTraining" onclick="toggleTrainingMode()" class="flex items-center justify-center bg-slate-700 hover:bg-slate-600 text-white font-bold py-2 px-3 rounded-xl shadow-lg transition-all text-xs border border-slate-500 active:scale-95 w-full sm:w-auto">🎲 Entrenar</button>
+            <button onclick="openShotsModal()" class="flex items-center justify-center bg-indigo-700 hover:bg-indigo-600 text-white font-bold py-2 px-3 rounded-xl shadow-lg transition-all text-xs border border-indigo-500 active:scale-95 w-full sm:w-auto">📁 Mis Tiros</button>
+            <button onclick="toggleFullscreen()" class="flex items-center justify-center bg-slate-700 hover:bg-slate-600 text-white font-bold py-2 px-3 rounded-xl shadow-lg transition-all text-xs border border-slate-500 active:scale-95 w-full sm:w-auto">⛶ Jugar</button>
+        </div>
     </div>
 
     <!-- Pestañas de Navegación -->
@@ -160,7 +153,6 @@
         <div class="flex flex-col xl:flex-row gap-4 sm:gap-6 items-center xl:items-start justify-center w-full">
             <div class="w-full xl:w-2/3 flex flex-col items-center flex-shrink-0 canvas-section">
                 
-                <!-- Canvas unificado -->
                 <canvas id="canvasSimetria" class="game-canvas max-w-full shadow-[0_15px_40px_rgba(0,0,0,0.6)] sm:rounded-2xl cursor-crosshair border border-slate-700/50 bg-[#0f172a]"></canvas>
                 
                 <button id="btnAnimarSim" class="btn-disparar w-full max-w-md mt-4 mb-2 py-3 rounded-2xl font-black text-xl bg-gradient-to-r from-blue-500 to-cyan-500 text-white hover:from-blue-400 hover:to-cyan-400 transition-all transform active:scale-95 shadow-lg border border-cyan-400 disabled:opacity-50 disabled:cursor-not-allowed">
@@ -168,22 +160,31 @@
                 </button>
 
                 <div class="mt-2 flex flex-wrap justify-between items-center w-full px-4 gap-4 extra-controls">
-                    <select id="mitadesSelect" class="flex-1 bg-slate-800 border border-slate-600 text-cyan-300 rounded-xl px-4 py-3 focus:outline-none focus:border-cyan-500 transition-colors cursor-pointer font-bold text-center sm:text-left shadow-lg">
+                    <select id="mitadesSelect" class="flex-1 min-w-[140px] bg-slate-800 border border-slate-600 text-cyan-300 rounded-xl px-4 py-3 focus:outline-none focus:border-cyan-500 transition-colors cursor-pointer font-bold text-center sm:text-left shadow-lg">
                         <option value="corta" selected>Larga a Corta</option>
                         <option value="larga">Larga a Larga</option>
                     </select>
-                    <label for="gridToggleSim" class="flex items-center glass-panel px-4 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition touch-manipulation flex-1 justify-center">
-                        <span class="mr-3 text-xs sm:text-sm font-bold text-slate-200 uppercase tracking-wider text-center">Grip</span>
-                        <div class="relative inline-block w-12 mr-1 align-middle select-none">
-                            <input type="checkbox" id="gridToggleSim" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
-                            <div class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-600 cursor-pointer"></div>
+                    
+                    <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center border-red-900/50 border min-w-[140px]">
+                        <span class="mr-2 text-xs font-bold text-red-400 uppercase tracking-wider text-center">🔴 Obstáculo</span>
+                        <div class="relative inline-block w-10 mr-1 align-middle select-none">
+                            <input type="checkbox" id="obsToggleSim" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer" />
+                            <div class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-600 cursor-pointer"></div>
                         </div>
                     </label>
-                    <label for="espejoToggle" class="flex items-center glass-panel px-4 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition touch-manipulation flex-1 justify-center">
-                        <span class="mr-3 text-xs sm:text-sm font-bold text-slate-200 uppercase tracking-wider text-center">Ver Espejo</span>
-                        <div class="relative inline-block w-12 mr-1 align-middle select-none">
-                            <input type="checkbox" id="espejoToggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
-                            <div class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-600 cursor-pointer"></div>
+
+                    <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px]">
+                        <span class="mr-2 text-xs font-bold text-slate-200 uppercase tracking-wider text-center">Grip</span>
+                        <div class="relative inline-block w-10 mr-1 align-middle select-none">
+                            <input type="checkbox" id="gridToggleSim" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+                            <div class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-600 cursor-pointer"></div>
+                        </div>
+                    </label>
+                    <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px]">
+                        <span class="mr-2 text-xs font-bold text-slate-200 uppercase tracking-wider text-center">Espejo</span>
+                        <div class="relative inline-block w-10 mr-1 align-middle select-none">
+                            <input type="checkbox" id="espejoToggle" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+                            <div class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-600 cursor-pointer"></div>
                         </div>
                     </label>
                 </div>
@@ -194,6 +195,7 @@
                     <h2 class="text-xl font-black text-white">Sistema de Mitades</h2>
                     <div class="flex gap-2">
                         <button onclick="AppSimetria.reset()" class="p-1.5 bg-slate-700 hover:bg-slate-600 rounded shadow transition-colors text-sm" title="Restaurar Posiciones">🔄</button>
+                        <button onclick="openSaveModal('simetria')" class="p-1.5 bg-indigo-700 hover:bg-indigo-600 rounded shadow transition-colors text-sm text-white" title="Guardar Jugada">💾</button>
                         <button onclick="showHelp('mitades')" class="p-1.5 bg-slate-700 hover:bg-slate-600 rounded shadow transition-colors text-sm text-cyan-400 font-bold" title="Ayuda">❓</button>
                     </div>
                 </div>
@@ -232,23 +234,31 @@
                 </button>
 
                 <div class="mt-2 flex flex-wrap justify-between w-full px-4 gap-4 items-center extra-controls">
-                    <select id="bandaSelect" class="flex-1 bg-slate-800 border border-slate-600 text-emerald-300 rounded-xl px-4 py-3 focus:outline-none focus:border-emerald-500 transition-colors cursor-pointer font-bold text-center sm:text-left shadow-lg">
-                        <option value="bottom">Banda Inferior (Rebote)</option>
-                        <option value="top">Banda Superior (Rebote)</option>
-                        <option value="left">Banda Izquierda (Rebote)</option>
-                        <option value="right">Banda Derecha (Rebote)</option>
+                    <select id="bandaSelect" class="flex-1 min-w-[140px] bg-slate-800 border border-slate-600 text-emerald-300 rounded-xl px-4 py-3 focus:outline-none focus:border-emerald-500 transition-colors cursor-pointer font-bold text-center sm:text-left shadow-lg">
+                        <option value="bottom">Banda Inferior</option>
+                        <option value="top">Banda Superior</option>
+                        <option value="left">Banda Izquierda</option>
+                        <option value="right">Banda Derecha</option>
                     </select>
                     
-                    <select id="triEscalaSelect" class="flex-1 bg-slate-800 border border-slate-600 text-emerald-300 rounded-xl px-4 py-3 focus:outline-none focus:border-emerald-500 transition-colors cursor-pointer font-bold text-center sm:text-left shadow-lg">
+                    <select id="triEscalaSelect" class="flex-1 min-w-[140px] bg-slate-800 border border-slate-600 text-emerald-300 rounded-xl px-4 py-3 focus:outline-none focus:border-emerald-500 transition-colors cursor-pointer font-bold text-center sm:text-left shadow-lg">
                         <option value="10" selected>Escala: 10 a 80</option>
                         <option value="1">Escala: 1 a 8</option>
                     </select>
 
-                    <label for="gridToggle" class="flex items-center glass-panel px-4 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition touch-manipulation justify-center">
-                        <span class="mr-3 text-xs sm:text-sm font-bold text-slate-200 uppercase tracking-wider text-center">Grip (Cuadrícula)</span>
-                        <div class="relative inline-block w-12 mr-1 align-middle select-none">
-                            <input type="checkbox" id="gridToggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" checked/>
-                            <div class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-600 cursor-pointer"></div>
+                    <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center border-red-900/50 border min-w-[140px]">
+                        <span class="mr-2 text-xs font-bold text-red-400 uppercase tracking-wider text-center">🔴 Obstáculo</span>
+                        <div class="relative inline-block w-10 mr-1 align-middle select-none">
+                            <input type="checkbox" id="obsToggleTri" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer" />
+                            <div class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-600 cursor-pointer"></div>
+                        </div>
+                    </label>
+
+                    <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px]">
+                        <span class="mr-2 text-xs font-bold text-slate-200 uppercase tracking-wider text-center">Grip</span>
+                        <div class="relative inline-block w-10 mr-1 align-middle select-none">
+                            <input type="checkbox" id="gridToggle" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer" checked/>
+                            <div class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-600 cursor-pointer"></div>
                         </div>
                     </label>
                 </div>
@@ -259,15 +269,9 @@
                     <h2 class="text-xl font-black text-emerald-400">Estrategias de Apunte</h2>
                     <div class="flex gap-2">
                         <button onclick="AppTriangulacion.reset()" class="p-1.5 bg-slate-700 hover:bg-slate-600 rounded shadow transition-colors text-sm" title="Restaurar Posiciones">🔄</button>
+                        <button onclick="openSaveModal('triangulacion')" class="p-1.5 bg-indigo-700 hover:bg-indigo-600 rounded shadow transition-colors text-sm text-white" title="Guardar Jugada">💾</button>
                         <button onclick="showHelp('triangulacion')" class="p-1.5 bg-slate-700 hover:bg-slate-600 rounded shadow transition-colors text-sm text-cyan-400 font-bold" title="Ayuda">❓</button>
                     </div>
-                </div>
-                
-                <div class="mb-5">
-                    <h3 class="text-emerald-300 text-sm font-bold uppercase mb-1">1. Conexión Visual (La "X")</h3>
-                    <p class="text-[12px] text-slate-300 font-medium leading-relaxed">
-                        Visualmente, traza una "X" desde cada bola hasta el reflejo en banda de la otra. El cruce central marca tu ataque exacto.
-                    </p>
                 </div>
 
                 <div class="bg-slate-900 rounded-2xl p-4 border border-emerald-800 mb-6 relative overflow-hidden shadow-inner flex flex-col items-start" id="triBox">
@@ -302,11 +306,11 @@
                                     <span id="triStep1" class="text-emerald-300">0.0</span>
                                 </div>
                                 <div class="flex justify-between bg-black/20 p-1 rounded">
-                                    <span class="text-slate-400">2. A ÷ Suma (Fracción)</span>
+                                    <span class="text-slate-400">2. A ÷ Suma (Frac.)</span>
                                     <span id="triStep2" class="text-emerald-300">0.00</span>
                                 </div>
                                 <div class="flex justify-between bg-black/20 p-1 rounded">
-                                    <span class="text-slate-400">3. L × Fracc (Desplaz.)</span>
+                                    <span class="text-slate-400">3. L × Fracc (Despl.)</span>
                                     <span id="triStep3" class="text-emerald-300">0.0</span>
                                 </div>
                             </div>
@@ -343,15 +347,24 @@
                 </button>
 
                 <div class="mt-2 flex flex-wrap justify-between w-full px-4 gap-4 items-center extra-controls">
-                    <select id="plusSelect" class="flex-1 bg-slate-800 border border-slate-600 text-purple-300 rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 transition-colors cursor-pointer font-bold text-center sm:text-left shadow-lg">
+                    <select id="plusSelect" class="flex-1 min-w-[140px] bg-slate-800 border border-slate-600 text-purple-300 rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 transition-colors cursor-pointer font-bold text-center sm:text-left shadow-lg">
                         <option value="left" selected>Ataque a Banda Corta Izquierda</option>
                         <option value="right">Ataque a Banda Corta Derecha</option>
                     </select>
-                    <label for="gridTogglePlus" class="flex items-center glass-panel px-4 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition touch-manipulation justify-center">
-                        <span class="mr-3 text-xs sm:text-sm font-bold text-slate-200 uppercase tracking-wider text-center">Grip</span>
-                        <div class="relative inline-block w-12 mr-1 align-middle select-none">
-                            <input type="checkbox" id="gridTogglePlus" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" />
-                            <div class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-600 cursor-pointer"></div>
+
+                    <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center border-red-900/50 border min-w-[140px]">
+                        <span class="mr-2 text-xs font-bold text-red-400 uppercase tracking-wider text-center">🔴 Obstáculo</span>
+                        <div class="relative inline-block w-10 mr-1 align-middle select-none">
+                            <input type="checkbox" id="obsTogglePlus" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer" />
+                            <div class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-600 cursor-pointer"></div>
+                        </div>
+                    </label>
+
+                    <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px]">
+                        <span class="mr-2 text-xs font-bold text-slate-200 uppercase tracking-wider text-center">Grip</span>
+                        <div class="relative inline-block w-10 mr-1 align-middle select-none">
+                            <input type="checkbox" id="gridTogglePlus" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer" />
+                            <div class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-600 cursor-pointer"></div>
                         </div>
                     </label>
                 </div>
@@ -362,6 +375,7 @@
                     <h2 class="text-xl font-black text-purple-400">Sistema Plus</h2>
                     <div class="flex gap-2">
                         <button onclick="AppPlus.reset()" class="p-1.5 bg-slate-700 hover:bg-slate-600 rounded shadow transition-colors text-sm" title="Restaurar Posiciones">🔄</button>
+                        <button onclick="openSaveModal('plus')" class="p-1.5 bg-indigo-700 hover:bg-indigo-600 rounded shadow transition-colors text-sm text-white" title="Guardar Jugada">💾</button>
                         <button onclick="showHelp('plus')" class="p-1.5 bg-slate-700 hover:bg-slate-600 rounded shadow transition-colors text-sm text-cyan-400 font-bold" title="Ayuda">❓</button>
                     </div>
                 </div>
@@ -410,15 +424,24 @@
                 </button>
 
                 <div class="mt-2 flex flex-wrap justify-between w-full px-4 gap-4 items-center extra-controls">
-                    <select id="sidSelect" class="flex-1 bg-slate-800 border border-slate-600 text-orange-300 rounded-xl px-4 py-3 focus:outline-none focus:border-orange-500 transition-colors cursor-pointer font-bold text-center sm:text-left shadow-lg">
-                        <option value="larga" selected>Llegada a Larga (Salida Corta -> Ataque Corta Der)</option>
-                        <option value="corta">Llegada a Corta (Salida Larga -> Ataque Larga Sup)</option>
+                    <select id="sidSelect" class="flex-1 min-w-[140px] bg-slate-800 border border-slate-600 text-orange-300 rounded-xl px-4 py-3 focus:outline-none focus:border-orange-500 transition-colors cursor-pointer font-bold text-center sm:text-left shadow-lg">
+                        <option value="larga" selected>Llegada a Larga (Salida Corta -> Ataque Der)</option>
+                        <option value="corta">Llegada a Corta (Salida Larga -> Ataque Sup)</option>
                     </select>
-                    <label for="gridToggleSid" class="flex items-center glass-panel px-4 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition touch-manipulation justify-center">
-                        <span class="mr-3 text-xs sm:text-sm font-bold text-slate-200 uppercase tracking-wider text-center">Grip</span>
-                        <div class="relative inline-block w-12 mr-1 align-middle select-none">
-                            <input type="checkbox" id="gridToggleSid" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" />
-                            <div class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-600 cursor-pointer"></div>
+
+                    <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center border-red-900/50 border min-w-[140px]">
+                        <span class="mr-2 text-xs font-bold text-red-400 uppercase tracking-wider text-center">🔴 Obstáculo</span>
+                        <div class="relative inline-block w-10 mr-1 align-middle select-none">
+                            <input type="checkbox" id="obsToggleSid" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer" />
+                            <div class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-600 cursor-pointer"></div>
+                        </div>
+                    </label>
+
+                    <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px]">
+                        <span class="mr-2 text-xs font-bold text-slate-200 uppercase tracking-wider text-center">Grip</span>
+                        <div class="relative inline-block w-10 mr-1 align-middle select-none">
+                            <input type="checkbox" id="gridToggleSid" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer" />
+                            <div class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-600 cursor-pointer"></div>
                         </div>
                     </label>
                 </div>
@@ -429,6 +452,7 @@
                     <h2 class="text-xl font-black text-orange-400">Sistema SID</h2>
                     <div class="flex gap-2">
                         <button onclick="AppSid.reset()" class="p-1.5 bg-slate-700 hover:bg-slate-600 rounded shadow transition-colors text-sm" title="Restaurar Posiciones">🔄</button>
+                        <button onclick="openSaveModal('sid')" class="p-1.5 bg-indigo-700 hover:bg-indigo-600 rounded shadow transition-colors text-sm text-white" title="Guardar Jugada">💾</button>
                         <button onclick="showHelp('sid')" class="p-1.5 bg-slate-700 hover:bg-slate-600 rounded shadow transition-colors text-sm text-cyan-400 font-bold" title="Ayuda">❓</button>
                     </div>
                 </div>
@@ -477,18 +501,27 @@
                 </button>
 
                 <div class="mt-2 flex flex-wrap justify-between w-full px-4 gap-4 items-center extra-controls">
-                    <label for="cuartaBandaToggle" class="flex items-center glass-panel px-4 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition touch-manipulation justify-center">
-                        <span class="mr-3 text-xs sm:text-sm font-bold text-slate-200 uppercase tracking-wider text-center">Líneas 4ta Banda</span>
-                        <div class="relative inline-block w-12 mr-1 align-middle select-none">
-                            <input type="checkbox" id="cuartaBandaToggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" />
+                    <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[140px]">
+                        <span class="mr-2 text-xs font-bold text-slate-200 uppercase tracking-wider text-center">4ta Banda</span>
+                        <div class="relative inline-block w-10 mr-1 align-middle select-none">
+                            <input type="checkbox" id="cuartaBandaToggle" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer" />
                             <div class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-600 cursor-pointer"></div>
                         </div>
                     </label>
-                    <label for="gridToggleBase" class="flex items-center glass-panel px-4 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition touch-manipulation justify-center">
-                        <span class="mr-3 text-xs sm:text-sm font-bold text-slate-200 uppercase tracking-wider text-center">Grip</span>
-                        <div class="relative inline-block w-12 mr-1 align-middle select-none">
-                            <input type="checkbox" id="gridToggleBase" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" />
-                            <div class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-600 cursor-pointer"></div>
+
+                    <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center border-red-900/50 border min-w-[140px]">
+                        <span class="mr-2 text-xs font-bold text-red-400 uppercase tracking-wider text-center">🔴 Obstáculo</span>
+                        <div class="relative inline-block w-10 mr-1 align-middle select-none">
+                            <input type="checkbox" id="obsToggleBase50" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer" />
+                            <div class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-600 cursor-pointer"></div>
+                        </div>
+                    </label>
+
+                    <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px]">
+                        <span class="mr-2 text-xs font-bold text-slate-200 uppercase tracking-wider text-center">Grip</span>
+                        <div class="relative inline-block w-10 mr-1 align-middle select-none">
+                            <input type="checkbox" id="gridToggleBase" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer" />
+                            <div class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-600 cursor-pointer"></div>
                         </div>
                     </label>
                 </div>
@@ -499,6 +532,7 @@
                     <h2 class="text-xl font-black text-indigo-400">Sistema Base 50</h2>
                     <div class="flex gap-2">
                         <button onclick="AppBase50.reset()" class="p-1.5 bg-slate-700 hover:bg-slate-600 rounded shadow transition-colors text-sm" title="Restaurar Posiciones">🔄</button>
+                        <button onclick="openSaveModal('base50')" class="p-1.5 bg-indigo-700 hover:bg-indigo-600 rounded shadow transition-colors text-sm text-white" title="Guardar Jugada">💾</button>
                         <button onclick="showHelp('base50')" class="p-1.5 bg-slate-700 hover:bg-slate-600 rounded shadow transition-colors text-sm text-cyan-400 font-bold" title="Ayuda">❓</button>
                     </div>
                 </div>
@@ -537,8 +571,27 @@
         <div class="bg-slate-800 rounded-2xl shadow-2xl border border-slate-600 max-w-lg w-full p-6 relative">
             <button onclick="closeHelp()" class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-slate-700 text-slate-400 hover:text-white hover:bg-red-500 transition-colors">✕</button>
             <h3 id="helpTitle" class="text-2xl font-black text-cyan-400 mb-4 border-b border-slate-700 pb-2">Ayuda del Sistema</h3>
-            <div id="helpContent" class="text-slate-300 space-y-3 text-sm leading-relaxed overflow-y-auto max-h-[70vh] pr-2">
-            </div>
+            <div id="helpContent" class="text-slate-300 space-y-3 text-sm leading-relaxed overflow-y-auto max-h-[70vh] pr-2"></div>
+        </div>
+    </div>
+
+    <!-- Modal Guardar Tiro -->
+    <div id="saveModal" class="fixed inset-0 z-[60] hidden bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-slate-800 rounded-2xl shadow-2xl border border-slate-600 max-w-sm w-full p-6 relative">
+            <button onclick="closeSaveModal()" class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-slate-700 text-slate-400 hover:text-white hover:bg-red-500 transition-colors">✕</button>
+            <h3 class="text-xl font-black text-indigo-400 mb-4 border-b border-slate-700 pb-2">Guardar Tiro</h3>
+            <p class="text-xs text-slate-400 mb-4">Guarda la posición actual de las bolas y los obstáculos para practicar después.</p>
+            <input type="text" id="saveShotName" placeholder="Ej: Tiro de esquina complejo..." class="w-full bg-slate-900 border border-slate-600 rounded-xl px-4 py-3 text-white mb-4 focus:outline-none focus:border-indigo-500">
+            <button onclick="confirmSaveShot()" class="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold transition">Guardar en Favoritos</button>
+        </div>
+    </div>
+
+    <!-- Modal Mis Tiros -->
+    <div id="shotsModal" class="fixed inset-0 z-[60] hidden bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-slate-800 rounded-2xl shadow-2xl border border-slate-600 max-w-md w-full p-6 relative flex flex-col max-h-[85vh]">
+            <button onclick="closeShotsModal()" class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-slate-700 text-slate-400 hover:text-white hover:bg-red-500 transition-colors">✕</button>
+            <h3 class="text-xl font-black text-indigo-400 mb-4 border-b border-slate-700 pb-2">Mis Tiros Guardados</h3>
+            <div id="shotsList" class="flex-1 overflow-y-auto flex flex-col gap-2 pr-2 pb-2"></div>
         </div>
     </div>
 
@@ -551,41 +604,105 @@
 
     <script>
         // ==========================================
+        // MOTOR DE AUDIO (SIN ARCHIVOS EXTERNOS)
+        // ==========================================
+        let isAudioEnabled = true;
+        const AudioEngine = {
+            ctx: new (window.AudioContext || window.webkitAudioContext)(),
+            playCueHit: () => {
+                if(!isAudioEnabled) return;
+                if(AudioEngine.ctx.state === 'suspended') AudioEngine.ctx.resume();
+                let osc = AudioEngine.ctx.createOscillator(); let gain = AudioEngine.ctx.createGain();
+                osc.type = 'triangle'; osc.frequency.setValueAtTime(600, AudioEngine.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(100, AudioEngine.ctx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.5, AudioEngine.ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, AudioEngine.ctx.currentTime + 0.1);
+                osc.connect(gain); gain.connect(AudioEngine.ctx.destination); osc.start(); osc.stop(AudioEngine.ctx.currentTime + 0.1);
+            },
+            playRailHit: () => {
+                if(!isAudioEnabled) return;
+                if(AudioEngine.ctx.state === 'suspended') AudioEngine.ctx.resume();
+                let osc = AudioEngine.ctx.createOscillator(); let gain = AudioEngine.ctx.createGain();
+                osc.type = 'sine'; osc.frequency.setValueAtTime(300, AudioEngine.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(100, AudioEngine.ctx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.3, AudioEngine.ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, AudioEngine.ctx.currentTime + 0.1);
+                osc.connect(gain); gain.connect(AudioEngine.ctx.destination); osc.start(); osc.stop(AudioEngine.ctx.currentTime + 0.1);
+            },
+            playBallHit: () => {
+                if(!isAudioEnabled) return;
+                if(AudioEngine.ctx.state === 'suspended') AudioEngine.ctx.resume();
+                let osc = AudioEngine.ctx.createOscillator(); let gain = AudioEngine.ctx.createGain();
+                osc.type = 'square'; osc.frequency.setValueAtTime(800, AudioEngine.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(200, AudioEngine.ctx.currentTime + 0.05);
+                gain.gain.setValueAtTime(0.4, AudioEngine.ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, AudioEngine.ctx.currentTime + 0.05);
+                osc.connect(gain); gain.connect(AudioEngine.ctx.destination); osc.start(); osc.stop(AudioEngine.ctx.currentTime + 0.05);
+            }
+        };
+
+        function toggleAudio() {
+            isAudioEnabled = !isAudioEnabled;
+            document.getElementById('btnAudio').textContent = isAudioEnabled ? '🔊 Sonido' : '🔇 Mute';
+            document.getElementById('btnAudio').classList.toggle('text-slate-400', !isAudioEnabled);
+            if (isAudioEnabled && AudioEngine.ctx.state === 'suspended') AudioEngine.ctx.resume();
+        }
+
+        // ==========================================
+        // MODO ENTRENAMIENTO (DESAFÍO)
+        // ==========================================
+        let isTrainingMode = false;
+        let solutionRevealed = false;
+
+        function toggleTrainingMode() {
+            isTrainingMode = !isTrainingMode;
+            solutionRevealed = false;
+            const btn = document.getElementById('btnTraining');
+            if (isTrainingMode) {
+                btn.classList.replace('bg-slate-700', 'bg-yellow-600');
+                btn.classList.replace('hover:bg-slate-600', 'hover:bg-yellow-500');
+                btn.classList.add('animate-pulse');
+                triggerRandomizeOnActiveTab();
+            } else {
+                btn.classList.replace('bg-yellow-600', 'bg-slate-700');
+                btn.classList.replace('hover:bg-yellow-500', 'hover:bg-slate-600');
+                btn.classList.remove('animate-pulse');
+                triggerUpdateOnActiveTab();
+            }
+        }
+
+        function triggerRandomizeOnActiveTab() {
+            let activeTab = document.querySelector('.tab-content.active').id;
+            if(activeTab === 'tab-simetria') AppSimetria.randomize();
+            if(activeTab === 'tab-triangulacion') AppTriangulacion.randomize();
+            if(activeTab === 'tab-plus') AppPlus.randomize();
+            if(activeTab === 'tab-sid') AppSid.randomize();
+            if(activeTab === 'tab-base50') AppBase50.randomize();
+        }
+
+        function triggerUpdateOnActiveTab() {
+            let activeTab = document.querySelector('.tab-content.active').id;
+            if(activeTab === 'tab-simetria') AppSimetria.resume();
+            if(activeTab === 'tab-triangulacion') AppTriangulacion.resume();
+            if(activeTab === 'tab-plus') AppPlus.resume();
+            if(activeTab === 'tab-sid') AppSid.resume();
+            if(activeTab === 'tab-base50') AppBase50.resume();
+        }
+
+        // ==========================================
         // SISTEMA FULLSCREEN (UX)
         // ==========================================
         function toggleFullscreen() {
             const isFs = document.body.classList.contains('is-fullscreen');
             if (!isFs) {
-                if (document.documentElement.requestFullscreen) {
-                    document.documentElement.requestFullscreen().catch(err => console.log(err));
-                } else if (document.documentElement.webkitRequestFullscreen) {
-                    document.documentElement.webkitRequestFullscreen();
-                } else if (document.documentElement.msRequestFullscreen) {
-                    document.documentElement.msRequestFullscreen();
-                }
+                if (document.documentElement.requestFullscreen) { document.documentElement.requestFullscreen().catch(err => console.log(err)); }
                 document.body.classList.add('is-fullscreen');
             } else {
-                if (document.exitFullscreen && document.fullscreenElement) {
-                    document.exitFullscreen();
-                } else if (document.webkitExitFullscreen && document.webkitFullscreenElement) {
-                    document.webkitExitFullscreen();
-                } else if (document.msExitFullscreen && document.msFullscreenElement) {
-                    document.msExitFullscreen();
-                }
+                if (document.exitFullscreen && document.fullscreenElement) { document.exitFullscreen(); }
                 document.body.classList.remove('is-fullscreen');
             }
         }
-
-        document.addEventListener('fullscreenchange', () => {
-            if (!document.fullscreenElement) document.body.classList.remove('is-fullscreen');
-        });
-        document.addEventListener('webkitfullscreenchange', () => {
-            if (!document.webkitFullscreenElement) document.body.classList.remove('is-fullscreen');
-        });
-
+        document.addEventListener('fullscreenchange', () => { if (!document.fullscreenElement) document.body.classList.remove('is-fullscreen'); });
 
         // ==========================================
-        // VARIABLES GLOBALES Y MANEJO DE ESTADO
+        // VARIABLES GLOBALES (COLORES Y ESTADO)
         // ==========================================
         let globalClothColor = '#047857';
         let globalGripColor = '#cbd5e1';
@@ -595,27 +712,97 @@
             if (hexCloth.toLowerCase() === '#0284c7') return '#ffffff'; 
             if (hexCloth.toLowerCase() === '#be185d') return '#fef08a'; 
             if (hexCloth.toLowerCase() === '#ea580c') return '#1e293b'; 
-            
             let hex = hexCloth.replace('#', '');
             if (hex.length === 3) hex = hex.split('').map(char => char + char).join('');
-            let r = parseInt(hex.substring(0, 2), 16);
-            let g = parseInt(hex.substring(2, 4), 16);
-            let b = parseInt(hex.substring(4, 6), 16);
+            let r = parseInt(hex.substring(0, 2), 16); let g = parseInt(hex.substring(2, 4), 16); let b = parseInt(hex.substring(4, 6), 16);
             let luminance = 0.299 * r + 0.587 * g + 0.114 * b;
-            
             return luminance > 130 ? '#1e293b' : '#ffffff';
         }
 
         function changeClothColor(color) {
-            globalClothColor = color;
-            document.getElementById('customColorPicker').value = color;
-            let recommendedGrip = getRecommendedGripColor(color);
-            changeGripColor(recommendedGrip, false);
+            globalClothColor = color; document.getElementById('customColorPicker').value = color;
+            let recommendedGrip = getRecommendedGripColor(color); changeGripColor(recommendedGrip, false);
         }
 
         function changeGripColor(color, isManual = true) {
-            globalGripColor = color;
-            document.getElementById('customGripPicker').value = color;
+            globalGripColor = color; document.getElementById('customGripPicker').value = color;
+        }
+
+        // ==========================================
+        // SISTEMA DE GUARDADO (LOCALSTORAGE)
+        // ==========================================
+        let systemToSave = null;
+        function openSaveModal(sys) {
+            systemToSave = sys; document.getElementById('saveShotName').value = '';
+            document.getElementById('saveModal').classList.remove('hidden');
+        }
+        function closeSaveModal() { document.getElementById('saveModal').classList.add('hidden'); }
+        
+        function confirmSaveShot() {
+            let name = document.getElementById('saveShotName').value.trim();
+            if(!name) name = "Tiro Estratégico";
+            
+            let state = null;
+            if (systemToSave === 'simetria') state = AppSimetria.getState();
+            if (systemToSave === 'triangulacion') state = AppTriangulacion.getState();
+            if (systemToSave === 'plus') state = AppPlus.getState();
+            if (systemToSave === 'sid') state = AppSid.getState();
+            if (systemToSave === 'base50') state = AppBase50.getState();
+            
+            let shot = { id: Date.now(), systemId: systemToSave, name: name, date: new Date().toLocaleDateString(), state: state };
+            let saved = JSON.parse(localStorage.getItem('billarSavedShots')) || [];
+            saved.push(shot);
+            localStorage.setItem('billarSavedShots', JSON.stringify(saved));
+            closeSaveModal();
+        }
+
+        function openShotsModal() { renderShotsList(); document.getElementById('shotsModal').classList.remove('hidden'); }
+        function closeShotsModal() { document.getElementById('shotsModal').classList.add('hidden'); }
+
+        function renderShotsList() {
+            let saved = JSON.parse(localStorage.getItem('billarSavedShots')) || [];
+            let html = '';
+            if(saved.length === 0) html = '<p class="text-slate-400 text-sm text-center py-6">No tienes tiros guardados aún. Presiona el ícono 💾 en cualquier mesa.</p>';
+            
+            saved.reverse().forEach(s => {
+                let sysName = { 'simetria': 'Mitades', 'triangulacion': 'Triangulación', 'plus': 'Sis. Plus', 'sid': 'Sis. SID', 'base50': 'Base 50' }[s.systemId];
+                html += `
+                <div class="shot-item bg-slate-900 border border-slate-700 rounded-lg p-3 flex justify-between items-center transition-colors">
+                    <div class="overflow-hidden">
+                        <h4 class="text-emerald-400 font-bold text-sm truncate pr-2">${s.name}</h4>
+                        <p class="text-slate-500 text-[10px] uppercase">${sysName} • ${s.date}</p>
+                    </div>
+                    <div class="flex gap-2 flex-shrink-0">
+                        <button onclick="loadShot(${s.id})" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded text-xs font-bold transition">Cargar</button>
+                        <button onclick="deleteShot(${s.id})" class="bg-red-900/50 hover:bg-red-600 text-white px-2.5 py-1.5 rounded text-xs font-bold transition border border-red-800">✕</button>
+                    </div>
+                </div>`;
+            });
+            document.getElementById('shotsList').innerHTML = html;
+        }
+
+        function deleteShot(id) {
+            let saved = JSON.parse(localStorage.getItem('billarSavedShots')) || [];
+            saved = saved.filter(s => s.id !== id);
+            localStorage.setItem('billarSavedShots', JSON.stringify(saved));
+            renderShotsList();
+        }
+
+        function loadShot(id) {
+            let saved = JSON.parse(localStorage.getItem('billarSavedShots')) || [];
+            let shot = saved.find(s => s.id === id);
+            if(!shot) return;
+            
+            if(isTrainingMode) toggleTrainingMode();
+            
+            switchTab('tab-' + shot.systemId);
+            
+            if (shot.systemId === 'simetria') AppSimetria.loadState(shot.state);
+            if (shot.systemId === 'triangulacion') AppTriangulacion.loadState(shot.state);
+            if (shot.systemId === 'plus') AppPlus.loadState(shot.state);
+            if (shot.systemId === 'sid') AppSid.loadState(shot.state);
+            if (shot.systemId === 'base50') AppBase50.loadState(shot.state);
+            closeShotsModal();
         }
 
         // Sistema de Ayuda
@@ -628,18 +815,14 @@
         };
 
         function showHelp(systemId) {
-            const data = helpData[systemId];
-            document.getElementById('helpTitle').textContent = data.title;
-            document.getElementById('helpContent').innerHTML = data.content;
+            document.getElementById('helpTitle').textContent = helpData[systemId].title;
+            document.getElementById('helpContent').innerHTML = helpData[systemId].content;
             document.getElementById('helpModal').classList.remove('hidden');
         }
-
-        function closeHelp() {
-            document.getElementById('helpModal').classList.add('hidden');
-        }
+        function closeHelp() { document.getElementById('helpModal').classList.add('hidden'); }
 
         // ==========================================
-        // UTILIDADES DRY (NO REPETIR CÓDIGO)
+        // UTILIDADES DRY (FÍSICAS Y DIBUJO)
         // ==========================================
         const MathUtils = {
             lerp: (s, e, a) => s + (e - s) * MathUtils.easeOut(a),
@@ -651,30 +834,36 @@
                 t = Math.max(0, Math.min(1, t));
                 return Math.hypot(p.x - (v.x + t * (w.x - v.x)), p.y - (v.y + t * (w.y - v.y)));
             },
-            applySnapping: (val, snapBase) => Math.round(val / snapBase) * snapBase
+            applySnapping: (val, snapBase) => Math.round(val / snapBase) * snapBase,
+            projectPointOnSegment: (p, v, w) => {
+                let l2 = (w.x - v.x)**2 + (w.y - v.y)**2;
+                if (l2 === 0) return {x: v.x, y: v.y};
+                let t = ((p.x - v.x) * (w.x - v.x) + (p.y - v.y) * (w.y - v.y)) / l2;
+                t = Math.max(0, Math.min(1, t));
+                return {x: v.x + t * (w.x - v.x), y: v.y + t * (w.y - v.y)};
+            },
+            isPointInPocket: (pt, playX, playY, playW, playH, radius = 32) => {
+                const pockets = [
+                    {x: playX, y: playY}, {x: playX + playW/2, y: playY}, {x: playX + playW, y: playY},
+                    {x: playX, y: playY + playH}, {x: playX + playW/2, y: playY + playH}, {x: playX + playW, y: playY + playH}
+                ];
+                return pockets.some(pocket => Math.hypot(pt.x - pocket.x, pt.y - pocket.y) < radius);
+            }
         };
 
         const CanvasUtils = {
             setupRetina: (canvas, ctx, logicalWidth, logicalHeight) => {
                 const dpr = window.devicePixelRatio || 1;
-                canvas.width = logicalWidth * dpr;
-                canvas.height = logicalHeight * dpr;
-                ctx.scale(dpr, dpr);
-                canvas._logW = logicalWidth;
-                canvas._logH = logicalHeight;
+                canvas.width = logicalWidth * dpr; canvas.height = logicalHeight * dpr;
+                ctx.scale(dpr, dpr); canvas._logW = logicalWidth; canvas._logH = logicalHeight;
             },
             getTouchPos: (canvas, e) => {
-                const rect = canvas.getBoundingClientRect();
-                let cX = e.clientX, cY = e.clientY;
+                const rect = canvas.getBoundingClientRect(); let cX = e.clientX, cY = e.clientY;
                 if(e.touches && e.touches.length > 0) { cX = e.touches[0].clientX; cY = e.touches[0].clientY; }
-                return {
-                    x: (cX - rect.left) * (canvas._logW / rect.width),
-                    y: (cY - rect.top) * (canvas._logH / rect.height)
-                };
+                return { x: (cX - rect.left) * (canvas._logW / rect.width), y: (cY - rect.top) * (canvas._logH / rect.height) };
             },
             drawBaseTable: (ctx, playX, playY, playW, playH, opacity = 1) => {
-                ctx.save();
-                ctx.globalAlpha = opacity;
+                ctx.save(); ctx.globalAlpha = opacity;
                 ctx.fillStyle = '#451a03'; ctx.fillRect(playX - 45, playY - 45, playW + 90, playH + 90);
                 ctx.fillStyle = globalClothColor; ctx.fillRect(playX, playY, playW, playH);
                 ctx.strokeStyle = '#000'; ctx.lineWidth = 6; ctx.strokeRect(playX, playY, playW, playH);
@@ -684,90 +873,66 @@
             },
             drawStandardDiamonds: (ctx, playX, playY, playW, playH, showGrid = false) => {
                 let diaX = playW / 8; let diaY = playH / 4;
-                if (showGrid) {
-                    ctx.save();
-                    ctx.globalAlpha = 0.2;
-                    ctx.strokeStyle = globalGripColor;
-                    ctx.lineWidth = 1;
+                if (showGrid && (!isTrainingMode || solutionRevealed)) {
+                    ctx.save(); ctx.globalAlpha = 0.2; ctx.strokeStyle = globalGripColor; ctx.lineWidth = 1;
                     for(let i=1; i<=7; i++) { ctx.beginPath(); ctx.moveTo(playX + i*diaX, playY); ctx.lineTo(playX + i*diaX, playY + playH); ctx.stroke(); }
                     for(let i=1; i<=3; i++) { ctx.beginPath(); ctx.moveTo(playX, playY + i*diaY); ctx.lineTo(playX + playW, playY + i*diaY); ctx.stroke(); }
-                    
-                    ctx.strokeStyle = '#ef4444'; 
-                    ctx.setLineDash([4, 4]);
+                    ctx.strokeStyle = '#ef4444'; ctx.setLineDash([4, 4]);
                     for(let i=0; i<=7; i++) { ctx.beginPath(); ctx.moveTo(playX + (i+0.5)*diaX, playY); ctx.lineTo(playX + (i+0.5)*diaX, playY + playH); ctx.stroke(); }
                     for(let i=0; i<=3; i++) { ctx.beginPath(); ctx.moveTo(playX, playY + (i+0.5)*diaY); ctx.lineTo(playX + playW, playY + (i+0.5)*diaY); ctx.stroke(); }
                     ctx.restore();
                 }
-                
                 const drawSubs = (x1, y1, x2, y2) => {
                     ctx.lineWidth = 1.5;
                     for(let j=1; j<10; j++) {
-                        let px = x1 + (x2 - x1) * (j/10);
-                        let py = y1 + (y2 - y1) * (j/10);
-                        if (j === 5) {
-                            ctx.fillStyle = '#ef4444'; 
-                            ctx.beginPath(); ctx.arc(px, py, 2.5, 0, Math.PI*2); ctx.fill();
-                        } else {
-                            ctx.strokeStyle = '#38bdf8'; 
-                            ctx.beginPath();
-                            if (y1 === y2) { ctx.moveTo(px, py - 3); ctx.lineTo(px, py + 3); }
-                            else { ctx.moveTo(px - 3, py); ctx.lineTo(px + 3, py); }
+                        let px = x1 + (x2 - x1) * (j/10); let py = y1 + (y2 - y1) * (j/10);
+                        if (j === 5) { ctx.fillStyle = '#ef4444'; ctx.beginPath(); ctx.arc(px, py, 2.5, 0, Math.PI*2); ctx.fill(); } 
+                        else {
+                            ctx.strokeStyle = '#38bdf8'; ctx.beginPath();
+                            if (y1 === y2) { ctx.moveTo(px, py - 3); ctx.lineTo(px, py + 3); } else { ctx.moveTo(px - 3, py); ctx.lineTo(px + 3, py); }
                             ctx.stroke();
                         }
                     }
                 };
-
                 for(let i=0; i<8; i++) {
-                    let px1 = playX + i * diaX;
-                    let px2 = playX + (i+1) * diaX;
-                    drawSubs(px1, playY - 15, px2, playY - 15);
-                    drawSubs(px1, playY + playH + 15, px2, playY + playH + 15);
-                    if (i > 0) {
-                        ctx.fillStyle = globalGripColor;
-                        ctx.beginPath(); ctx.arc(px1, playY - 15, 4, 0, Math.PI*2); ctx.fill();
-                        ctx.beginPath(); ctx.arc(px1, playY + playH + 15, 4, 0, Math.PI*2); ctx.fill();
-                    }
+                    let px1 = playX + i * diaX; let px2 = playX + (i+1) * diaX;
+                    drawSubs(px1, playY - 15, px2, playY - 15); drawSubs(px1, playY + playH + 15, px2, playY + playH + 15);
+                    if (i > 0) { ctx.fillStyle = globalGripColor; ctx.beginPath(); ctx.arc(px1, playY - 15, 4, 0, Math.PI*2); ctx.fill(); ctx.beginPath(); ctx.arc(px1, playY + playH + 15, 4, 0, Math.PI*2); ctx.fill(); }
                 }
                 for(let i=0; i<4; i++) {
-                    let py1 = playY + i * diaY;
-                    let py2 = playY + (i+1) * diaY;
-                    drawSubs(playX - 15, py1, playX - 15, py2);
-                    drawSubs(playX + playW + 15, py1, playX + playW + 15, py2);
-                    if (i > 0) {
-                        ctx.fillStyle = globalGripColor;
-                        ctx.beginPath(); ctx.arc(playX - 15, py1, 4, 0, Math.PI*2); ctx.fill();
-                        ctx.beginPath(); ctx.arc(playX + playW + 15, py1, 4, 0, Math.PI*2); ctx.fill();
-                    }
+                    let py1 = playY + i * diaY; let py2 = playY + (i+1) * diaY;
+                    drawSubs(playX - 15, py1, playX - 15, py2); drawSubs(playX + playW + 15, py1, playX + playW + 15, py2);
+                    if (i > 0) { ctx.fillStyle = globalGripColor; ctx.beginPath(); ctx.arc(playX - 15, py1, 4, 0, Math.PI*2); ctx.fill(); ctx.beginPath(); ctx.arc(playX + playW + 15, py1, 4, 0, Math.PI*2); ctx.fill(); }
                 }
             },
             drawPostImpact: (ctx, x1, y1, x2, y2) => {
-                let dx = x2 - x1; let dy = y2 - y1;
-                let dist = Math.hypot(dx, dy);
-                if(dist === 0) return;
-                dx /= dist; dy /= dist;
-                let tx1 = -dy; let ty1 = dx;
-                let tx2 = dy; let ty2 = -dx;
-                ctx.beginPath();
-                ctx.moveTo(x2, y2); ctx.lineTo(x2 + tx1 * 40, y2 + ty1 * 40);
-                ctx.moveTo(x2, y2); ctx.lineTo(x2 + tx2 * 40, y2 + ty2 * 40);
+                let dx = x2 - x1; let dy = y2 - y1; let dist = Math.hypot(dx, dy); if(dist === 0) return; dx /= dist; dy /= dist;
+                ctx.beginPath(); ctx.moveTo(x2, y2); ctx.lineTo(x2 - dy * 40, y2 + dx * 40); ctx.moveTo(x2, y2); ctx.lineTo(x2 + dy * 40, y2 - dx * 40);
                 ctx.strokeStyle = 'rgba(255, 255, 255, 0.6)'; ctx.lineWidth = 2; ctx.setLineDash([4, 4]); ctx.stroke(); ctx.setLineDash([]);
+            },
+            drawObstacle: (ctx, obs) => {
+                if(!obs.active) return;
+                ctx.beginPath(); ctx.arc(obs.x, obs.y, obs.radius + Math.sin(Date.now()/150)*2, 0, Math.PI*2); ctx.fillStyle = 'rgba(239, 68, 68, 0.4)'; ctx.fill();
+                ctx.beginPath(); ctx.arc(obs.x, obs.y, obs.radius, 0, Math.PI*2); ctx.fillStyle = '#dc2626'; ctx.fill();
+                ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
             }
         };
 
-        // Controlador de Pestañas
         function switchTab(tabId) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            
             document.getElementById('btn-' + tabId.replace('tab-', '')).classList.add('active');
             document.getElementById(tabId).classList.add('active');
             
             AppSimetria.pause(); AppTriangulacion.pause(); AppPlus.pause(); AppSid.pause(); AppBase50.pause();
-            if(tabId === 'tab-simetria') AppSimetria.resume();
-            if(tabId === 'tab-triangulacion') AppTriangulacion.resume();
-            if(tabId === 'tab-plus') AppPlus.resume();
-            if(tabId === 'tab-sid') AppSid.resume();
-            if(tabId === 'tab-base50') AppBase50.resume();
+            
+            solutionRevealed = false;
+            
+            if(tabId === 'tab-simetria') { AppSimetria.resume(); if(isTrainingMode) AppSimetria.randomize(); }
+            if(tabId === 'tab-triangulacion') { AppTriangulacion.resume(); if(isTrainingMode) AppTriangulacion.randomize(); }
+            if(tabId === 'tab-plus') { AppPlus.resume(); if(isTrainingMode) AppPlus.randomize(); }
+            if(tabId === 'tab-sid') { AppSid.resume(); if(isTrainingMode) AppSid.randomize(); }
+            if(tabId === 'tab-base50') { AppBase50.resume(); if(isTrainingMode) AppBase50.randomize(); }
         }
 
         // ==========================================
@@ -777,39 +942,53 @@
             const canvas = document.getElementById('canvasSimetria'); const ctx = canvas.getContext('2d');
             const uiSalida = document.getElementById('simSalida'); const uiDestino = document.getElementById('simDestino'); 
             const uiAtaque = document.getElementById('simAtaque'); const btnAnimar = document.getElementById('btnAnimarSim');
-            const espejoToggle = document.getElementById('espejoToggle'); const mitadesSelect = document.getElementById('mitadesSelect');
-            const uiDecor = document.getElementById('simDecor'); const uiTitle = document.getElementById('simTitle');
-            const gridToggle = document.getElementById('gridToggleSim');
+            const mitadesSelect = document.getElementById('mitadesSelect'); const uiDecor = document.getElementById('simDecor'); 
+            const uiTitle = document.getElementById('simTitle'); const gridToggle = document.getElementById('gridToggleSim');
+            const espejoToggle = document.getElementById('espejoToggle'); const obsToggle = document.getElementById('obsToggleSim');
 
             const padding = 60; const playW = 800; const playH = 400; const playX = padding; 
             const segmentX = playW / 8; const segmentY = playH / 8; 
             const cwSingle = playW + padding * 2; const cwDouble = playW * 2 + padding * 2; 
             const ch = playH + padding * 2; const chDouble = playH * 2 + padding * 2;
 
-            let playY = padding; let showGrid = false;
-            let isAnimating = false; let showMirror = false; let animProgress = 0;
-            let trail = []; let isActive = false; let loopId; let isPossible = true;
+            let playY = padding; let showGrid = false; let isAnimating = false; let showMirror = false; let animProgress = 0;
+            let trail = []; let isActive = false; let loopId; let isPossible = true; let isBlocked = false; let isInPocket = false;
+            let isShotFinished = false;
 
-            let ball = { x: 0, y: 0, radius: 15 }; 
-            let targetObj = { x: 0, y: 0, radius: 18 }; 
-
-            let ptStart = {x: 0, y: 0};
-            let ptAttack = {x: 0, y: 0};
-            let ptTarget = {x: 0, y: 0};
-            let draggedItem = null; 
+            let ball = { x: 0, y: 0, radius: 15 }; let targetObj = { x: 0, y: 0, radius: 18 }; 
+            let obstacleObj = { active: false, x: playX + playW/2, y: playY + playH/2, radius: 16 };
+            let ptStart = {x: 0, y: 0}; let ptAttack = {x: 0, y: 0}; let ptTarget = {x: 0, y: 0};
+            let draggedItem = null; let originalBallPos = {x:0, y:0};
 
             function resetPositions() {
                 let modo = mitadesSelect.value;
-                if (modo === 'larga') {
-                    ball.x = playX + segmentX * 6; ball.y = playY + playH - 20; 
-                    targetObj.x = playX + segmentX * 2; targetObj.y = playY + playH - 20;
-                } else {
-                    ball.x = playX + segmentX * 4; ball.y = playY + playH - 20; 
-                    targetObj.x = playX + segmentX * 2; targetObj.y = playY + segmentY * 2;
-                }
-                ptStart = {x: ball.x, y: ball.y};
-                ptTarget = {x: targetObj.x, y: targetObj.y};
+                if (modo === 'larga') { ball.x = playX + segmentX * 6; ball.y = playY + playH - 20; targetObj.x = playX + segmentX * 2; targetObj.y = playY + playH - 20; } 
+                else { ball.x = playX + segmentX * 4; ball.y = playY + playH - 20; targetObj.x = playX + segmentX * 2; targetObj.y = playY + segmentY * 2; }
+                ptStart = {x: ball.x, y: ball.y}; ptTarget = {x: targetObj.x, y: targetObj.y};
+                obstacleObj.x = playX + playW/2; obstacleObj.y = playY + playH/2;
+                isShotFinished = false;
                 setCanvasSize();
+            }
+
+            function randomizePositions() {
+                let attempts = 0;
+                setCanvasSize();
+                do {
+                    ball.x = playX + segmentX + Math.random() * (playW - 2*segmentX); ball.y = playY + segmentY + Math.random() * (playH - 2*segmentY);
+                    targetObj.x = playX + segmentX + Math.random() * (playW - 2*segmentX); targetObj.y = playY + segmentY + Math.random() * (playH - 2*segmentY);
+                    ptStart = {x: ball.x, y: ball.y}; ptTarget = {x: targetObj.x, y: targetObj.y};
+                    updateMath(); attempts++;
+                } while(!isPossible && attempts < 100);
+
+                if (obstacleObj.active) {
+                    obstacleObj.x = MathUtils.lerp(ptStart.x, ptAttack.x, 0.5);
+                    obstacleObj.y = MathUtils.lerp(ptStart.y, ptAttack.y, 0.5);
+                }
+                
+                originalBallPos = {x: ball.x, y: ball.y};
+                isShotFinished = false;
+                solutionRevealed = false;
+                updateMath();
             }
 
             function setCanvasSize() { 
@@ -817,31 +996,23 @@
                 let logW = cwSingle, logH = ch;
                 let newPlayY = padding;
                 
-                if (showMirror && modo === 'larga') {
-                    logH = chDouble; newPlayY = padding + playH;
-                } else if (showMirror && modo === 'corta') {
-                    logW = cwDouble;
-                }
+                if (showMirror && modo === 'larga') { logH = chDouble; newPlayY = padding + playH; } 
+                else if (showMirror && modo === 'corta') { logW = cwDouble; }
                 
                 CanvasUtils.setupRetina(canvas, ctx, logW, logH);
 
                 let deltaY = newPlayY - playY;
                 playY = newPlayY;
-                ball.y += deltaY;
-                targetObj.y += deltaY;
-                ptStart.y += deltaY;
-                ptTarget.y += deltaY;
-                
-                ball.x = Math.max(playX, Math.min(playX + playW, ball.x));
-                ball.y = Math.max(playY, Math.min(playY + playH, ball.y));
-                targetObj.x = Math.max(playX, Math.min(playX + playW, targetObj.x));
-                targetObj.y = Math.max(playY, Math.min(playY + playH, targetObj.y));
+                ball.y += deltaY; targetObj.y += deltaY; ptStart.y += deltaY; ptTarget.y += deltaY; obstacleObj.y += deltaY;
+                ball.x = Math.max(playX, Math.min(playX + playW, ball.x)); ball.y = Math.max(playY, Math.min(playY + playH, ball.y));
+                targetObj.x = Math.max(playX, Math.min(playX + playW, targetObj.x)); targetObj.y = Math.max(playY, Math.min(playY + playH, targetObj.y));
+                obstacleObj.x = Math.max(playX, Math.min(playX + playW, obstacleObj.x)); obstacleObj.y = Math.max(playY, Math.min(playY + playH, obstacleObj.y));
 
                 ptStart.x = ball.x;
                 ptStart.y = ball.y;
                 ptTarget.x = targetObj.x;
                 ptTarget.y = targetObj.y;
-                
+                originalBallPos = {x: ball.x, y: ball.y};
                 updateMath(); 
             }
 
@@ -850,6 +1021,7 @@
                 const dist = (p1, p2) => Math.hypot(p2.x - p1.x, p2.y - p1.y);
                 if (dist(pos, ptStart) <= ball.radius * 4) { draggedItem = 'ball'; e.preventDefault(); }
                 else if (dist(pos, targetObj) <= targetObj.radius * 4) { draggedItem = 'target'; e.preventDefault(); }
+                else if (obstacleObj.active && dist(pos, obstacleObj) <= obstacleObj.radius * 4) { draggedItem = 'obstacle'; e.preventDefault(); }
             }
             function handleMove(e) {
                 if (!draggedItem || isAnimating || !isActive) return; e.preventDefault(); const pos = CanvasUtils.getTouchPos(canvas, e);
@@ -859,7 +1031,7 @@
                 let modo = mitadesSelect.value;
                 if (modo === 'larga' && draggedItem === 'target') { boundY = playY + playH - 20; }
 
-                if (showGrid) {
+                if (showGrid && draggedItem !== 'obstacle') {
                     boundX = MathUtils.applySnapping(boundX - playX, segmentX / 2) + playX;
                     boundY = MathUtils.applySnapping(boundY - playY, segmentY / 2) + playY;
                     boundX = Math.max(playX, Math.min(playX + playW, boundX));
@@ -868,38 +1040,76 @@
 
                 if (draggedItem === 'ball') { ptStart.x = boundX; ptStart.y = boundY; ball.x = ptStart.x; ball.y = ptStart.y; }
                 else if (draggedItem === 'target') { targetObj.x = boundX; targetObj.y = boundY; ptTarget.x = targetObj.x; ptTarget.y = targetObj.y; }
+                else if (draggedItem === 'obstacle') { obstacleObj.x = boundX; obstacleObj.y = boundY; }
                 updateMath();
             }
 
             function updateMath() {
                 let modo = mitadesSelect.value;
-                let logicalSalida = (playX + playW - ptStart.x) / segmentX; uiSalida.textContent = logicalSalida.toFixed(0);
+                let logicalSalida = (playX + playW - ptStart.x) / segmentX; 
                 
                 if (modo === 'corta') {
-                    uiDestino.textContent = "Hacia (" + ((playX + playW - targetObj.x)/segmentX).toFixed(0) + ", " + ((playY + playH - targetObj.y)/segmentY).toFixed(0) + ")";
                     const rightWall = playX + playW; const mirrorTargetX = rightWall + (rightWall - targetObj.x);
                     let intersectY = playY + playH/2;
                     if (mirrorTargetX !== ptStart.x) { intersectY = ptStart.y + (rightWall - ptStart.x) * ((targetObj.y - ptStart.y) / (mirrorTargetX - ptStart.x)); }
-                    
                     ptAttack.x = rightWall; ptAttack.y = intersectY;
-                    let logicalAtaque = (playY + playH - ptAttack.y) / segmentY; 
-                    uiAtaque.textContent = logicalAtaque.toFixed(0);
                     isPossible = (intersectY >= playY && intersectY <= playY + playH && rightWall > ptStart.x && mirrorTargetX > ptStart.x);
                 } else {
-                    uiDestino.textContent = "Banda Larga (" + ((playX + playW - targetObj.x)/segmentX).toFixed(0) + ")";
                     const topWall = playY; const mirrorTargetY = topWall - (targetObj.y - topWall);
                     let intersectX = playX + playW/2;
                     if (mirrorTargetY !== ptStart.y) { intersectX = ptStart.x + (topWall - ptStart.y) * ((targetObj.x - ptStart.x) / (mirrorTargetY - ptStart.y)); }
-                    
                     ptAttack.y = topWall; ptAttack.x = intersectX;
-                    let logicalAtaque = (playX + playW - ptAttack.x) / segmentX; 
-                    uiAtaque.textContent = logicalAtaque.toFixed(0);
                     isPossible = (intersectX >= playX && intersectX <= playX + playW && ptStart.y > topWall && mirrorTargetY < topWall);
                 }
 
-                btnAnimar.disabled = !isPossible;
-                uiAtaque.style.color = isPossible ? '' : '#ef4444'; uiTitle.style.color = isPossible ? '' : '#ef4444';
-                uiTitle.textContent = isPossible ? 'Punto de Ataque' : 'TIRO IMPOSIBLE'; uiDecor.style.backgroundColor = isPossible ? '' : '#ef4444';
+                isInPocket = false;
+                if(isPossible) {
+                    isInPocket = MathUtils.isPointInPocket(ptAttack, playX, playY, playW, playH);
+                    if(isInPocket) isPossible = false;
+                }
+
+                isBlocked = false;
+                if (obstacleObj.active) {
+                    if (MathUtils.distToSegment(obstacleObj, ptStart, ptAttack) < 30 || MathUtils.distToSegment(obstacleObj, ptAttack, ptTarget) < 30) isBlocked = true;
+                }
+
+                if (isTrainingMode && !solutionRevealed) {
+                    uiSalida.textContent = '???'; uiDestino.textContent = '???'; uiAtaque.textContent = '???';
+                    uiTitle.textContent = '¡CALCULA EL TIRO!'; uiTitle.style.color = '#facc15'; uiDecor.style.backgroundColor = '#facc15'; uiAtaque.style.color = '#facc15';
+                    btnAnimar.innerHTML = '👀 Ver Solución';
+                    btnAnimar.disabled = false;
+                    btnAnimar.className = "btn-disparar w-full max-w-md mt-4 mb-2 py-3 rounded-2xl font-black text-xl bg-gradient-to-r from-yellow-500 to-orange-500 text-white hover:from-yellow-400 hover:to-orange-400 transition-all transform active:scale-95 shadow-lg border border-yellow-400";
+                } else {
+                    uiSalida.textContent = logicalSalida.toFixed(0);
+                    if (modo === 'corta') {
+                        uiDestino.textContent = "Hacia (" + ((playX + playW - targetObj.x)/segmentX).toFixed(0) + ", " + ((playY + playH - targetObj.y)/segmentY).toFixed(0) + ")";
+                        uiAtaque.textContent = ((playY + playH - ptAttack.y) / segmentY).toFixed(0);
+                    } else {
+                        uiDestino.textContent = "Banda Larga (" + ((playX + playW - targetObj.x)/segmentX).toFixed(0) + ")";
+                        uiAtaque.textContent = ((playX + playW - ptAttack.x) / segmentX).toFixed(0);
+                    }
+                    
+                    if (isTrainingMode && isShotFinished) {
+                        btnAnimar.innerHTML = '🎯 Siguiente Tiro';
+                        btnAnimar.disabled = false;
+                        btnAnimar.className = "btn-disparar w-full max-w-md mt-4 mb-2 py-3 rounded-2xl font-black text-xl bg-indigo-600 text-white hover:bg-indigo-500 transition-all transform active:scale-95 shadow-lg border border-indigo-500";
+                    } else {
+                        btnAnimar.innerHTML = '🎱 Disparar';
+                        btnAnimar.disabled = !isPossible || isBlocked;
+                        btnAnimar.className = "btn-disparar w-full max-w-md mt-4 mb-2 py-3 rounded-2xl font-black text-xl bg-gradient-to-r from-blue-500 to-cyan-500 text-white hover:from-blue-400 hover:to-cyan-400 transition-all transform active:scale-95 shadow-lg border border-cyan-400 disabled:opacity-50 disabled:cursor-not-allowed";
+                    }
+                    
+                    if (!isPossible) {
+                        uiAtaque.style.color = '#ef4444'; uiTitle.style.color = '#ef4444'; 
+                        uiTitle.textContent = isInPocket ? 'CAE EN TRONERA' : 'TIRO IMPOSIBLE'; 
+                        uiDecor.style.backgroundColor = '#ef4444';
+                    } else if (isBlocked) {
+                        uiAtaque.style.color = '#f97316'; uiTitle.style.color = '#f97316'; uiTitle.textContent = 'RUTA BLOQUEADA'; uiDecor.style.backgroundColor = '#f97316';
+                    } else {
+                        uiAtaque.style.color = ''; uiTitle.style.color = ''; uiTitle.textContent = 'Punto de Ataque'; uiDecor.style.backgroundColor = '';
+                    }
+                }
+                
                 if (!isAnimating) { ball.x = ptStart.x; ball.y = ptStart.y; trail = []; }
             }
 
@@ -908,10 +1118,8 @@
                 CanvasUtils.drawStandardDiamonds(ctx, x, y, playW, playH, showGrid);
                 ctx.font = 'bold 16px Inter'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#fde047';
                 for(let i=0; i<=8; i++) {
-                    let valX = 8 - i; 
-                    ctx.fillText(valX, x + i * segmentX, y + playH + 35);
+                    let valX = 8 - i; ctx.fillText(valX, x + i * segmentX, y + playH + 35);
                     if (!isLargaMode) ctx.fillText(valX, x + i * segmentX, y - 35);
-                    
                     let valY = 8 - i; let py = y + i * segmentY;
                     if (!isLargaMode && i%2===0) { ctx.fillText(valY, x - 35, py); ctx.fillText(valY, x + playW + 35, py); }
                 }
@@ -920,53 +1128,48 @@
             function draw() {
                 if(!isActive) return;
                 ctx.save(); ctx.clearRect(0, 0, canvas.width, canvas.height); 
-                
                 let modo = mitadesSelect.value;
                 
-                if (showMirror) {
+                if (showMirror && (!isTrainingMode || solutionRevealed)) {
                     if (modo === 'corta') {
                         drawTable(playX + playW, playY, 0.4, false);
-                        ctx.beginPath(); ctx.moveTo(playX + playW, playY); ctx.lineTo(playX + playW, playY + playH);
-                        ctx.strokeStyle = '#fff'; ctx.lineWidth = 3; ctx.setLineDash([15,15]); ctx.stroke(); ctx.setLineDash([]);
-                        let mirrorX = playX + playW + (playX + playW - targetObj.x);
-                        ctx.beginPath(); ctx.arc(mirrorX, targetObj.y, targetObj.radius, 0, Math.PI*2); ctx.fillStyle = 'rgba(239, 68, 68, 0.5)'; ctx.fill();
+                        ctx.beginPath(); ctx.moveTo(playX + playW, playY); ctx.lineTo(playX + playW, playY + playH); ctx.strokeStyle = '#fff'; ctx.lineWidth = 3; ctx.setLineDash([15,15]); ctx.stroke(); ctx.setLineDash([]);
+                        let mirrorX = playX + playW + (playX + playW - targetObj.x); ctx.beginPath(); ctx.arc(mirrorX, targetObj.y, targetObj.radius, 0, Math.PI*2); ctx.fillStyle = 'rgba(239, 68, 68, 0.5)'; ctx.fill();
                     } else {
                         drawTable(playX, playY - playH, 0.4, true);
-                        ctx.beginPath(); ctx.moveTo(playX, playY); ctx.lineTo(playX + playW, playY);
-                        ctx.strokeStyle = '#fff'; ctx.lineWidth = 3; ctx.setLineDash([15,15]); ctx.stroke(); ctx.setLineDash([]);
-                        let mirrorY = playY - (targetObj.y - playY);
-                        ctx.beginPath(); ctx.arc(targetObj.x, mirrorY, targetObj.radius, 0, Math.PI*2); ctx.fillStyle = 'rgba(239, 68, 68, 0.5)'; ctx.fill();
+                        ctx.beginPath(); ctx.moveTo(playX, playY); ctx.lineTo(playX + playW, playY); ctx.strokeStyle = '#fff'; ctx.lineWidth = 3; ctx.setLineDash([15,15]); ctx.stroke(); ctx.setLineDash([]);
+                        let mirrorY = playY - (targetObj.y - playY); ctx.beginPath(); ctx.arc(targetObj.x, mirrorY, targetObj.radius, 0, Math.PI*2); ctx.fillStyle = 'rgba(239, 68, 68, 0.5)'; ctx.fill();
                     }
                 }
 
                 drawTable(playX, playY, 1, modo === 'larga');
+                CanvasUtils.drawObstacle(ctx, obstacleObj);
 
                 const pulse = 3 * Math.sin(Date.now() / 200);
                 ctx.beginPath(); ctx.arc(targetObj.x, targetObj.y, targetObj.radius + pulse, 0, Math.PI*2); ctx.fillStyle = 'rgba(239, 68, 68, 0.3)'; ctx.fill();
                 ctx.beginPath(); ctx.arc(targetObj.x, targetObj.y, 8, 0, Math.PI*2); ctx.fillStyle = '#ef4444'; ctx.fill(); ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
 
                 if (!isAnimating && animProgress === 0) {
-                    if (showMirror) {
-                        ctx.beginPath(); ctx.moveTo(ptStart.x, ptStart.y); ctx.lineTo(ptAttack.x, ptAttack.y); ctx.lineTo(ptTarget.x, ptTarget.y);
-                        ctx.strokeStyle = isPossible ? 'rgba(34, 211, 238, 0.15)' : 'rgba(239, 68, 68, 0.15)'; ctx.lineWidth = 24; ctx.stroke();
-                        ctx.strokeStyle = isPossible ? 'rgba(34, 211, 238, 0.3)' : 'rgba(239, 68, 68, 0.3)'; ctx.lineWidth = 4; ctx.stroke();
+                    if (!isTrainingMode || solutionRevealed) {
+                        let strokeBase = !isPossible ? 'rgba(239, 68, 68, 0.15)' : (isBlocked ? 'rgba(249, 115, 22, 0.15)' : 'rgba(34, 211, 238, 0.15)');
+                        let strokeLine = !isPossible ? '#ef4444' : (isBlocked ? '#f97316' : 'rgba(34, 211, 238, 0.8)');
                         
-                        ctx.beginPath(); ctx.moveTo(ptStart.x, ptStart.y);
-                        if (modo === 'corta') {
-                            let mirrorX = playX + playW + (playX + playW - targetObj.x);
-                            ctx.lineTo(mirrorX, targetObj.y);
+                        if (showMirror) {
+                            ctx.beginPath(); ctx.moveTo(ptStart.x, ptStart.y); ctx.lineTo(ptAttack.x, ptAttack.y); ctx.lineTo(ptTarget.x, ptTarget.y);
+                            ctx.strokeStyle = strokeBase; ctx.lineWidth = 24; ctx.stroke();
+                            ctx.strokeStyle = !isPossible ? '#ef4444' : (isBlocked ? '#f97316' : 'rgba(34, 211, 238, 0.3)'); ctx.lineWidth = 4; ctx.stroke();
+                            ctx.beginPath(); ctx.moveTo(ptStart.x, ptStart.y);
+                            if (modo === 'corta') { let mirrorX = playX + playW + (playX + playW - targetObj.x); ctx.lineTo(mirrorX, targetObj.y); } 
+                            else { let mirrorY = playY - (targetObj.y - playY); ctx.lineTo(targetObj.x, mirrorY); }
+                            ctx.strokeStyle = strokeLine; ctx.setLineDash([10, 10]); ctx.lineWidth = 4; ctx.stroke(); ctx.setLineDash([]);
                         } else {
-                            let mirrorY = playY - (targetObj.y - playY);
-                            ctx.lineTo(targetObj.x, mirrorY);
+                            ctx.beginPath(); ctx.moveTo(ptStart.x, ptStart.y); ctx.lineTo(ptAttack.x, ptAttack.y); ctx.lineTo(ptTarget.x, ptTarget.y);
+                            ctx.strokeStyle = strokeBase; ctx.lineWidth = 24; ctx.stroke();
+                            ctx.strokeStyle = strokeLine; ctx.setLineDash([10, 10]); ctx.lineWidth = 4; ctx.stroke(); ctx.setLineDash([]);
                         }
-                        ctx.strokeStyle = isPossible ? 'rgba(255, 255, 255, 0.9)' : '#ef4444'; ctx.setLineDash([10, 10]); ctx.lineWidth = 4; ctx.stroke(); ctx.setLineDash([]);
-                    } else {
-                        ctx.beginPath(); ctx.moveTo(ptStart.x, ptStart.y); ctx.lineTo(ptAttack.x, ptAttack.y); ctx.lineTo(ptTarget.x, ptTarget.y);
-                        ctx.strokeStyle = isPossible ? 'rgba(34, 211, 238, 0.15)' : 'rgba(239, 68, 68, 0.15)'; ctx.lineWidth = 24; ctx.stroke();
-                        ctx.strokeStyle = isPossible ? 'rgba(34, 211, 238, 0.8)' : '#ef4444'; ctx.setLineDash([10, 10]); ctx.lineWidth = 4; ctx.stroke(); ctx.setLineDash([]);
+                        ctx.beginPath(); ctx.arc(ptAttack.x, ptAttack.y, 7, 0, Math.PI*2); ctx.fillStyle = !isPossible ? '#ef4444' : (isBlocked ? '#f97316' : '#22d3ee'); ctx.fill();
+                        if(isPossible && !isBlocked) CanvasUtils.drawPostImpact(ctx, ptAttack.x, ptAttack.y, ptTarget.x, ptTarget.y);
                     }
-                    ctx.beginPath(); ctx.arc(ptAttack.x, ptAttack.y, 7, 0, Math.PI*2); ctx.fillStyle = isPossible ? '#22d3ee' : '#ef4444'; ctx.fill();
-                    if(isPossible) CanvasUtils.drawPostImpact(ctx, ptAttack.x, ptAttack.y, ptTarget.x, ptTarget.y);
                 }
 
                 trail.forEach((t, i) => { ctx.beginPath(); ctx.arc(t.x, t.y, ball.radius * 0.7, 0, Math.PI*2); ctx.fillStyle = `rgba(255, 255, 255, ${(i / trail.length) * 0.4})`; ctx.fill(); });
@@ -975,27 +1178,69 @@
             }
 
             function animate() {
-                if (!isAnimating || !isActive || !isPossible) return;
-                animProgress += 0.03; trail.push({x: ball.x, y: ball.y}); if (trail.length > 25) trail.shift(); 
+                if (!isAnimating || !isActive || !isPossible || isBlocked) return;
+                let prev = animProgress; animProgress += 0.03; 
+                trail.push({x: ball.x, y: ball.y}); if (trail.length > 25) trail.shift(); 
+                
+                if (prev === 0) AudioEngine.playCueHit();
+
                 if (animProgress <= 1) { ball.x = MathUtils.lerp(ptStart.x, ptAttack.x, animProgress); ball.y = MathUtils.lerp(ptStart.y, ptAttack.y, animProgress); } 
-                else if (animProgress <= 2) { let ap2 = animProgress - 1; ball.x = MathUtils.lerp(ptAttack.x, ptTarget.x, ap2); ball.y = MathUtils.lerp(ptAttack.y, ptTarget.y, ap2); } 
+                else if (animProgress <= 2) { 
+                    if (prev < 1 && animProgress >= 1) AudioEngine.playRailHit();
+                    let ap2 = animProgress - 1; ball.x = MathUtils.lerp(ptAttack.x, ptTarget.x, ap2); ball.y = MathUtils.lerp(ptAttack.y, ptTarget.y, ap2); 
+                } 
                 else {
+                    if (prev < 2 && animProgress >= 2) AudioEngine.playBallHit();
                     isAnimating = false; ball.x = ptTarget.x; ball.y = ptTarget.y;
-                    setTimeout(() => { ball.x = ptStart.x; ball.y = ptStart.y; trail = []; animProgress = 0; isAnimating = false; btnAnimar.classList.remove('hidden'); updateMath(); }, 1200);
+                    setTimeout(() => { 
+                        ball.x = ptStart.x; ball.y = ptStart.y; trail = []; animProgress = 0; isAnimating = false; 
+                        isShotFinished = true;
+                        btnAnimar.classList.remove('hidden'); updateMath(); 
+                    }, 1200);
                     let fade = setInterval(() => { trail.shift(); if(trail.length===0) clearInterval(fade); }, 40);
                 }
             }
 
             canvas.addEventListener('mousedown', handleDown); window.addEventListener('mousemove', handleMove); window.addEventListener('mouseup', () => draggedItem = null);
-            canvas.addEventListener('touchstart', handleDown, {passive: false}); window.addEventListener('touchmove', handleMove, {passive: false}); window.addEventListener('touchend', () => draggedItem = null);
-            btnAnimar.addEventListener('click', () => { if(isAnimating || !isPossible) return; isAnimating = true; animProgress = 0; trail = []; btnAnimar.classList.add('hidden'); });
+            canvas.addEventListener('touchstart', handleDown, {passive: false}); window.addEventListener('touchmove', handleMove, {passive: false}); window.addEventListener('touchmove', handleMove, {passive: false}); window.addEventListener('touchend', () => draggedItem = null);
+            
+            btnAnimar.addEventListener('click', () => { 
+                if (isTrainingMode) { 
+                    if (isShotFinished) { randomizePositions(); return; }
+                    if (!solutionRevealed) { solutionRevealed = true; updateMath(); return; }
+                }
+                if(isAnimating || !isPossible || isBlocked) return; 
+                isAnimating = true; animProgress = 0; trail = []; originalBallPos = {x: ball.x, y: ball.y}; btnAnimar.classList.add('hidden'); 
+            });
+
             espejoToggle.addEventListener('change', e => { showMirror = e.target.checked; setCanvasSize(); });
             mitadesSelect.addEventListener('change', () => { resetPositions(); setCanvasSize(); });
             gridToggle.addEventListener('change', e => { showGrid = e.target.checked; updateMath(); });
+            obsToggle.addEventListener('change', e => { 
+                obstacleObj.active = e.target.checked; 
+                if(obstacleObj.active) { obstacleObj.x = MathUtils.lerp(ptStart.x, ptAttack.x, 0.5); obstacleObj.y = MathUtils.lerp(ptStart.y, ptAttack.y, 0.5); }
+                updateMath(); 
+            });
             function loop() { if(isActive) { if(isAnimating) animate(); draw(); } loopId = requestAnimationFrame(loop); }
-            return { init: () => { resetPositions(); setCanvasSize(); loop(); }, pause: () => { isActive = false; cancelAnimationFrame(loopId); }, resume: () => { isActive = true; setCanvasSize(); updateMath(); loop(); }, reset: resetPositions };
+            
+            return { 
+                init: () => { resetPositions(); setCanvasSize(); loop(); }, 
+                pause: () => { isActive = false; cancelAnimationFrame(loopId); }, 
+                resume: () => { isActive = true; setCanvasSize(); updateMath(); loop(); }, 
+                reset: resetPositions,
+                randomize: randomizePositions,
+                getState: () => ({ modo: mitadesSelect.value, showGrid, showMirror, obs: {active: obstacleObj.active, x: obstacleObj.x, y: obstacleObj.y}, ball: {x: ptStart.x, y: ptStart.y}, targetObj: {x: ptTarget.x, y: ptTarget.y} }),
+                loadState: (state) => { 
+                    mitadesSelect.value = state.modo; gridToggle.checked = state.showGrid; showGrid = state.showGrid;
+                    espejoToggle.checked = state.showMirror; showMirror = state.showMirror;
+                    obsToggle.checked = state.obs.active; obstacleObj.active = state.obs.active; obstacleObj.x = state.obs.x; obstacleObj.y = state.obs.y;
+                    ball.x = state.ball.x; ball.y = state.ball.y; targetObj.x = state.targetObj.x; targetObj.y = state.targetObj.y;
+                    ptStart = {x: ball.x, y: ball.y}; ptTarget = {x: targetObj.x, y: targetObj.y};
+                    isShotFinished = false; solutionRevealed = false;
+                    setCanvasSize();
+                }
+            };
         })();
-
 
         // ==========================================
         // APP 2: TRIANGULACIÓN
@@ -1008,20 +1253,43 @@
             const uiPunto = document.getElementById('triPunto'); 
             const uiStep1 = document.getElementById('triStep1'); const uiStep2 = document.getElementById('triStep2'); const uiStep3 = document.getElementById('triStep3');
             const uiDecor = document.getElementById('triDecor'); const uiTitle = document.getElementById('triTitle');
-            const gridToggle = document.getElementById('gridToggle');
-            const escalaSelect = document.getElementById('triEscalaSelect');
+            const gridToggle = document.getElementById('gridToggle'); const escalaSelect = document.getElementById('triEscalaSelect');
+            const obsToggle = document.getElementById('obsToggleTri');
 
             const padding = 80; const playW = 840; const playH = 420; const playX = padding; const playY = padding; const dia = playW / 8;
-            let isActive = false; let isAnimating = false; let animProgress = 0; let trail = []; let loopId; let isPossible = true;
-            let showGrid = true;
+            let isActive = false; let isAnimating = false; let animProgress = 0; let trail = []; let loopId; let isPossible = true; let isBlocked = false; let isInPocket = false;
+            let showGrid = true; let isShotFinished = false;
             let ball = { x: playX + dia*1.5, y: playY + playH - dia*1.5, radius: 15 };
             let targetObj = { x: playX + dia*6.5, y: playY + playH - dia*3.5, radius: 18 };
+            let obstacleObj = { active: false, x: playX + playW/2, y: playY + playH/2, radius: 16 };
             let ptAttack = { x: 0, y: playY }; let draggedItem = null; let originalBallPos = {x: 0, y: 0};
 
             function resetPositions() {
                 ball.x = playX + dia*1.5; ball.y = playY + playH - dia*1.5;
                 targetObj.x = playX + dia*6.5; targetObj.y = playY + playH - dia*3.5;
+                obstacleObj.x = playX + playW/2; obstacleObj.y = playY + playH/2;
+                isShotFinished = false;
                 CanvasUtils.setupRetina(canvas, ctx, playW + padding*2, playH + padding*2);
+                updateMath();
+            }
+
+            function randomizePositions() {
+                let attempts = 0;
+                CanvasUtils.setupRetina(canvas, ctx, playW + padding*2, playH + padding*2);
+                do {
+                    ball.x = playX + dia + Math.random() * (playW - 2*dia); ball.y = playY + dia + Math.random() * (playH - 2*dia);
+                    targetObj.x = playX + dia + Math.random() * (playW - 2*dia); targetObj.y = playY + dia + Math.random() * (playH - 2*dia);
+                    updateMath(); attempts++;
+                } while(!isPossible && attempts < 100);
+
+                if (obstacleObj.active) {
+                    obstacleObj.x = MathUtils.lerp(ball.x, ptAttack.x, 0.5);
+                    obstacleObj.y = MathUtils.lerp(ball.y, ptAttack.y, 0.5);
+                }
+
+                originalBallPos = {x: ball.x, y: ball.y};
+                isShotFinished = false;
+                solutionRevealed = false;
                 updateMath();
             }
 
@@ -1029,13 +1297,15 @@
                 if(isAnimating || !isActive) return; const pos = CanvasUtils.getTouchPos(canvas, e); const dist = (p1, p2) => Math.hypot(p2.x - p1.x, p2.y - p1.y);
                 if (dist(pos, ball) <= ball.radius * 4) { draggedItem = 'ball'; e.preventDefault(); }
                 else if (dist(pos, targetObj) <= targetObj.radius * 4) { draggedItem = 'target'; e.preventDefault(); }
+                else if (obstacleObj.active && dist(pos, obstacleObj) <= obstacleObj.radius * 4) { draggedItem = 'obstacle'; e.preventDefault(); }
             }
             function handleMove(e) {
                 if (!draggedItem || isAnimating || !isActive) return; e.preventDefault(); const pos = CanvasUtils.getTouchPos(canvas, e);
                 pos.x = Math.max(playX + 15, Math.min(playX + playW - 15, pos.x)); pos.y = Math.max(playY + 15, Math.min(playY + playH - 15, pos.y));
-                
+
                 if (draggedItem === 'ball') { ball.x = pos.x; ball.y = pos.y; } 
                 else if (draggedItem === 'target') { targetObj.x = pos.x; targetObj.y = pos.y; }
+                else if (draggedItem === 'obstacle') { obstacleObj.x = pos.x; obstacleObj.y = pos.y; }
                 updateMath();
             }
 
@@ -1056,39 +1326,59 @@
                     mirrorX = (playX + playW) + ((playX + playW) - targetObj.x); h1Px = (playX + playW) - ball.x; h2Px = (playX + playW) - targetObj.x; basePx = Math.abs(targetObj.y - ball.y);
                     let dx = mirrorX - ball.x; let dy = mirrorY - ball.y; ptAttack.x = playX + playW; ptAttack.y = ball.y + (ptAttack.x - ball.x) * (dy / dx);
                 }
-                
                 calcData.h1 = h1Px / dia; calcData.h2 = h2Px / dia; calcData.base = basePx / dia; calcData.shift = calcData.base * (calcData.h1 / (calcData.h1 + calcData.h2));
                 
-                if(calcData.banda === 'bottom' || calcData.banda === 'top') { 
-                    isPossible = (ptAttack.x >= playX && ptAttack.x <= playX + playW); 
-                    calcData.ataqueCoord = (ptAttack.x - playX) / dia;
+                if(calcData.banda === 'bottom' || calcData.banda === 'top') { isPossible = (ptAttack.x >= playX && ptAttack.x <= playX + playW); calcData.ataqueCoord = (ptAttack.x - playX) / dia; }
+                else { isPossible = (ptAttack.y >= playY && ptAttack.y <= playY + playH); calcData.ataqueCoord = (ptAttack.y - playY) / dia; }
+
+                isInPocket = false;
+                if(isPossible) {
+                    isInPocket = MathUtils.isPointInPocket(ptAttack, playX, playY, playW, playH);
+                    if(isInPocket) isPossible = false;
                 }
-                else { 
-                    isPossible = (ptAttack.y >= playY && ptAttack.y <= playY + playH); 
-                    calcData.ataqueCoord = (ptAttack.y - playY) / dia;
+
+                isBlocked = false;
+                if (obstacleObj.active) {
+                    if (MathUtils.distToSegment(obstacleObj, ball, ptAttack) < 30 || MathUtils.distToSegment(obstacleObj, ptAttack, targetObj) < 30) isBlocked = true;
                 }
 
-                let s_h1 = calcData.h1 * scale;
-                let s_h2 = calcData.h2 * scale;
-                let s_base = calcData.base * scale;
-                let s_shift = calcData.shift * scale;
-                let s_ataque = calcData.ataqueCoord * scale;
+                let s_h1 = calcData.h1 * scale; let s_h2 = calcData.h2 * scale; let s_base = calcData.base * scale; let s_shift = calcData.shift * scale; let s_ataque = calcData.ataqueCoord * scale;
+                let suma = s_h1 + s_h2; let fraccion = suma === 0 ? 0 : s_h1 / suma;
 
-                let suma = s_h1 + s_h2;
-                let fraccion = suma === 0 ? 0 : s_h1 / suma;
+                if (isTrainingMode && !solutionRevealed) {
+                    uiBase.textContent = '???'; uiAlt1.textContent = '???'; uiAlt2.textContent = '???';
+                    uiStep1.textContent = `? + ? = ???`; uiStep2.textContent = `? ÷ ? = ???`; uiStep3.textContent = `? × ? = ???`;
+                    uiFormula.textContent = `Cálculo Oculto`; uiPunto.textContent = '???';
 
-                uiBase.textContent = s_base.toFixed(0); uiAlt1.textContent = s_h1.toFixed(0); uiAlt2.textContent = s_h2.toFixed(0);
-                
-                uiStep1.textContent = `${s_h1.toFixed(0)} + ${s_h2.toFixed(0)} = ${suma.toFixed(0)}`;
-                uiStep2.textContent = `${s_h1.toFixed(0)} ÷ ${suma.toFixed(0)} = ${fraccion.toFixed(2)}`;
-                uiStep3.textContent = `${s_base.toFixed(0)} × ${fraccion.toFixed(2)} = ${s_shift.toFixed(0)}`;
+                    uiTitle.textContent = '¡CALCULA EL TIRO!'; uiTitle.style.color = '#facc15'; uiDecor.style.backgroundColor = '#facc15'; uiPunto.style.color = '#facc15';
+                    btnAnimar.innerHTML = '👀 Ver Solución'; btnAnimar.disabled = false;
+                    btnAnimar.className = "btn-disparar w-full max-w-md mt-4 mb-2 py-3 rounded-2xl font-black text-xl bg-gradient-to-r from-yellow-500 to-orange-500 text-white hover:from-yellow-400 hover:to-orange-400 transition-all transform active:scale-95 shadow-lg border border-yellow-400";
+                } else {
+                    uiBase.textContent = s_base.toFixed(0); uiAlt1.textContent = s_h1.toFixed(0); uiAlt2.textContent = s_h2.toFixed(0);
+                    uiStep1.textContent = `${s_h1.toFixed(0)} + ${s_h2.toFixed(0)} = ${suma.toFixed(0)}`;
+                    uiStep2.textContent = `${s_h1.toFixed(0)} ÷ ${suma.toFixed(0)} = ${fraccion.toFixed(2)}`;
+                    uiStep3.textContent = `${s_base.toFixed(0)} × ${fraccion.toFixed(2)} = ${s_shift.toFixed(0)}`;
+                    uiFormula.textContent = `Cálculo: ${s_base.toFixed(0)} × [${s_h1.toFixed(0)} ÷ ${(s_h1 + s_h2).toFixed(0)}]`; 
+                    uiPunto.textContent = s_ataque.toFixed(scale === 10 ? 0 : 1);
 
-                uiFormula.textContent = `Cálculo: ${s_base.toFixed(0)} × [${s_h1.toFixed(0)} ÷ ${(s_h1 + s_h2).toFixed(0)}]`; 
-                uiPunto.textContent = s_ataque.toFixed(scale === 10 ? 0 : 1);
+                    if (isTrainingMode && isShotFinished) {
+                        btnAnimar.innerHTML = '🎯 Siguiente Tiro'; btnAnimar.disabled = false;
+                        btnAnimar.className = "btn-disparar w-full max-w-md mt-4 mb-2 py-3 rounded-2xl font-black text-xl bg-indigo-600 text-white hover:bg-indigo-500 transition-all transform active:scale-95 shadow-lg border border-indigo-500";
+                    } else {
+                        btnAnimar.innerHTML = '🎱 Ejecutar Tiro'; btnAnimar.disabled = !isPossible || isBlocked;
+                        btnAnimar.className = "btn-disparar w-full max-w-md mt-4 mb-2 py-3 rounded-2xl font-black text-xl bg-gradient-to-r from-emerald-500 to-green-500 text-white hover:from-emerald-400 hover:to-green-400 transition-all transform active:scale-95 shadow-lg border border-emerald-400 disabled:opacity-50 disabled:cursor-not-allowed";
+                    }
 
-                btnAnimar.disabled = !isPossible;
-                uiPunto.style.color = isPossible ? '' : '#ef4444'; uiTitle.style.color = isPossible ? '' : '#ef4444';
-                uiTitle.textContent = isPossible ? 'Cálculo Numérico' : 'TIRO IMPOSIBLE'; uiDecor.style.backgroundColor = isPossible ? '' : '#ef4444';
+                    if (!isPossible) {
+                        uiPunto.style.color = '#ef4444'; uiTitle.style.color = '#ef4444'; 
+                        uiTitle.textContent = isInPocket ? 'CAE EN TRONERA' : 'TIRO IMPOSIBLE'; 
+                        uiDecor.style.backgroundColor = '#ef4444';
+                    } else if (isBlocked) {
+                        uiPunto.style.color = '#f97316'; uiTitle.style.color = '#f97316'; uiTitle.textContent = 'RUTA BLOQUEADA'; uiDecor.style.backgroundColor = '#f97316';
+                    } else {
+                        uiPunto.style.color = ''; uiTitle.style.color = ''; uiTitle.textContent = 'Cálculo Numérico'; uiDecor.style.backgroundColor = '';
+                    }
+                }
             }
 
             function draw() {
@@ -1099,41 +1389,42 @@
 
                 let scale = parseInt(escalaSelect.value);
                 ctx.font = 'bold 16px Inter'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#fde047';
-                for(let i=0; i<=8; i++) {
-                    ctx.fillText(i * scale, playX + i * dia, playY + playH + 35);
-                    ctx.fillText(i * scale, playX + i * dia, playY - 35);
-                }
-                for(let i=0; i<=4; i++) {
-                    ctx.fillText(i * scale, playX - 35, playY + i * dia);
-                    ctx.fillText(i * scale, playX + playW + 35, playY + i * dia);
-                }
+                for(let i=0; i<=8; i++) { ctx.fillText(i * scale, playX + i * dia, playY + playH + 35); ctx.fillText(i * scale, playX + i * dia, playY - 35); }
+                for(let i=0; i<=4; i++) { ctx.fillText(i * scale, playX - 35, playY + i * dia); ctx.fillText(i * scale, playX + playW + 35, playY + i * dia); }
+
+                CanvasUtils.drawObstacle(ctx, obstacleObj);
 
                 if (!isAnimating && animProgress === 0) {
-                    let bx = ball.x, by = ball.y, tx = targetObj.x, ty = targetObj.y, ax = ptAttack.x, ay = ptAttack.y;
-                    let cx, cy, bx_c, by_c, tx_c, ty_c;
-                    if (calcData.banda === 'bottom' || calcData.banda === 'top') {
-                        bx_c = bx; by_c = ay; tx_c = tx; ty_c = ay; cx = ax; 
-                        if (Math.abs(tx - bx_c) > 0.01) { let m1 = (ty - by_c) / (tx - bx_c); cy = by_c + m1 * (cx - bx_c); } else { cy = by_c + (ty - by_c) / 2; }
-                    } else { 
-                        bx_c = ax; by_c = by; tx_c = ax; ty_c = ty; cy = ay; 
-                        if (Math.abs(ty - by_c) > 0.01) { let m1 = (tx - bx_c) / (ty - by_c); cx = bx_c + m1 * (cy - by_c); } else { cx = bx_c + (tx - bx_c) / 2; }
+                    if (!isTrainingMode || solutionRevealed) {
+                        let bx = ball.x, by = ball.y, tx = targetObj.x, ty = targetObj.y, ax = ptAttack.x, ay = ptAttack.y;
+                        let cx, cy, bx_c, by_c, tx_c, ty_c;
+                        if (calcData.banda === 'bottom' || calcData.banda === 'top') {
+                            bx_c = bx; by_c = ay; tx_c = tx; ty_c = ay; cx = ax; 
+                            if (Math.abs(tx - bx_c) > 0.01) { let m1 = (ty - by_c) / (tx - bx_c); cy = by_c + m1 * (cx - bx_c); } else { cy = by_c + (ty - by_c) / 2; }
+                        } else { 
+                            bx_c = ax; by_c = by; tx_c = ax; ty_c = ty; cy = ay; 
+                            if (Math.abs(ty - by_c) > 0.01) { let m1 = (tx - bx_c) / (ty - by_c); cx = bx_c + m1 * (cy - by_c); } else { cx = bx_c + (tx - bx_c) / 2; }
+                        }
+
+                        ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)'; ctx.lineWidth = 3; ctx.setLineDash([8,8]);
+                        ctx.beginPath(); ctx.moveTo(bx, by); ctx.lineTo(bx_c, by_c); ctx.lineTo(tx_c, ty_c); ctx.lineTo(tx, ty); ctx.stroke(); ctx.setLineDash([]);
+                        
+                        let strokeBase = !isPossible ? 'rgba(239, 68, 68, 0.15)' : (isBlocked ? 'rgba(249, 115, 22, 0.15)' : 'rgba(52, 211, 153, 0.15)');
+                        let strokeLine = !isPossible ? '#ef4444' : (isBlocked ? '#f97316' : '#10b981');
+                        let crossColor = !isPossible ? '#ef4444' : (isBlocked ? '#f97316' : '#ec4899');
+
+                        ctx.strokeStyle = crossColor; ctx.lineWidth = 4; ctx.setLineDash([8, 8]);
+                        ctx.beginPath(); ctx.moveTo(bx_c, by_c); ctx.lineTo(tx, ty); ctx.moveTo(tx_c, ty_c); ctx.lineTo(bx, by); ctx.stroke(); ctx.setLineDash([]);
+                        ctx.beginPath(); ctx.arc(cx, cy, 8, 0, Math.PI*2); ctx.fillStyle = crossColor; ctx.fill();
+                        ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(ax, ay); ctx.strokeStyle = crossColor; ctx.lineWidth = 4; ctx.stroke();
+                        
+                        ctx.beginPath(); ctx.moveTo(bx, by); ctx.lineTo(ax, ay); ctx.lineTo(tx, ty); 
+                        ctx.strokeStyle = strokeBase; ctx.lineWidth = 24; ctx.stroke();
+                        ctx.strokeStyle = strokeLine; ctx.lineWidth = 6; ctx.stroke();
+                        ctx.beginPath(); ctx.arc(ax, ay, 10, 0, Math.PI*2); ctx.fillStyle = strokeLine; ctx.fill();
+
+                        if(isPossible && !isBlocked) CanvasUtils.drawPostImpact(ctx, ax, ay, tx, ty);
                     }
-
-                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)'; ctx.lineWidth = 3; ctx.setLineDash([8,8]);
-                    ctx.beginPath(); ctx.moveTo(bx, by); ctx.lineTo(bx_c, by_c); ctx.lineTo(tx_c, ty_c); ctx.lineTo(tx, ty); ctx.stroke(); ctx.setLineDash([]);
-                    
-                    ctx.strokeStyle = isPossible ? 'rgba(236, 72, 153, 1)' : '#ef4444'; ctx.lineWidth = 4; ctx.setLineDash([8, 8]);
-                    ctx.beginPath(); ctx.moveTo(bx_c, by_c); ctx.lineTo(tx, ty); ctx.moveTo(tx_c, ty_c); ctx.lineTo(bx, by); ctx.stroke(); ctx.setLineDash([]);
-                    
-                    ctx.beginPath(); ctx.arc(cx, cy, 8, 0, Math.PI*2); ctx.fillStyle = isPossible ? '#ec4899' : '#ef4444'; ctx.fill();
-                    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(ax, ay); ctx.strokeStyle = isPossible ? '#ec4899' : '#ef4444'; ctx.lineWidth = 4; ctx.stroke();
-                    
-                    ctx.beginPath(); ctx.moveTo(bx, by); ctx.lineTo(ax, ay); ctx.lineTo(tx, ty); 
-                    ctx.strokeStyle = isPossible ? 'rgba(52, 211, 153, 0.15)' : 'rgba(239, 68, 68, 0.15)'; ctx.lineWidth = 24; ctx.stroke();
-                    ctx.strokeStyle = isPossible ? '#10b981' : '#ef4444'; ctx.lineWidth = 6; ctx.stroke();
-                    ctx.beginPath(); ctx.arc(ax, ay, 10, 0, Math.PI*2); ctx.fillStyle = isPossible ? '#10b981' : '#ef4444'; ctx.fill();
-
-                    if(isPossible) CanvasUtils.drawPostImpact(ctx, ax, ay, tx, ty);
                 }
 
                 ctx.beginPath(); ctx.arc(targetObj.x, targetObj.y, targetObj.radius + Math.sin(Date.now()/150)*4, 0, Math.PI*2); ctx.fillStyle = 'rgba(239, 68, 68, 0.4)'; ctx.fill();
@@ -1144,28 +1435,66 @@
             }
 
             function animate() {
-                if (!isAnimating || !isActive || !isPossible) return;
-                animProgress += 0.03; trail.push({x: ball.x, y: ball.y}); if (trail.length > 25) trail.shift(); 
-                const lerp = (s, e, a) => s + (e - s) * MathUtils.easeOut(a);
-                if (animProgress <= 1) { ball.x = lerp(originalBallPos.x, ptAttack.x, animProgress); ball.y = lerp(originalBallPos.y, ptAttack.y, animProgress); } 
-                else if (animProgress <= 2) { let ap2 = animProgress - 1; ball.x = lerp(ptAttack.x, targetObj.x, ap2); ball.y = lerp(ptAttack.y, targetObj.y, ap2); } 
+                if (!isAnimating || !isActive || !isPossible || isBlocked) return;
+                let prev = animProgress; animProgress += 0.03; 
+                trail.push({x: ball.x, y: ball.y}); if (trail.length > 25) trail.shift(); 
+                
+                if (prev === 0) AudioEngine.playCueHit();
+
+                if (animProgress <= 1) { ball.x = MathUtils.lerp(originalBallPos.x, ptAttack.x, animProgress); ball.y = MathUtils.lerp(originalBallPos.y, ptAttack.y, animProgress); } 
+                else if (animProgress <= 2) { 
+                    if (prev < 1 && animProgress >= 1) AudioEngine.playRailHit();
+                    let ap2 = animProgress - 1; ball.x = MathUtils.lerp(ptAttack.x, targetObj.x, ap2); ball.y = MathUtils.lerp(ptAttack.y, targetObj.y, ap2); 
+                } 
                 else {
+                    if (prev < 2 && animProgress >= 2) AudioEngine.playBallHit();
                     isAnimating = false; ball.x = targetObj.x; ball.y = targetObj.y; 
-                    setTimeout(() => { ball.x = originalBallPos.x; ball.y = originalBallPos.y; trail = []; animProgress = 0; isAnimating = false; btnAnimar.classList.remove('hidden'); updateMath(); }, 1200);
+                    setTimeout(() => { 
+                        ball.x = originalBallPos.x; ball.y = originalBallPos.y; trail = []; animProgress = 0; isAnimating = false; 
+                        isShotFinished = true;
+                        btnAnimar.classList.remove('hidden'); updateMath(); 
+                    }, 1200);
                     let fade = setInterval(() => { trail.shift(); if(trail.length===0) clearInterval(fade); }, 40);
                 }
             }
 
             canvas.addEventListener('mousedown', handleDown); window.addEventListener('mousemove', handleMove); window.addEventListener('mouseup', () => draggedItem = null);
-            canvas.addEventListener('touchstart', handleDown, {passive: false}); window.addEventListener('touchmove', handleMove, {passive: false}); window.addEventListener('touchend', () => draggedItem = null);
-            selectBanda.addEventListener('change', updateMath);
-            escalaSelect.addEventListener('change', updateMath);
-            gridToggle.addEventListener('change', e => { showGrid = e.target.checked; updateMath(); });
-            btnAnimar.addEventListener('click', () => { if(isAnimating || !isPossible) return; isAnimating = true; animProgress = 0; trail = []; originalBallPos = {x: ball.x, y: ball.y}; btnAnimar.classList.add('hidden'); });
-            function loop() { if(isActive) { if(isAnimating) animate(); draw(); } loopId = requestAnimationFrame(loop); }
-            return { init: () => { resetPositions(); loop(); }, pause: () => { isActive = false; cancelAnimationFrame(loopId); }, resume: () => { isActive = true; updateMath(); loop(); }, reset: resetPositions };
-        })();
+            canvas.addEventListener('touchstart', handleDown, {passive: false}); window.addEventListener('touchmove', handleMove, {passive: false}); window.addEventListener('touchmove', handleMove, {passive: false}); window.addEventListener('touchend', () => draggedItem = null);
+            
+            btnAnimar.addEventListener('click', () => { 
+                if (isTrainingMode) { 
+                    if (isShotFinished) { randomizePositions(); return; }
+                    if (!solutionRevealed) { solutionRevealed = true; updateMath(); return; }
+                }
+                if(isAnimating || !isPossible || isBlocked) return; 
+                isAnimating = true; animProgress = 0; trail = []; originalBallPos = {x: ball.x, y: ball.y}; btnAnimar.classList.add('hidden'); 
+            });
 
+            selectBanda.addEventListener('change', updateMath); escalaSelect.addEventListener('change', updateMath);
+            gridToggle.addEventListener('change', e => { showGrid = e.target.checked; updateMath(); });
+            obsToggle.addEventListener('change', e => { 
+                obstacleObj.active = e.target.checked; 
+                if(obstacleObj.active) { obstacleObj.x = MathUtils.lerp(ball.x, ptAttack.x, 0.5); obstacleObj.y = MathUtils.lerp(ball.y, ptAttack.y, 0.5); }
+                updateMath(); 
+            });
+            function loop() { if(isActive) { if(isAnimating) animate(); draw(); } loopId = requestAnimationFrame(loop); }
+            
+            return { 
+                init: () => { resetPositions(); loop(); }, 
+                pause: () => { isActive = false; cancelAnimationFrame(loopId); }, 
+                resume: () => { isActive = true; updateMath(); loop(); }, 
+                reset: resetPositions,
+                randomize: randomizePositions,
+                getState: () => ({ banda: selectBanda.value, escala: escalaSelect.value, showGrid, obs: {active: obstacleObj.active, x: obstacleObj.x, y: obstacleObj.y}, ball: {x: ball.x, y: ball.y}, targetObj: {x: targetObj.x, y: targetObj.y} }),
+                loadState: (state) => { 
+                    selectBanda.value = state.banda; escalaSelect.value = state.escala; gridToggle.checked = state.showGrid; showGrid = state.showGrid;
+                    obsToggle.checked = state.obs.active; obstacleObj.active = state.obs.active; obstacleObj.x = state.obs.x; obstacleObj.y = state.obs.y;
+                    ball.x = state.ball.x; ball.y = state.ball.y; targetObj.x = state.targetObj.x; targetObj.y = state.targetObj.y;
+                    isShotFinished = false; solutionRevealed = false;
+                    CanvasUtils.setupRetina(canvas, ctx, playW + padding*2, playH + padding*2); updateMath();
+                }
+            };
+        })();
 
         // ==========================================
         // APP 3: SISTEMA PLUS (2 BANDAS)
@@ -1175,31 +1504,48 @@
             const uiSalida = document.getElementById('plusSalida'); const uiAtaque = document.getElementById('plusAtaque'); const uiAtaqueText = document.getElementById('plusAtaqueText');
             const uiLlegada = document.getElementById('plusLlegada'); const btnAnimar = document.getElementById('btnAnimarPlus');
             const plusSelect = document.getElementById('plusSelect'); const gridToggle = document.getElementById('gridTogglePlus');
+            const obsToggle = document.getElementById('obsTogglePlus');
             const uiDecor = document.getElementById('plusDecor'); const uiTitle = document.getElementById('plusTitle');
             
             const padding = 60; const playW = 800; const playH = 400; const playX = padding; const playY = padding; 
             const segmentX = playW / 8; const segmentY = playH / 4; 
 
-            let isActive = false; let isAnimating = false; let animProgress = 0; let trail = []; let loopId; let isPossible = true;
-            let showGrid = false;
+            let isActive = false; let isAnimating = false; let animProgress = 0; let trail = []; let loopId; let isPossible = true; let isBlocked = false; let isInPocket = false;
+            let showGrid = false; let isShotFinished = false;
             let ball = { x: playX + segmentX * 5, y: playY + playH - 15, radius: 15 }; 
             let targetObj = { x: playX + segmentX * 1, y: playY + segmentY * 1, radius: 18 }; 
-            let ptAttack = { x: playX, y: playY }; 
-            let ptTopRail = { x: playX + playW/2, y: playY };
+            let obstacleObj = { active: false, x: playX + playW/2, y: playY + playH/2, radius: 16 };
+            let ptAttack = { x: playX, y: playY }; let ptTopRail = { x: playX + playW/2, y: playY }; let ptTargetProj = { x:0, y:0 };
             let draggedItem = null; let originalBallPos = {x:0, y:0};
 
             function resetPositions() {
                 CanvasUtils.setupRetina(canvas, ctx, playW + padding*2, playH + padding*2);
                 let isLeft = plusSelect.value === 'left';
-                if (isLeft) {
-                    ball.x = playX + segmentX * 2.7; 
-                    targetObj.x = playX + 773.333;   
-                } else {
-                    ball.x = playX + playW - segmentX * 2.7; 
-                    targetObj.x = playX + playW - 773.333; 
-                }
+                if (isLeft) { ball.x = playX + segmentX * 2.7; targetObj.x = playX + 773.333; } 
+                else { ball.x = playX + playW - segmentX * 2.7; targetObj.x = playX + playW - 773.333; }
                 ball.y = playY + playH - 20; targetObj.y = playY + playH - 20;
+                obstacleObj.x = playX + playW/2; obstacleObj.y = playY + playH/2;
                 originalBallPos = {x: ball.x, y: ball.y};
+                isShotFinished = false;
+                updateMath();
+            }
+
+            function randomizePositions() {
+                let attempts = 0;
+                CanvasUtils.setupRetina(canvas, ctx, playW + padding*2, playH + padding*2);
+                do {
+                    ball.x = playX + segmentX + Math.random() * (playW - 2*segmentX); ball.y = playY + segmentY + Math.random() * (playH - 2*segmentY);
+                    targetObj.x = playX + segmentX + Math.random() * (playW - 2*segmentX); targetObj.y = playY + segmentY + Math.random() * (playH - 2*segmentY);
+                    updateMath(); attempts++;
+                } while(!isPossible && attempts < 100);
+
+                if (obstacleObj.active) {
+                    obstacleObj.x = MathUtils.lerp(ball.x, ptAttack.x, 0.5);
+                    obstacleObj.y = MathUtils.lerp(ball.y, ptAttack.y, 0.5);
+                }
+                originalBallPos = {x: ball.x, y: ball.y};
+                isShotFinished = false;
+                solutionRevealed = false;
                 updateMath();
             }
 
@@ -1207,48 +1553,45 @@
                 if(isAnimating || !isActive) return; const pos = CanvasUtils.getTouchPos(canvas, e);
                 if (Math.hypot(pos.x - ball.x, pos.y - ball.y) <= ball.radius * 4) { draggedItem = 'ball'; e.preventDefault(); }
                 else if (Math.hypot(pos.x - targetObj.x, pos.y - targetObj.y) <= targetObj.radius * 4) { draggedItem = 'target'; e.preventDefault(); }
+                else if (obstacleObj.active && Math.hypot(pos.x - obstacleObj.x, pos.y - obstacleObj.y) <= obstacleObj.radius * 4) { draggedItem = 'obstacle'; e.preventDefault(); }
             }
             function handleMove(e) {
                 if (!draggedItem || isAnimating || !isActive) return; e.preventDefault(); const pos = CanvasUtils.getTouchPos(canvas, e);
-                let boundX = Math.max(playX + 15, Math.min(playX + playW - 15, pos.x));
-                let boundY = Math.max(playY + 15, Math.min(playY + playH - 15, pos.y));
+                let boundX = Math.max(playX + 15, Math.min(playX + playW - 15, pos.x)); let boundY = Math.max(playY + 15, Math.min(playY + playH - 15, pos.y));
                 
-                if (showGrid) {
+                if (showGrid && draggedItem !== 'obstacle') {
                     boundX = MathUtils.applySnapping(boundX - playX, segmentX / 2) + playX;
                     boundY = MathUtils.applySnapping(boundY - playY, segmentY / 2) + playY;
-                    boundX = Math.max(playX, Math.min(playX + playW, boundX));
-                    boundY = Math.max(playY, Math.min(playY + playH, boundY));
+                    boundX = Math.max(playX, Math.min(playX + playW, boundX)); boundY = Math.max(playY, Math.min(playY + playH, boundY));
                 }
 
                 if (draggedItem === 'ball') { ball.x = boundX; ball.y = boundY; }
                 else if (draggedItem === 'target') { targetObj.x = boundX; targetObj.y = boundY; }
+                else if (draggedItem === 'obstacle') { obstacleObj.x = boundX; obstacleObj.y = boundY; }
                 updateMath();
             }
 
             let calcData = { salida: 0, ataque: 0, llegada: 80 };
             function updateMath() {
                 let isLeft = plusSelect.value === 'left';
-                let bestA = 0; let minDistA = Infinity;
-                let bestD = 0; let finalS = 0;
+                let bestA = 0; let minDistA = Infinity; let bestD = 0; let finalS = 0; let finalArrivalPt = {x:0, y:0};
 
                 for (let A = 10; A <= 90; A += 0.5) {
                     let xA, yA;
-                    if (isLeft) { xA = playX; yA = playY + ((A - 10) / 20) * segmentY; } 
-                    else { xA = playX + playW; yA = playY + ((A - 10) / 20) * segmentY; }
+                    if (isLeft) { xA = playX; yA = playY + ((A - 10) / 20) * segmentY; } else { xA = playX + playW; yA = playY + ((A - 10) / 20) * segmentY; }
                     
                     let yS_rail = playY + playH; let dxS = (ball.x - xA); let dyS = (ball.y - yA); if (dyS === 0) dyS = 0.0001;
                     let xS = xA + (yS_rail - yA) * dxS / dyS;
                     let S = isLeft ? ((xS - playX) / segmentX) * 10 : ((playX + playW - xS) / segmentX) * 10;
                     
-                    let yD_rail = playY + playH;
-                    let D = S + A;
+                    let yD_rail = playY + playH; let D = S + A;
                     let xD = isLeft ? playX + (D / 10) * segmentX : playX + playW - (D / 10) * segmentX;
                     
                     let xD_mirror = xD; let yD_mirror = playY - playH;
                     let pTop = {x: xA + (playY - yA) * (xD_mirror - xA) / (yD_mirror - yA), y: playY};
 
                     let dist = Math.min(MathUtils.distToSegment(targetObj, {x:xA, y:yA}, pTop), MathUtils.distToSegment(targetObj, pTop, {x:xD, y:yD_rail}));
-                    if (dist < minDistA) { minDistA = dist; bestA = A; finalS = S; bestD = D; ptTopRail = pTop; }
+                    if (dist < minDistA) { minDistA = dist; bestA = A; finalS = S; bestD = D; ptTopRail = pTop; finalArrivalPt = {x:xD, y:yD_rail}; }
                 }
 
                 calcData.ataque = bestA; calcData.salida = finalS; calcData.llegada = bestD;
@@ -1256,24 +1599,52 @@
                 if (isLeft) { ptAttack.x = playX; ptAttack.y = playY + ((bestA - 10) / 20) * segmentY; } 
                 else { ptAttack.x = playX + playW; ptAttack.y = playY + ((bestA - 10) / 20) * segmentY; }
 
+                ptTargetProj = MathUtils.projectPointOnSegment(targetObj, ptTopRail, finalArrivalPt);
+
                 isPossible = (minDistA < 2 && finalS >= 0 && finalS <= 80 && bestD >= 0 && bestD <= 100 && ptAttack.y >= playY && ptAttack.y <= playY + playH);
+                let target_my = playY - (ptTargetProj.y - playY);
+                if (target_my !== ptAttack.y) { ptTopRail.x = ptAttack.x + (playY - ptAttack.y) * (ptTargetProj.x - ptAttack.x) / (target_my - ptAttack.y); } 
+                else { ptTopRail.x = playX + playW/2; }
+                ptTopRail.y = playY; ptTopRail.x = Math.max(playX, Math.min(playX + playW, ptTopRail.x));
 
-                let target_my = playY - (targetObj.y - playY);
-                if (target_my !== ptAttack.y) {
-                    ptTopRail.x = ptAttack.x + (playY - ptAttack.y) * (targetObj.x - ptAttack.x) / (target_my - ptAttack.y);
-                } else {
-                    ptTopRail.x = playX + playW/2;
+                isInPocket = false;
+                if(isPossible) {
+                    isInPocket = MathUtils.isPointInPocket(ptAttack, playX, playY, playW, playH) || MathUtils.isPointInPocket(ptTopRail, playX, playY, playW, playH);
+                    if(isInPocket) isPossible = false;
                 }
-                ptTopRail.y = playY;
-                ptTopRail.x = Math.max(playX, Math.min(playX + playW, ptTopRail.x));
 
-                uiSalida.textContent = calcData.salida.toFixed(0); uiLlegada.textContent = calcData.llegada.toFixed(0); 
-                uiAtaque.textContent = calcData.ataque.toFixed(0); uiAtaqueText.textContent = calcData.ataque.toFixed(0);
+                isBlocked = false;
+                if (obstacleObj.active) {
+                    if (MathUtils.distToSegment(obstacleObj, ball, ptAttack) < 30 || MathUtils.distToSegment(obstacleObj, ptAttack, ptTopRail) < 30 || MathUtils.distToSegment(obstacleObj, ptTopRail, ptTargetProj) < 30) isBlocked = true;
+                }
 
-                btnAnimar.disabled = !isPossible;
-                uiAtaque.style.color = isPossible ? '' : '#ef4444'; uiAtaqueText.style.color = isPossible ? '' : '#ef4444';
-                uiTitle.style.color = isPossible ? '' : '#ef4444'; uiTitle.textContent = isPossible ? 'Cálculo de 2 Bandas' : 'TIRO IMPOSIBLE';
-                uiDecor.style.backgroundColor = isPossible ? '' : '#ef4444';
+                if (isTrainingMode && !solutionRevealed) {
+                    uiSalida.textContent = '???'; uiLlegada.textContent = '???'; uiAtaque.textContent = '???'; uiAtaqueText.textContent = '???';
+                    uiTitle.textContent = '¡CALCULA EL TIRO!'; uiTitle.style.color = '#facc15'; uiDecor.style.backgroundColor = '#facc15'; uiAtaque.style.color = '#facc15'; uiAtaqueText.style.color = '#facc15';
+                    btnAnimar.innerHTML = '👀 Ver Solución'; btnAnimar.disabled = false;
+                    btnAnimar.className = "btn-disparar w-full max-w-md mt-4 mb-2 py-3 rounded-2xl font-black text-xl bg-gradient-to-r from-yellow-500 to-orange-500 text-white hover:from-yellow-400 hover:to-orange-400 transition-all transform active:scale-95 shadow-lg border border-yellow-400";
+                } else {
+                    uiSalida.textContent = calcData.salida.toFixed(0); uiLlegada.textContent = calcData.llegada.toFixed(0); 
+                    uiAtaque.textContent = calcData.ataque.toFixed(0); uiAtaqueText.textContent = calcData.ataque.toFixed(0);
+
+                    if (isTrainingMode && isShotFinished) {
+                        btnAnimar.innerHTML = '🎯 Siguiente Tiro'; btnAnimar.disabled = false;
+                        btnAnimar.className = "btn-disparar w-full max-w-md mt-4 mb-2 py-3 rounded-2xl font-black text-xl bg-indigo-600 text-white hover:bg-indigo-500 transition-all transform active:scale-95 shadow-lg border border-indigo-500";
+                    } else {
+                        btnAnimar.innerHTML = '🎱 Ejecutar Tiro'; btnAnimar.disabled = !isPossible || isBlocked;
+                        btnAnimar.className = "btn-disparar w-full max-w-md mt-4 mb-2 py-3 rounded-2xl font-black text-xl bg-gradient-to-r from-purple-500 to-fuchsia-500 text-white hover:from-purple-400 hover:to-fuchsia-400 transition-all transform active:scale-95 shadow-lg border border-purple-400 disabled:opacity-50 disabled:cursor-not-allowed";
+                    }
+
+                    if (!isPossible) {
+                        uiAtaque.style.color = '#ef4444'; uiAtaqueText.style.color = '#ef4444'; uiTitle.style.color = '#ef4444'; 
+                        uiTitle.textContent = isInPocket ? 'CAE EN TRONERA' : 'TIRO IMPOSIBLE'; 
+                        uiDecor.style.backgroundColor = '#ef4444';
+                    } else if (isBlocked) {
+                        uiAtaque.style.color = '#f97316'; uiAtaqueText.style.color = '#f97316'; uiTitle.style.color = '#f97316'; uiTitle.textContent = 'RUTA BLOQUEADA'; uiDecor.style.backgroundColor = '#f97316';
+                    } else {
+                        uiAtaque.style.color = ''; uiAtaqueText.style.color = ''; uiTitle.style.color = ''; uiTitle.textContent = 'Cálculo de 2 Bandas'; uiDecor.style.backgroundColor = '';
+                    }
+                }
             }
 
             function drawTable() {
@@ -1281,14 +1652,9 @@
                 CanvasUtils.drawStandardDiamonds(ctx, playX, playY, playW, playH, showGrid);
                 ctx.font = 'bold 16px Inter'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
                 let isLeft = plusSelect.value === 'left';
-                
-                for(let i=0; i<=8; i++) {
-                    let px = playX + i * segmentX; let val = isLeft ? i * 10 : (8 - i) * 10;
-                    ctx.fillStyle = '#fde047'; ctx.fillText(val, px, playY + playH + 35); 
-                }
+                for(let i=0; i<=8; i++) { let px = playX + i * segmentX; let val = isLeft ? i * 10 : (8 - i) * 10; ctx.fillStyle = '#fde047'; ctx.fillText(val, px, playY + playH + 35); }
                 for(let i=0; i<=4; i++) {
-                    let py = playY + i * segmentY; let valAtaque = 10 + i * 20;
-                    ctx.fillStyle = '#ef4444'; 
+                    let py = playY + i * segmentY; let valAtaque = 10 + i * 20; ctx.fillStyle = '#ef4444'; 
                     if (isLeft) { ctx.fillText(valAtaque, playX - 35, py); } else { ctx.fillText(valAtaque, playX + playW + 35, py); }
                 }
             }
@@ -1296,26 +1662,29 @@
             function draw() {
                 if(!isActive) return;
                 ctx.save(); ctx.clearRect(0, 0, canvas.width, canvas.height); 
-                drawTable();
+                drawTable(); CanvasUtils.drawObstacle(ctx, obstacleObj);
 
                 if (!isAnimating && animProgress === 0) {
-                    ctx.beginPath(); ctx.moveTo(ball.x, ball.y); ctx.lineTo(ptAttack.x, ptAttack.y); ctx.lineTo(ptTopRail.x, ptTopRail.y); ctx.lineTo(targetObj.x, targetObj.y);
-                    ctx.strokeStyle = isPossible ? 'rgba(232, 121, 249, 0.25)' : 'rgba(239, 68, 68, 0.15)'; ctx.lineWidth = 24; ctx.stroke();
-                    ctx.strokeStyle = isPossible ? '#e879f9' : '#ef4444'; ctx.setLineDash([8, 8]); ctx.lineWidth = 4; ctx.stroke(); ctx.setLineDash([]);
-                    ctx.beginPath(); ctx.arc(ptAttack.x, ptAttack.y, 7, 0, Math.PI*2); ctx.fillStyle = isPossible ? '#e879f9' : '#ef4444'; ctx.fill();
-                    
-                    if(isPossible) CanvasUtils.drawPostImpact(ctx, ptTopRail.x, ptTopRail.y, targetObj.x, targetObj.y);
+                    if (!isTrainingMode || solutionRevealed) {
+                        let strokeBase = !isPossible ? 'rgba(239, 68, 68, 0.15)' : (isBlocked ? 'rgba(249, 115, 22, 0.15)' : 'rgba(232, 121, 249, 0.25)');
+                        let strokeLine = !isPossible ? '#ef4444' : (isBlocked ? '#f97316' : '#e879f9');
+
+                        ctx.beginPath(); ctx.moveTo(ball.x, ball.y); ctx.lineTo(ptAttack.x, ptAttack.y); ctx.lineTo(ptTopRail.x, ptTopRail.y); ctx.lineTo(ptTargetProj.x, ptTargetProj.y);
+                        ctx.strokeStyle = strokeBase; ctx.lineWidth = 24; ctx.stroke();
+                        ctx.strokeStyle = strokeLine; ctx.setLineDash([8, 8]); ctx.lineWidth = 4; ctx.stroke(); ctx.setLineDash([]);
+                        ctx.beginPath(); ctx.arc(ptAttack.x, ptAttack.y, 7, 0, Math.PI*2); ctx.fillStyle = strokeLine; ctx.fill();
+                        
+                        if(isPossible && !isBlocked) CanvasUtils.drawPostImpact(ctx, ptTopRail.x, ptTopRail.y, ptTargetProj.x, ptTargetProj.y);
+                    }
                 }
 
                 ctx.beginPath(); ctx.arc(targetObj.x, targetObj.y, targetObj.radius + Math.sin(Date.now()/150)*4, 0, Math.PI*2); ctx.fillStyle = 'rgba(239, 68, 68, 0.3)'; ctx.fill();
                 ctx.beginPath(); ctx.arc(targetObj.x, targetObj.y, targetObj.radius - 4, 0, Math.PI*2); ctx.fillStyle = '#ef4444'; ctx.fill();
 
                 trail.forEach((t, i) => { ctx.beginPath(); ctx.arc(t.x, t.y, ball.radius * 0.7, 0, Math.PI*2); ctx.fillStyle = `rgba(255, 255, 255, ${(i / trail.length) * 0.4})`; ctx.fill(); });
-                
                 ctx.beginPath(); ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI*2); ctx.fillStyle = '#fff'; ctx.fill(); ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 2; ctx.stroke();
                 
-                let isLeft = plusSelect.value === 'left';
-                let spinAngle = isLeft ? (-Math.PI / 6) : (-5 * Math.PI / 6);
+                let isLeft = plusSelect.value === 'left'; let spinAngle = isLeft ? (-Math.PI / 6) : (-5 * Math.PI / 6);
                 let dotX = ball.x + Math.cos(spinAngle) * (ball.radius * 0.6); let dotY = ball.y + Math.sin(spinAngle) * (ball.radius * 0.6);
                 ctx.beginPath(); ctx.arc(dotX, dotY, 4, 0, Math.PI*2); ctx.fillStyle = '#ef4444'; ctx.fill();
                 ctx.font = 'bold 10px Inter'; ctx.fillStyle = '#fff'; ctx.fillText(isLeft ? '2h' : '10h', isLeft ? ball.x + 20 : ball.x - 20, ball.y - 15);
@@ -1323,29 +1692,70 @@
             }
 
             function animate() {
-                if (!isAnimating || !isActive || !isPossible) return;
-                animProgress += 0.03; trail.push({x: ball.x, y: ball.y}); if (trail.length > 25) trail.shift(); 
-                const lerp = (s, e, a) => s + (e - s) * MathUtils.easeOut(a);
-                if (animProgress <= 1) { ball.x = lerp(originalBallPos.x, ptAttack.x, animProgress); ball.y = lerp(originalBallPos.y, ptAttack.y, animProgress); } 
-                else if (animProgress <= 2) { let ap2 = animProgress - 1; ball.x = lerp(ptAttack.x, ptTopRail.x, ap2); ball.y = lerp(ptAttack.y, ptTopRail.y, ap2); } 
-                else if (animProgress <= 3) { let ap3 = animProgress - 2; ball.x = lerp(ptTopRail.x, targetObj.x, ap3); ball.y = lerp(ptTopRail.y, targetObj.y, ap3); }
+                if (!isAnimating || !isActive || !isPossible || isBlocked) return;
+                let prev = animProgress; animProgress += 0.03; 
+                trail.push({x: ball.x, y: ball.y}); if (trail.length > 25) trail.shift(); 
+                
+                if (prev === 0) AudioEngine.playCueHit();
+
+                if (animProgress <= 1) { ball.x = MathUtils.lerp(originalBallPos.x, ptAttack.x, animProgress); ball.y = MathUtils.lerp(originalBallPos.y, ptAttack.y, animProgress); } 
+                else if (animProgress <= 2) { 
+                    if (prev < 1 && animProgress >= 1) AudioEngine.playRailHit();
+                    let ap2 = animProgress - 1; ball.x = MathUtils.lerp(ptAttack.x, ptTopRail.x, ap2); ball.y = MathUtils.lerp(ptAttack.y, ptTopRail.y, ap2); 
+                } 
+                else if (animProgress <= 3) { 
+                    if (prev < 2 && animProgress >= 2) AudioEngine.playRailHit();
+                    let ap3 = animProgress - 2; ball.x = MathUtils.lerp(ptTopRail.x, ptTargetProj.x, ap3); ball.y = MathUtils.lerp(ptTopRail.y, ptTargetProj.y, ap3); 
+                }
                 else {
-                    isAnimating = false; ball.x = targetObj.x; ball.y = targetObj.y;
-                    setTimeout(() => {
-                        ball.x = originalBallPos.x; ball.y = originalBallPos.y; trail = []; animProgress = 0; isAnimating = false;
-                        btnAnimar.classList.remove('hidden'); updateMath();
+                    if (prev < 3 && animProgress >= 3) AudioEngine.playBallHit();
+                    isAnimating = false; ball.x = ptTargetProj.x; ball.y = ptTargetProj.y;
+                    setTimeout(() => { 
+                        ball.x = originalBallPos.x; ball.y = originalBallPos.y; trail = []; animProgress = 0; isAnimating = false; 
+                        isShotFinished = true;
+                        btnAnimar.classList.remove('hidden'); updateMath(); 
                     }, 1200);
                     let fade = setInterval(() => { trail.shift(); if(trail.length===0) clearInterval(fade); }, 40);
                 }
             }
 
             canvas.addEventListener('mousedown', handleDown); window.addEventListener('mousemove', handleMove); window.addEventListener('mouseup', () => draggedItem = null);
-            canvas.addEventListener('touchstart', handleDown, {passive: false}); window.addEventListener('touchmove', handleMove, {passive: false}); window.addEventListener('touchend', () => draggedItem = null);
+            canvas.addEventListener('touchstart', handleDown, {passive: false}); window.addEventListener('touchmove', handleMove, {passive: false}); window.addEventListener('touchmove', handleMove, {passive: false}); window.addEventListener('touchend', () => draggedItem = null);
+            
+            btnAnimar.addEventListener('click', () => { 
+                if (isTrainingMode) { 
+                    if (isShotFinished) { randomizePositions(); return; }
+                    if (!solutionRevealed) { solutionRevealed = true; updateMath(); return; }
+                }
+                if(isAnimating || !isPossible || isBlocked) return; 
+                isAnimating = true; animProgress = 0; trail = []; originalBallPos = {x: ball.x, y: ball.y}; btnAnimar.classList.add('hidden'); 
+            });
+
             plusSelect.addEventListener('change', resetPositions);
             gridToggle.addEventListener('change', e => { showGrid = e.target.checked; updateMath(); });
-            btnAnimar.addEventListener('click', () => { if(isAnimating || !isPossible) return; isAnimating = true; animProgress = 0; trail = []; originalBallPos = {x: ball.x, y: ball.y}; btnAnimar.classList.add('hidden'); });
+            obsToggle.addEventListener('change', e => { 
+                obstacleObj.active = e.target.checked; 
+                updateMath();
+                if(obstacleObj.active) { obstacleObj.x = MathUtils.lerp(ball.x, ptAttack.x, 0.5); obstacleObj.y = MathUtils.lerp(ball.y, ptAttack.y, 0.5); }
+                updateMath(); 
+            });
             function loop() { if(isActive) { if(isAnimating) animate(); draw(); } loopId = requestAnimationFrame(loop); }
-            return { init: () => { resetPositions(); loop(); }, pause: () => { isActive = false; cancelAnimationFrame(loopId); }, resume: () => { isActive = true; updateMath(); loop(); }, reset: resetPositions };
+            
+            return { 
+                init: () => { resetPositions(); loop(); }, 
+                pause: () => { isActive = false; cancelAnimationFrame(loopId); }, 
+                resume: () => { isActive = true; updateMath(); loop(); }, 
+                reset: resetPositions,
+                randomize: randomizePositions,
+                getState: () => ({ select: plusSelect.value, showGrid, obs: {active: obstacleObj.active, x: obstacleObj.x, y: obstacleObj.y}, ball: {x: ball.x, y: ball.y}, targetObj: {x: targetObj.x, y: targetObj.y} }),
+                loadState: (state) => { 
+                    plusSelect.value = state.select; gridToggle.checked = state.showGrid; showGrid = state.showGrid;
+                    obsToggle.checked = state.obs.active; obstacleObj.active = state.obs.active; obstacleObj.x = state.obs.x; obstacleObj.y = state.obs.y;
+                    ball.x = state.ball.x; ball.y = state.ball.y; targetObj.x = state.targetObj.x; targetObj.y = state.targetObj.y;
+                    isShotFinished = false; solutionRevealed = false;
+                    CanvasUtils.setupRetina(canvas, ctx, playW + padding*2, playH + padding*2); updateMath();
+                }
+            };
         })();
 
 
@@ -1358,143 +1768,163 @@
             const uiAtaque = document.getElementById('sidAtaque'); const uiAtaqueText = document.getElementById('sidAtaqueText');
             const btnAnimar = document.getElementById('btnAnimarSid'); const sidSelect = document.getElementById('sidSelect');
             const uiDecor = document.getElementById('sidDecor'); const uiTitle = document.getElementById('sidTitle');
-            const gridToggle = document.getElementById('gridToggleSid');
+            const gridToggle = document.getElementById('gridToggleSid'); const obsToggle = document.getElementById('obsToggleSid');
             
             const padding = 60; const playW = 800; const playH = 400; const playX = padding; const playY = padding; 
             const segmentX = playW / 8; const segmentY = playH / 4; 
 
-            let isActive = false; let isAnimating = false; let animProgress = 0; let trail = []; let loopId; let isPossible = true;
-            let showGrid = false;
-            let ball = { x: 0, y: 0, radius: 15 }; 
-            let targetObj = { x: 0, y: 0, radius: 18 }; 
-            let ptAttack = { x: playX + playW/2, y: playY }; 
+            let isActive = false; let isAnimating = false; let animProgress = 0; let trail = []; let loopId; let isPossible = true; let isBlocked = false; let isInPocket = false;
+            let showGrid = false; let isShotFinished = false;
+            let ball = { x: 0, y: 0, radius: 15 }; let targetObj = { x: 0, y: 0, radius: 18 }; 
+            let obstacleObj = { active: false, x: playX + playW/2, y: playY + playH/2, radius: 16 };
+            let ptAttack = { x: playX + playW/2, y: playY }; let ptLlegada_phys = {x: 0, y: 0}; let ptTargetProj = {x: 0, y: 0};
             let draggedItem = null; let originalBallPos = {x:0, y:0};
-            let ptLlegada_phys = {x: 0, y: 0};
 
             function resetPositions() {
                 CanvasUtils.setupRetina(canvas, ctx, playW + padding*2, playH + padding*2);
                 let modo = sidSelect.value;
-                if (modo === 'larga') {
-                    ball.x = playX + 60; ball.y = playY + playH - segmentY * 2; 
-                    targetObj.x = playX + segmentX * 4; targetObj.y = playY + playH - 60; 
-                } else {
-                    ball.x = playX + segmentX * 4; ball.y = playY + playH - 60; 
-                    targetObj.x = playX + playW - 60; targetObj.y = playY + playH - segmentY * 2; 
+                if (modo === 'larga') { ball.x = playX + 60; ball.y = playY + playH - segmentY * 2; targetObj.x = playX + segmentX * 4; targetObj.y = playY + playH - 60; } 
+                else { ball.x = playX + segmentX * 4; ball.y = playY + playH - 60; targetObj.x = playX + playW - 60; targetObj.y = playY + playH - segmentY * 2; }
+                obstacleObj.x = playX + playW/2; obstacleObj.y = playY + playH/2;
+                originalBallPos = {x: ball.x, y: ball.y}; 
+                isShotFinished = false; updateMath();
+            }
+
+            function randomizePositions() {
+                let attempts = 0;
+                CanvasUtils.setupRetina(canvas, ctx, playW + padding*2, playH + padding*2);
+                do {
+                    ball.x = playX + segmentX + Math.random() * (playW - 2*segmentX); ball.y = playY + segmentY + Math.random() * (playH - 2*segmentY);
+                    targetObj.x = playX + segmentX + Math.random() * (playW - 2*segmentX); targetObj.y = playY + segmentY + Math.random() * (playH - 2*segmentY);
+                    updateMath(); attempts++;
+                } while(!isPossible && attempts < 100);
+
+                if (obstacleObj.active) {
+                    let S_pt = sidSelect.value === 'larga' ? {x: playX, y: playY + playH - calcData.salida * segmentY} : {x: playX + playW - calcData.salida * segmentX, y: playY + playH};
+                    obstacleObj.x = MathUtils.lerp(S_pt.x, ptAttack.x, 0.5); obstacleObj.y = MathUtils.lerp(S_pt.y, ptAttack.y, 0.5);
                 }
                 originalBallPos = {x: ball.x, y: ball.y};
-                updateMath();
+                isShotFinished = false; solutionRevealed = false; updateMath();
             }
 
             function handleDown(e) {
                 if(isAnimating || !isActive) return; const pos = CanvasUtils.getTouchPos(canvas, e);
                 if (Math.hypot(pos.x - ball.x, pos.y - ball.y) <= ball.radius * 4) { draggedItem = 'ball'; e.preventDefault(); }
                 else if (Math.hypot(pos.x - targetObj.x, pos.y - targetObj.y) <= targetObj.radius * 4) { draggedItem = 'target'; e.preventDefault(); }
+                else if (obstacleObj.active && Math.hypot(pos.x - obstacleObj.x, pos.y - obstacleObj.y) <= obstacleObj.radius * 4) { draggedItem = 'obstacle'; e.preventDefault(); }
             }
             function handleMove(e) {
                 if (!draggedItem || isAnimating || !isActive) return; e.preventDefault(); const pos = CanvasUtils.getTouchPos(canvas, e);
-                let boundX = Math.max(playX + 15, Math.min(playX + playW - 15, pos.x));
-                let boundY = Math.max(playY + 15, Math.min(playY + playH - 15, pos.y));
+                let boundX = Math.max(playX + 15, Math.min(playX + playW - 15, pos.x)); let boundY = Math.max(playY + 15, Math.min(playY + playH - 15, pos.y));
                 
-                if (showGrid) {
+                if (showGrid && draggedItem !== 'obstacle') {
                     boundX = MathUtils.applySnapping(boundX - playX, segmentX / 2) + playX;
                     boundY = MathUtils.applySnapping(boundY - playY, segmentY / 2) + playY;
-                    boundX = Math.max(playX, Math.min(playX + playW, boundX));
-                    boundY = Math.max(playY, Math.min(playY + playH, boundY));
+                    boundX = Math.max(playX, Math.min(playX + playW, boundX)); boundY = Math.max(playY, Math.min(playY + playH, boundY));
                 }
 
                 if (draggedItem === 'ball') { ball.x = boundX; ball.y = boundY; }
                 else if (draggedItem === 'target') { targetObj.x = boundX; targetObj.y = boundY; }
+                else if (draggedItem === 'obstacle') { obstacleObj.x = boundX; obstacleObj.y = boundY; }
                 updateMath();
             }
 
             let calcData = { salida: 0, llegada: 0, ataque: 0 };
             function updateMath() {
                 let modo = sidSelect.value;
-                let bestA = 0; let minDistA = Infinity;
-                let finalS = 0; let finalL = 0;
-                let tempLlegada = {x: 0, y: 0};
+                let bestA = 0; let minDistA = Infinity; let finalS = 0; let finalL = 0; let tempLlegada = {x: 0, y: 0};
 
                 for (let A = 1; A <= 80; A += 0.5) {
                     if (modo === 'larga') {
                         if (A > 40) continue;
                         let xA = playX + playW; let yA = playY + playH - (A / 10) * segmentY;
-                        
                         let xS_rail = playX; let dxS = ball.x - xA; if (dxS === 0) dxS = 0.0001;
-                        let yS = yA + (xS_rail - xA) * (ball.y - yA) / dxS;
-                        let S = (playY + playH - yS) / segmentY;
+                        let yS = yA + (xS_rail - xA) * (ball.y - yA) / dxS; let S = (playY + playH - yS) / segmentY;
                         
-                        let yL = playY + playH; 
-                        let dyL = targetObj.y - yA; if (dyL === 0) dyL = 0.0001;
+                        let yL = playY + playH; let dyL = targetObj.y - yA; if (dyL === 0) dyL = 0.0001;
                         let xL = xA + (yL - yA) * (targetObj.x - xA) / dyL;
                         let distFromRight = (playX + playW - xL) / segmentX;
                         let L = distFromRight <= 2 ? distFromRight : 2 + (distFromRight - 2) * 0.5;
                         
                         let error = Math.abs(A - (S * L));
-                        if (error < minDistA) {
-                            minDistA = error; bestA = A; finalS = S; finalL = L;
-                            tempLlegada = {x: xL, y: yL};
-                        }
+                        if (error < minDistA) { minDistA = error; bestA = A; finalS = S; finalL = L; tempLlegada = {x: xL, y: yL}; }
                     } else {
                         let yA = playY; let xA = playX + playW - (A / 10) * segmentX;
+                        let yS_rail = playY + playH; let dyS = ball.y - yA; if (dyS === 0) dyS = 0.0001;
+                        let xS = xA + (yS_rail - yA) * (ball.x - xA) / dyS; let S = (playX + playW - xS) / segmentX;
                         
-                        let yS_rail = playY + playH; 
-                        let dyS = ball.y - yA; if (dyS === 0) dyS = 0.0001;
-                        let xS = xA + (yS_rail - yA) * (ball.x - xA) / dyS;
-                        let S = (playX + playW - xS) / segmentX;
-                        
-                        let xL = playX + playW; 
-                        let dxL = targetObj.x - xA; if (dxL === 0) dxL = 0.0001;
+                        let xL = playX + playW; let dxL = targetObj.x - xA; if (dxL === 0) dxL = 0.0001;
                         let yL = yA + (xL - xA) * (targetObj.y - yA) / dxL;
                         let distFromTop = (yL - playY) / segmentY;
                         let L = distFromTop <= 1 ? distFromTop * 2 : 2 + (distFromTop - 1); 
                         
                         let error = Math.abs(A - (S * L));
-                        if (error < minDistA) {
-                            minDistA = error; bestA = A; finalS = S; finalL = L;
-                            tempLlegada = {x: xL, y: yL};
-                        }
+                        if (error < minDistA) { minDistA = error; bestA = A; finalS = S; finalL = L; tempLlegada = {x: xL, y: yL}; }
                     }
                 }
 
-                calcData.ataque = bestA; calcData.salida = finalS; calcData.llegada = finalL;
-                ptLlegada_phys = tempLlegada;
-                
-                if (modo === 'larga') {
-                    ptAttack.x = playX + playW; ptAttack.y = playY + playH - (bestA / 10) * segmentY;
-                } else {
-                    ptAttack.y = playY; ptAttack.x = playX + playW - (bestA / 10) * segmentX;
-                }
+                calcData.ataque = bestA; calcData.salida = finalS; calcData.llegada = finalL; ptLlegada_phys = tempLlegada;
+                if (modo === 'larga') { ptAttack.x = playX + playW; ptAttack.y = playY + playH - (bestA / 10) * segmentY; } 
+                else { ptAttack.y = playY; ptAttack.x = playX + playW - (bestA / 10) * segmentX; }
 
                 isPossible = (minDistA < 5.0 && finalS >= -5 && finalL >= -5);
+                ptTargetProj = MathUtils.projectPointOnSegment(targetObj, ptAttack, ptLlegada_phys);
 
-                uiSalida.textContent = calcData.salida.toFixed(0); uiLlegada.textContent = calcData.llegada.toFixed(0);
-                uiAtaque.textContent = calcData.ataque.toFixed(0); uiAtaqueText.textContent = calcData.ataque.toFixed(0);
+                isInPocket = false;
+                if(isPossible) {
+                    isInPocket = MathUtils.isPointInPocket(ptAttack, playX, playY, playW, playH) || MathUtils.isPointInPocket(ptLlegada_phys, playX, playY, playW, playH);
+                    if(isInPocket) isPossible = false;
+                }
 
-                btnAnimar.disabled = !isPossible;
-                uiAtaque.style.color = isPossible ? '' : '#ef4444'; uiAtaqueText.style.color = isPossible ? '' : '#ef4444';
-                uiTitle.style.color = isPossible ? '' : '#ef4444'; uiTitle.textContent = isPossible ? 'Ecuación SID' : 'TIRO IMPOSIBLE';
-                uiDecor.style.backgroundColor = isPossible ? '' : '#ef4444';
+                let S_pt = {x: 0, y: 0};
+                if (modo === 'larga') { S_pt = {x: playX, y: playY + playH - calcData.salida * segmentY}; } 
+                else { S_pt = {x: playX + playW - calcData.salida * segmentX, y: playY + playH}; }
+
+                isBlocked = false;
+                if (obstacleObj.active) {
+                    if (MathUtils.distToSegment(obstacleObj, S_pt, ptAttack) < 30 || MathUtils.distToSegment(obstacleObj, ptAttack, ptTargetProj) < 30) isBlocked = true;
+                }
+
+                if (isTrainingMode && !solutionRevealed) {
+                    uiSalida.textContent = '???'; uiLlegada.textContent = '???'; uiAtaque.textContent = '???'; uiAtaqueText.textContent = '???';
+                    uiTitle.textContent = '¡CALCULA EL TIRO!'; uiTitle.style.color = '#facc15'; uiDecor.style.backgroundColor = '#facc15'; uiAtaque.style.color = '#facc15'; uiAtaqueText.style.color = '#facc15';
+                    btnAnimar.innerHTML = '👀 Ver Solución'; btnAnimar.disabled = false;
+                    btnAnimar.className = "btn-disparar w-full max-w-md mt-4 mb-2 py-3 rounded-2xl font-black text-xl bg-gradient-to-r from-yellow-500 to-orange-500 text-white hover:from-yellow-400 hover:to-orange-400 transition-all transform active:scale-95 shadow-lg border border-yellow-400";
+                } else {
+                    uiSalida.textContent = calcData.salida.toFixed(0); uiLlegada.textContent = calcData.llegada.toFixed(0);
+                    uiAtaque.textContent = calcData.ataque.toFixed(0); uiAtaqueText.textContent = calcData.ataque.toFixed(0);
+
+                    if (isTrainingMode && isShotFinished) {
+                        btnAnimar.innerHTML = '🎯 Siguiente Tiro'; btnAnimar.disabled = false;
+                        btnAnimar.className = "btn-disparar w-full max-w-md mt-4 mb-2 py-3 rounded-2xl font-black text-xl bg-indigo-600 text-white hover:bg-indigo-500 transition-all transform active:scale-95 shadow-lg border border-indigo-500";
+                    } else {
+                        btnAnimar.innerHTML = '🎱 Ejecutar Bricole'; btnAnimar.disabled = !isPossible || isBlocked;
+                        btnAnimar.className = "btn-disparar w-full max-w-md mt-4 mb-2 py-3 rounded-2xl font-black text-xl bg-gradient-to-r from-orange-500 to-amber-500 text-white hover:from-orange-400 hover:to-amber-400 transition-all transform active:scale-95 shadow-lg border border-orange-400 disabled:opacity-50 disabled:cursor-not-allowed";
+                    }
+
+                    if (!isPossible) {
+                        uiAtaque.style.color = '#ef4444'; uiAtaqueText.style.color = '#ef4444'; uiTitle.style.color = '#ef4444'; 
+                        uiTitle.textContent = isInPocket ? 'CAE EN TRONERA' : 'TIRO IMPOSIBLE'; 
+                        uiDecor.style.backgroundColor = '#ef4444';
+                    } else if (isBlocked) {
+                        uiAtaque.style.color = '#f97316'; uiAtaqueText.style.color = '#f97316'; uiTitle.style.color = '#f97316'; uiTitle.textContent = 'RUTA BLOQUEADA'; uiDecor.style.backgroundColor = '#f97316';
+                    } else {
+                        uiAtaque.style.color = ''; uiAtaqueText.style.color = ''; uiTitle.style.color = ''; uiTitle.textContent = 'Ecuación SID'; uiDecor.style.backgroundColor = '';
+                    }
+                }
             }
 
             function drawTable() {
                 CanvasUtils.drawBaseTable(ctx, playX, playY, playW, playH);
                 CanvasUtils.drawStandardDiamonds(ctx, playX, playY, playW, playH, showGrid);
-                ctx.font = 'bold 16px Inter'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-                let modo = sidSelect.value;
-
+                ctx.font = 'bold 16px Inter'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; let modo = sidSelect.value;
                 if (modo === 'larga') {
                     for(let i=0; i<=4; i++) { ctx.fillStyle='#fde047'; ctx.fillText(i, playX-35, playY + playH - i*segmentY); }
-                    for(let i=0; i<=8; i++) { 
-                        let val = i <= 2 ? i : 2 + (i-2)*0.5;
-                        ctx.fillStyle='#f87171'; ctx.fillText(val, playX + playW - i*segmentX, playY+playH+35); 
-                    }
+                    for(let i=0; i<=8; i++) { let val = i <= 2 ? i : 2 + (i-2)*0.5; ctx.fillStyle='#f87171'; ctx.fillText(val, playX + playW - i*segmentX, playY+playH+35); }
                     for(let i=0; i<=4; i++) { ctx.fillStyle='#fb923c'; ctx.fillText(i*10, playX+playW+35, playY + playH - i*segmentY); }
                 } else {
                     for(let i=0; i<=8; i++) { ctx.fillStyle='#fde047'; ctx.fillText(i, playX + playW - i*segmentX, playY+playH+35); }
-                    for(let i=0; i<=4; i++) { 
-                        let val = i === 0 ? 0 : i + 1;
-                        ctx.fillStyle='#f87171'; ctx.fillText(val, playX+playW+35, playY + i*segmentY); 
-                    }
+                    for(let i=0; i<=4; i++) { let val = i === 0 ? 0 : i + 1; ctx.fillStyle='#f87171'; ctx.fillText(val, playX+playW+35, playY + i*segmentY); }
                     for(let i=0; i<=8; i++) { ctx.fillStyle='#fb923c'; ctx.fillText(i*10, playX + playW - i*segmentX, playY-35); }
                 }
             }
@@ -1502,64 +1932,104 @@
             function draw() {
                 if(!isActive) return;
                 ctx.save(); ctx.clearRect(0, 0, canvas.width, canvas.height); 
-                drawTable();
+                drawTable(); CanvasUtils.drawObstacle(ctx, obstacleObj);
 
                 if (!isAnimating && animProgress === 0) {
-                    let S_pt = {x: 0, y: 0};
-                    let modo = sidSelect.value;
-                    if (modo === 'larga') {
-                        S_pt = {x: playX, y: playY + playH - calcData.salida * segmentY};
-                    } else {
-                        S_pt = {x: playX + playW - calcData.salida * segmentX, y: playY + playH};
-                    }
+                    if (!isTrainingMode || solutionRevealed) {
+                        let S_pt = {x: 0, y: 0}; let modo = sidSelect.value;
+                        if (modo === 'larga') { S_pt = {x: playX, y: playY + playH - calcData.salida * segmentY}; } 
+                        else { S_pt = {x: playX + playW - calcData.salida * segmentX, y: playY + playH}; }
 
-                    ctx.beginPath(); ctx.moveTo(S_pt.x, S_pt.y); ctx.lineTo(ptAttack.x, ptAttack.y); ctx.lineTo(ptLlegada_phys.x, ptLlegada_phys.y);
-                    ctx.strokeStyle = isPossible ? 'rgba(249, 115, 22, 0.15)' : 'rgba(239, 68, 68, 0.15)'; ctx.lineWidth = 24; ctx.stroke();
-                    ctx.strokeStyle = isPossible ? 'rgba(249, 115, 22, 0.8)' : '#ef4444'; ctx.setLineDash([8, 8]); ctx.lineWidth = 4; ctx.stroke(); ctx.setLineDash([]);
-                    ctx.beginPath(); ctx.arc(ptAttack.x, ptAttack.y, 7, 0, Math.PI*2); ctx.fillStyle = isPossible ? '#fb923c' : '#ef4444'; ctx.fill();
-                    
-                    if(isPossible) CanvasUtils.drawPostImpact(ctx, ptAttack.x, ptAttack.y, targetObj.x, targetObj.y);
+                        let strokeBase = !isPossible ? 'rgba(239, 68, 68, 0.15)' : (isBlocked ? 'rgba(249, 115, 22, 0.15)' : 'rgba(249, 115, 22, 0.15)');
+                        let strokeLine = !isPossible ? '#ef4444' : (isBlocked ? '#f97316' : '#fb923c');
+
+                        ctx.beginPath(); ctx.moveTo(S_pt.x, S_pt.y); ctx.lineTo(ptAttack.x, ptAttack.y); ctx.lineTo(ptTargetProj.x, ptTargetProj.y);
+                        ctx.strokeStyle = strokeBase; ctx.lineWidth = 24; ctx.stroke();
+                        ctx.strokeStyle = strokeLine; ctx.setLineDash([8, 8]); ctx.lineWidth = 4; ctx.stroke(); ctx.setLineDash([]);
+                        ctx.beginPath(); ctx.arc(ptAttack.x, ptAttack.y, 7, 0, Math.PI*2); ctx.fillStyle = strokeLine; ctx.fill();
+                        
+                        if(isPossible && !isBlocked) CanvasUtils.drawPostImpact(ctx, ptAttack.x, ptAttack.y, ptTargetProj.x, ptTargetProj.y);
+                    }
                 }
 
                 ctx.beginPath(); ctx.arc(targetObj.x, targetObj.y, targetObj.radius + Math.sin(Date.now()/150)*4, 0, Math.PI*2); ctx.fillStyle = 'rgba(239, 68, 68, 0.4)'; ctx.fill();
                 ctx.beginPath(); ctx.arc(targetObj.x, targetObj.y, targetObj.radius - 4, 0, Math.PI*2); ctx.fillStyle = '#ef4444'; ctx.fill();
 
                 trail.forEach((t, i) => { ctx.beginPath(); ctx.arc(t.x, t.y, ball.radius * 0.7, 0, Math.PI*2); ctx.fillStyle = `rgba(255, 255, 255, ${(i / trail.length) * 0.4})`; ctx.fill(); });
-                ctx.beginPath(); ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI*2); ctx.fillStyle = '#fff'; ctx.fill();
+                ctx.beginPath(); ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI*2); ctx.fillStyle = '#fff'; ctx.fill(); ctx.strokeStyle = '#94a3b8'; ctx.lineWidth=2; ctx.stroke();
+                
+                let spinAngle = Math.PI - 0.2; let dotX = ball.x + Math.cos(spinAngle) * (ball.radius * 0.6); let dotY = ball.y + Math.sin(spinAngle) * (ball.radius * 0.6);
+                ctx.beginPath(); ctx.arc(dotX, dotY, 4, 0, Math.PI*2); ctx.fillStyle = '#ef4444'; ctx.fill();
+                ctx.font = 'bold 10px Inter'; ctx.fillStyle = '#fff'; ctx.fillText('Efecto 3', ball.x - 30, ball.y - 15);
                 ctx.restore();
             }
 
             function animate() {
-                if (!isAnimating || !isActive || !isPossible) return;
-                animProgress += 0.03; trail.push({x: ball.x, y: ball.y}); if (trail.length > 25) trail.shift(); 
-                const lerp = (s, e, a) => s + (e - s) * MathUtils.easeOut(a);
+                if (!isAnimating || !isActive || !isPossible || isBlocked) return;
+                let prev = animProgress; animProgress += 0.03; 
+                trail.push({x: ball.x, y: ball.y}); if (trail.length > 25) trail.shift(); 
                 
+                if (prev === 0) AudioEngine.playCueHit();
+
                 if (animProgress <= 1) { 
-                    ball.x = lerp(originalBallPos.x, ptAttack.x, animProgress); 
-                    ball.y = lerp(originalBallPos.y, ptAttack.y, animProgress); 
+                    ball.x = MathUtils.lerp(originalBallPos.x, ptAttack.x, animProgress); 
+                    ball.y = MathUtils.lerp(originalBallPos.y, ptAttack.y, animProgress); 
                 } 
                 else if (animProgress <= 2) { 
-                    ball.x = lerp(ptAttack.x, ptLlegada_phys.x, animProgress - 1); 
-                    ball.y = lerp(ptAttack.y, ptLlegada_phys.y, animProgress - 1); 
+                    if (prev < 1 && animProgress >= 1) AudioEngine.playRailHit();
+                    ball.x = MathUtils.lerp(ptAttack.x, ptTargetProj.x, animProgress - 1); 
+                    ball.y = MathUtils.lerp(ptAttack.y, ptTargetProj.y, animProgress - 1); 
                 } 
-                else if (animProgress <= 3) { 
-                    ball.x = lerp(ptLlegada_phys.x, targetObj.x, animProgress - 2); 
-                    ball.y = lerp(ptLlegada_phys.y, targetObj.y, animProgress - 2); 
-                }
                 else {
-                    isAnimating = false; ball.x = targetObj.x; ball.y = targetObj.y;
-                    setTimeout(() => { ball.x = originalBallPos.x; ball.y = originalBallPos.y; trail = []; animProgress = 0; isAnimating = false; btnAnimar.classList.remove('hidden'); updateMath(); }, 1200);
+                    if (prev < 2 && animProgress >= 2) AudioEngine.playBallHit();
+                    isAnimating = false; ball.x = ptTargetProj.x; ball.y = ptTargetProj.y;
+                    setTimeout(() => { 
+                        ball.x = originalBallPos.x; ball.y = originalBallPos.y; trail = []; animProgress = 0; isAnimating = false; 
+                        isShotFinished = true; btnAnimar.classList.remove('hidden'); updateMath(); 
+                    }, 1200);
                     let fade = setInterval(() => { trail.shift(); if(trail.length===0) clearInterval(fade); }, 40);
                 }
             }
 
             canvas.addEventListener('mousedown', handleDown); window.addEventListener('mousemove', handleMove); window.addEventListener('mouseup', () => draggedItem = null);
             canvas.addEventListener('touchstart', handleDown, {passive: false}); window.addEventListener('touchmove', handleMove, {passive: false}); window.addEventListener('touchmove', handleMove, {passive: false}); window.addEventListener('touchend', () => draggedItem = null);
+            
+            btnAnimar.addEventListener('click', () => { 
+                if (isTrainingMode) { 
+                    if (isShotFinished) { randomizePositions(); return; }
+                    if (!solutionRevealed) { solutionRevealed = true; updateMath(); return; }
+                }
+                if(isAnimating || !isPossible || isBlocked) return; 
+                isAnimating = true; animProgress = 0; trail = []; originalBallPos = {x: ball.x, y: ball.y}; btnAnimar.classList.add('hidden'); 
+            });
+
             sidSelect.addEventListener('change', resetPositions);
             gridToggle.addEventListener('change', e => { showGrid = e.target.checked; updateMath(); });
-            btnAnimar.addEventListener('click', () => { if(isAnimating || !isPossible) return; isAnimating = true; animProgress = 0; trail = []; originalBallPos = {x: ball.x, y: ball.y}; btnAnimar.classList.add('hidden'); });
+            obsToggle.addEventListener('change', e => { 
+                obstacleObj.active = e.target.checked; updateMath();
+                if(obstacleObj.active) {
+                    let S_pt = sidSelect.value === 'larga' ? {x: playX, y: playY + playH - calcData.salida * segmentY} : {x: playX + playW - calcData.salida * segmentX, y: playY + playH};
+                    obstacleObj.x = MathUtils.lerp(S_pt.x, ptAttack.x, 0.5); obstacleObj.y = MathUtils.lerp(S_pt.y, ptAttack.y, 0.5); 
+                }
+                updateMath(); 
+            });
             function loop() { if(isActive) { if(isAnimating) animate(); draw(); } loopId = requestAnimationFrame(loop); }
-            return { init: () => { resetPositions(); loop(); }, pause: () => { isActive = false; cancelAnimationFrame(loopId); }, resume: () => { isActive = true; updateMath(); loop(); }, reset: resetPositions };
+            
+            return { 
+                init: () => { resetPositions(); loop(); }, 
+                pause: () => { isActive = false; cancelAnimationFrame(loopId); }, 
+                resume: () => { isActive = true; updateMath(); loop(); }, 
+                reset: resetPositions,
+                randomize: randomizePositions,
+                getState: () => ({ select: sidSelect.value, showGrid, obs: {active: obstacleObj.active, x: obstacleObj.x, y: obstacleObj.y}, ball: {x: ball.x, y: ball.y}, targetObj: {x: targetObj.x, y: targetObj.y} }),
+                loadState: (state) => { 
+                    sidSelect.value = state.select; gridToggle.checked = state.showGrid; showGrid = state.showGrid;
+                    obsToggle.checked = state.obs.active; obstacleObj.active = state.obs.active; obstacleObj.x = state.obs.x; obstacleObj.y = state.obs.y;
+                    ball.x = state.ball.x; ball.y = state.ball.y; targetObj.x = state.targetObj.x; targetObj.y = state.targetObj.y;
+                    isShotFinished = false; solutionRevealed = false;
+                    CanvasUtils.setupRetina(canvas, ctx, playW + padding*2, playH + padding*2); updateMath();
+                }
+            };
         })();
 
 
@@ -1572,40 +2042,61 @@
             const uiAtaque = document.getElementById('base50Ataque'); const uiAtaqueText = document.getElementById('base50AtaqueText');
             const btnAnimar = document.getElementById('btnAnimarBase50'); const uiDecor = document.getElementById('base50Decor'); const uiTitle = document.getElementById('base50Title');
             const cuartaBandaToggle = document.getElementById('cuartaBandaToggle'); const gridToggle = document.getElementById('gridToggleBase');
+            const obsToggle = document.getElementById('obsToggleBase50');
             
             const paddingX = 90; const paddingYTop = 110; const paddingYBot = 90; 
             const playW = 800; const playH = 400; const playX = paddingX; const playY = paddingYTop; 
             const segmentX = playW / 8; const segmentY = playH / 4; 
 
-            let isActive = false; let isAnimating = false; let animProgress = 0; let trail = []; let loopId; let isPossible = true;
-            let show4thRail = false; let showGrid = false;
+            let isActive = false; let isAnimating = false; let animProgress = 0; let trail = []; let loopId; let isPossible = true; let isBlocked = false; let isInPocket = false;
+            let show4thRail = false; let showGrid = false; let isShotFinished = false;
             let ball = { x: playX + playW - 20, y: playY + playH - 20, radius: 15 }; 
             let targetObj = { x: playX + segmentX * 2, y: playY + playH - 20, radius: 18 }; 
-            let ptAttack = { x: playX, y: playY }; 
-            let ptSecondRail = { x: playX, y: playY + playH/2 };
-            let ptThirdRail = { x: playX, y: playY + playH };
-            let ptFourthRail = { x: playX + playW, y: playY + playH };
+            let obstacleObj = { active: false, x: playX + playW/2, y: playY + playH/2, radius: 16 };
+            let ptAttack = { x: playX, y: playY }; let ptSecondRail = { x: playX, y: playY + playH/2 }; let ptThirdRail = { x: playX, y: playY + playH }; let ptFourthRail = { x: playX + playW, y: playY + playH };
+            let ptTargetProj = {x: 0, y: 0};
             let draggedItem = null; let originalBallPos = {x:0, y:0};
 
             function resetPositions() {
                 CanvasUtils.setupRetina(canvas, ctx, playW + paddingX * 2, playH + paddingYTop + paddingYBot);
                 ball.x = playX + playW - 20; ball.y = playY + playH - 20; 
                 targetObj.x = playX + segmentX * 2; targetObj.y = playY + playH - 20;
+                obstacleObj.x = playX + playW/2; obstacleObj.y = playY + playH/2;
                 originalBallPos = {x: ball.x, y: ball.y};
+                isShotFinished = false;
                 updateMath();
+            }
+
+            function randomizePositions() {
+                let attempts = 0;
+                CanvasUtils.setupRetina(canvas, ctx, playW + paddingX * 2, playH + paddingYTop + paddingYBot);
+                do {
+                    ball.x = playX + segmentX + Math.random() * (playW - 2*segmentX); ball.y = playY + segmentY + Math.random() * (playH - 2*segmentY);
+                    targetObj.x = playX + segmentX + Math.random() * (playW - 2*segmentX); targetObj.y = playY + segmentY + Math.random() * (playH - 2*segmentY);
+                    updateMath(); attempts++;
+                } while(!isPossible && attempts < 100);
+
+                if (obstacleObj.active) {
+                    let S_pt = getSalidaPoint(calcData.salida);
+                    obstacleObj.x = MathUtils.lerp(S_pt.x, ptAttack.x, 0.5);
+                    obstacleObj.y = MathUtils.lerp(S_pt.y, ptAttack.y, 0.5);
+                }
+                originalBallPos = {x: ball.x, y: ball.y};
+                isShotFinished = false; solutionRevealed = false; updateMath();
             }
 
             function handleDown(e) {
                 if(isAnimating || !isActive) return; const pos = CanvasUtils.getTouchPos(canvas, e);
                 if (Math.hypot(pos.x - ball.x, pos.y - ball.y) <= ball.radius * 4) { draggedItem = 'ball'; e.preventDefault(); }
                 else if (Math.hypot(pos.x - targetObj.x, pos.y - targetObj.y) <= targetObj.radius * 4) { draggedItem = 'target'; e.preventDefault(); }
+                else if (obstacleObj.active && Math.hypot(pos.x - obstacleObj.x, pos.y - obstacleObj.y) <= obstacleObj.radius * 4) { draggedItem = 'obstacle'; e.preventDefault(); }
             }
             function handleMove(e) {
                 if (!draggedItem || isAnimating || !isActive) return; e.preventDefault(); const pos = CanvasUtils.getTouchPos(canvas, e);
                 let boundX = Math.max(playX + 15, Math.min(playX + playW - 15, pos.x));
                 let boundY = Math.max(playY + 15, Math.min(playY + playH - 15, pos.y));
                 
-                if (showGrid) {
+                if (showGrid && draggedItem !== 'obstacle') {
                     boundX = MathUtils.applySnapping(boundX - playX, segmentX / 2) + playX;
                     boundY = MathUtils.applySnapping(boundY - playY, segmentY / 2) + playY;
                     boundX = Math.max(playX, Math.min(playX + playW, boundX));
@@ -1614,6 +2105,7 @@
 
                 if (draggedItem === 'ball') { ball.x = boundX; ball.y = boundY; }
                 else if (draggedItem === 'target') { targetObj.x = boundX; targetObj.y = boundY; }
+                else if (draggedItem === 'obstacle') { obstacleObj.x = boundX; obstacleObj.y = boundY; }
                 updateMath();
             }
 
@@ -1650,9 +2142,7 @@
                     let dist = MathUtils.distToSegment(targetObj, p3, p4);
                     if (dist < minDistL) { minDistL = dist; bestL = L; }
                 }
-                calcData.llegada = bestL;
-                ptThirdRail = getThirdRailPoint(bestL);
-                ptFourthRail = getFourthRailPoint(bestL);
+                calcData.llegada = bestL; ptThirdRail = getThirdRailPoint(bestL); ptFourthRail = getFourthRailPoint(bestL);
 
                 let bestA = 0; let minDistA = Infinity;
                 for (let A = 0; A <= 100; A += 0.5) {
@@ -1672,14 +2162,51 @@
                 ptSecondRail.x = playX;
 
                 isPossible = (ptAttack.x >= playX && ptAttack.x <= playX + playW && ptSecondRail.y >= playY && ptSecondRail.y <= playY + playH);
+                ptTargetProj = MathUtils.projectPointOnSegment(targetObj, ptThirdRail, ptFourthRail);
 
-                uiSalida.textContent = calcData.salida.toFixed(0); uiLlegada.textContent = calcData.llegada.toFixed(0);
-                uiAtaque.textContent = calcData.ataque.toFixed(0); uiAtaqueText.textContent = calcData.ataque.toFixed(0);
+                isInPocket = false;
+                if(isPossible) {
+                    isInPocket = MathUtils.isPointInPocket(ptAttack, playX, playY, playW, playH) || 
+                                 MathUtils.isPointInPocket(ptSecondRail, playX, playY, playW, playH) || 
+                                 MathUtils.isPointInPocket(ptThirdRail, playX, playY, playW, playH) || 
+                                 (show4thRail && MathUtils.isPointInPocket(ptFourthRail, playX, playY, playW, playH));
+                    if(isInPocket) isPossible = false;
+                }
 
-                btnAnimar.disabled = !isPossible;
-                uiAtaque.style.color = isPossible ? '' : '#ef4444'; uiAtaqueText.style.color = isPossible ? '' : '#ef4444';
-                uiTitle.style.color = isPossible ? '' : '#ef4444'; uiTitle.textContent = isPossible ? 'Cálculo de Sistema' : 'TIRO IMPOSIBLE';
-                uiDecor.style.backgroundColor = isPossible ? '' : '#ef4444';
+                let S_pt = getSalidaPoint(calcData.salida);
+                let pEnd = show4thRail ? ptFourthRail : ptTargetProj;
+                isBlocked = false;
+                if (obstacleObj.active) {
+                    if (MathUtils.distToSegment(obstacleObj, S_pt, ptAttack) < 30 || MathUtils.distToSegment(obstacleObj, ptAttack, ptSecondRail) < 30 || MathUtils.distToSegment(obstacleObj, ptSecondRail, ptThirdRail) < 30 || MathUtils.distToSegment(obstacleObj, ptThirdRail, pEnd) < 30) isBlocked = true;
+                }
+
+                if (isTrainingMode && !solutionRevealed) {
+                    uiSalida.textContent = '???'; uiLlegada.textContent = '???'; uiAtaque.textContent = '???'; uiAtaqueText.textContent = '???';
+                    uiTitle.textContent = '¡CALCULA EL TIRO!'; uiTitle.style.color = '#facc15'; uiDecor.style.backgroundColor = '#facc15'; uiAtaque.style.color = '#facc15'; uiAtaqueText.style.color = '#facc15';
+                    btnAnimar.innerHTML = '👀 Ver Solución'; btnAnimar.disabled = false;
+                    btnAnimar.className = "btn-disparar w-full max-w-md mt-4 mb-2 py-3 rounded-2xl font-black text-xl bg-gradient-to-r from-yellow-500 to-orange-500 text-white hover:from-yellow-400 hover:to-orange-400 transition-all transform active:scale-95 shadow-lg border border-yellow-400";
+                } else {
+                    uiSalida.textContent = calcData.salida.toFixed(0); uiLlegada.textContent = calcData.llegada.toFixed(0);
+                    uiAtaque.textContent = calcData.ataque.toFixed(0); uiAtaqueText.textContent = calcData.ataque.toFixed(0);
+
+                    if (isTrainingMode && isShotFinished) {
+                        btnAnimar.innerHTML = '🎯 Siguiente Tiro'; btnAnimar.disabled = false;
+                        btnAnimar.className = "btn-disparar w-full max-w-md mt-4 mb-2 py-3 rounded-2xl font-black text-xl bg-indigo-600 text-white hover:bg-indigo-500 transition-all transform active:scale-95 shadow-lg border border-indigo-500";
+                    } else {
+                        btnAnimar.innerHTML = '🎱 Tiro a 3/4 Bandas'; btnAnimar.disabled = !isPossible || isBlocked;
+                        btnAnimar.className = "btn-disparar w-full max-w-md mt-4 mb-2 py-3 rounded-2xl font-black text-xl bg-gradient-to-r from-indigo-500 to-blue-500 text-white hover:from-indigo-400 hover:to-blue-400 transition-all transform active:scale-95 shadow-lg border border-indigo-400 disabled:opacity-50 disabled:cursor-not-allowed";
+                    }
+
+                    if (!isPossible) {
+                        uiAtaque.style.color = '#ef4444'; uiAtaqueText.style.color = '#ef4444'; uiTitle.style.color = '#ef4444'; 
+                        uiTitle.textContent = isInPocket ? 'CAE EN TRONERA' : 'TIRO IMPOSIBLE'; 
+                        uiDecor.style.backgroundColor = '#ef4444';
+                    } else if (isBlocked) {
+                        uiAtaque.style.color = '#f97316'; uiAtaqueText.style.color = '#f97316'; uiTitle.style.color = '#f97316'; uiTitle.textContent = 'RUTA BLOQUEADA'; uiDecor.style.backgroundColor = '#f97316';
+                    } else {
+                        uiAtaque.style.color = ''; uiAtaqueText.style.color = ''; uiTitle.style.color = ''; uiTitle.textContent = 'Cálculo de Sistema'; uiDecor.style.backgroundColor = '';
+                    }
+                }
             }
 
             function drawTable() {
@@ -1688,62 +2215,45 @@
                 ctx.font = 'bold 16px Inter'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
 
                 for(let i=0; i<=8; i++) {
-                    let px = playX + (i * segmentX);
-                    let val = i <= 5 ? i * 10 : 50 + (i - 5) * 20;
+                    let px = playX + (i * segmentX); let val = i <= 5 ? i * 10 : 50 + (i - 5) * 20;
                     if (val <= 90) { ctx.fillStyle = '#ef4444'; ctx.fillText(val, px, playY - 35); }
-                    if (i === 5) { ctx.fillText(60, px + segmentX/2, playY - 35); ctx.beginPath(); ctx.arc(px + segmentX/2, playY - 15, 2, 0, Math.PI*2); ctx.fill(); }
-                    if (i === 6) { ctx.fillText(80, px + segmentX/2, playY - 35); ctx.beginPath(); ctx.arc(px + segmentX/2, playY - 15, 2, 0, Math.PI*2); ctx.fill(); }
+                    if (i === 5 || i === 6) { ctx.fillText(i === 5 ? 60 : 80, px + segmentX/2, playY - 35); ctx.beginPath(); ctx.arc(px + segmentX/2, playY - 15, 2, 0, Math.PI*2); ctx.fill(); }
                 }
-                
-                for(let i=0; i<=8; i++) {
-                    let pxLarga = playX + playW - (i * segmentX);
-                    ctx.fillStyle = '#fde047'; ctx.fillText(50 - i*5, pxLarga, playY + playH + 35); 
-                }
-                for(let i=1; i<=3; i++) {
-                    let valSalidaCorta = i === 3 ? 90 : 50 + i*10;
-                    ctx.fillStyle = '#fde047'; ctx.fillText(valSalidaCorta, playX + playW + 35, playY + playH - i * segmentY); 
-                }
-
+                for(let i=0; i<=8; i++) { let pxLarga = playX + playW - (i * segmentX); ctx.fillStyle = '#fde047'; ctx.fillText(50 - i*5, pxLarga, playY + playH + 35); }
+                for(let i=1; i<=3; i++) { let valSalidaCorta = i === 3 ? 90 : 50 + i*10; ctx.fillStyle = '#fde047'; ctx.fillText(valSalidaCorta, playX + playW + 35, playY + playH - i * segmentY); }
                 for(let i=0; i<=7; i++) {
-                    let pxLlegada = playX + (i * segmentX);
-                    let valLlegada = i <= 4 ? i * 10 : 40 + (i - 4) * 20;
+                    let pxLlegada = playX + (i * segmentX); let valLlegada = i <= 4 ? i * 10 : 40 + (i - 4) * 20;
                     if (valLlegada <= 100) { ctx.fillStyle = '#10b981'; ctx.fillText(valLlegada, pxLlegada, playY + playH - 10); }
                 }
                 
                 if (show4thRail) {
                     ctx.fillStyle = '#38bdf8';
-                    ctx.fillText('20', playX + playW + 65, playY - 65); 
-                    ctx.fillText('15', playX + playW - 0.5*segmentX, playY - 65);
-                    ctx.fillText('10', playX + playW - 1*segmentX, playY - 65);
-                    ctx.fillText('5',  playX + playW - 1.5*segmentX, playY - 65);
-                    ctx.fillText('0',  playX + playW - 2*segmentX, playY - 65);
-                    ctx.fillText('30', playX + playW + 65, playY + segmentY);
-                    ctx.fillText('40', playX + playW + 65, playY + 1.5*segmentY);
-                    ctx.fillText('50', playX + playW + 65, playY + 2*segmentY);
-                    
+                    [20, 15, 10, 5, 0].forEach((v, i) => ctx.fillText(v, playX + playW + (i===0?65:-0.5*i*segmentX), playY - 65));
+                    [30, 40, 50].forEach((v, i) => ctx.fillText(v, playX + playW + 65, playY + (i+1)*segmentY));
                     ctx.strokeStyle = 'rgba(56, 189, 248, 0.3)'; ctx.lineWidth = 1.5; ctx.setLineDash([4, 4]);
-                    [0, 5, 10, 15, 20, 30, 40, 50].forEach(val => {
-                        let p3 = getThirdRailPoint(val); let p4 = getFourthRailPoint(val);
-                        ctx.beginPath(); ctx.moveTo(p3.x, p3.y); ctx.lineTo(p4.x, p4.y); ctx.stroke();
-                    });
-                    ctx.setLineDash([]);
+                    [0, 5, 10, 15, 20, 30, 40, 50].forEach(val => { let p3 = getThirdRailPoint(val); let p4 = getFourthRailPoint(val); ctx.beginPath(); ctx.moveTo(p3.x, p3.y); ctx.lineTo(p4.x, p4.y); ctx.stroke(); }); ctx.setLineDash([]);
                 }
             }
 
             function draw() {
                 if(!isActive) return;
-                ctx.save(); ctx.clearRect(0, 0, canvas.width, canvas.height); ctx.fillStyle = '#0f172a'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-                drawTable();
+                ctx.save(); ctx.clearRect(0, 0, canvas.width, canvas.height); 
+                drawTable(); CanvasUtils.drawObstacle(ctx, obstacleObj);
 
                 if (!isAnimating && animProgress === 0) {
-                    let S_pt = getSalidaPoint(calcData.salida);
-                    ctx.beginPath(); ctx.moveTo(S_pt.x, S_pt.y); ctx.lineTo(ptAttack.x, ptAttack.y); ctx.lineTo(ptSecondRail.x, ptSecondRail.y); ctx.lineTo(ptThirdRail.x, ptThirdRail.y); 
-                    if (show4thRail) { ctx.lineTo(ptFourthRail.x, ptFourthRail.y); } else { ctx.lineTo(targetObj.x, targetObj.y); }
-                    ctx.strokeStyle = isPossible ? 'rgba(129, 140, 248, 0.25)' : 'rgba(239, 68, 68, 0.15)'; ctx.lineWidth = 24; ctx.stroke();
-                    ctx.strokeStyle = isPossible ? '#818cf8' : '#ef4444'; ctx.setLineDash([8, 8]); ctx.lineWidth = 4; ctx.stroke(); ctx.setLineDash([]);
-                    ctx.beginPath(); ctx.arc(ptAttack.x, ptAttack.y, 7, 0, Math.PI*2); ctx.fillStyle = isPossible ? '#818cf8' : '#ef4444'; ctx.fill();
-                    if (show4thRail) { ctx.beginPath(); ctx.arc(ptFourthRail.x, ptFourthRail.y, 7, 0, Math.PI*2); ctx.fillStyle = isPossible ? '#38bdf8' : '#ef4444'; ctx.fill(); }
-                    if(isPossible) CanvasUtils.drawPostImpact(ctx, ptThirdRail.x, ptThirdRail.y, targetObj.x, targetObj.y);
+                    if (!isTrainingMode || solutionRevealed) {
+                        let S_pt = getSalidaPoint(calcData.salida);
+                        let strokeBase = !isPossible ? 'rgba(239, 68, 68, 0.15)' : (isBlocked ? 'rgba(249, 115, 22, 0.15)' : 'rgba(99, 102, 241, 0.15)');
+                        let strokeLine = !isPossible ? '#ef4444' : (isBlocked ? '#f97316' : '#6366f1');
+
+                        ctx.beginPath(); ctx.moveTo(S_pt.x, S_pt.y); ctx.lineTo(ptAttack.x, ptAttack.y); ctx.lineTo(ptSecondRail.x, ptSecondRail.y); ctx.lineTo(ptThirdRail.x, ptThirdRail.y); 
+                        if (show4thRail) { ctx.lineTo(ptFourthRail.x, ptFourthRail.y); } else { ctx.lineTo(ptTargetProj.x, ptTargetProj.y); }
+                        ctx.strokeStyle = strokeBase; ctx.lineWidth = 24; ctx.stroke();
+                        ctx.strokeStyle = strokeLine; ctx.setLineDash([8, 8]); ctx.lineWidth = 4; ctx.stroke(); ctx.setLineDash([]);
+                        ctx.beginPath(); ctx.arc(ptAttack.x, ptAttack.y, 7, 0, Math.PI*2); ctx.fillStyle = strokeLine; ctx.fill();
+                        if (show4thRail) { ctx.beginPath(); ctx.arc(ptFourthRail.x, ptFourthRail.y, 7, 0, Math.PI*2); ctx.fillStyle = isPossible ? '#38bdf8' : '#ef4444'; ctx.fill(); }
+                        if(isPossible && !isBlocked) CanvasUtils.drawPostImpact(ctx, ptThirdRail.x, ptThirdRail.y, ptTargetProj.x, ptTargetProj.y);
+                    }
                 }
 
                 ctx.beginPath(); ctx.arc(targetObj.x, targetObj.y, targetObj.radius + Math.sin(Date.now()/150)*4, 0, Math.PI*2); ctx.fillStyle = 'rgba(16, 185, 129, 0.4)'; ctx.fill();
@@ -1752,37 +2262,89 @@
                 trail.forEach((t, i) => { ctx.beginPath(); ctx.arc(t.x, t.y, ball.radius * 0.7, 0, Math.PI*2); ctx.fillStyle = `rgba(255, 255, 255, ${(i / trail.length) * 0.4})`; ctx.fill(); });
                 ctx.beginPath(); ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI*2); ctx.fillStyle = '#fff'; ctx.fill(); ctx.strokeStyle = '#94a3b8'; ctx.lineWidth=2; ctx.stroke();
                 
-                let spinAngle = Math.PI - 0.2; // Efecto 3 (ligeramente abajo de las 9h/3h)
-                let dotX = ball.x + Math.cos(spinAngle) * (ball.radius * 0.6); let dotY = ball.y + Math.sin(spinAngle) * (ball.radius * 0.6);
+                let spinAngle = Math.PI - 0.2; let dotX = ball.x + Math.cos(spinAngle) * (ball.radius * 0.6); let dotY = ball.y + Math.sin(spinAngle) * (ball.radius * 0.6);
                 ctx.beginPath(); ctx.arc(dotX, dotY, 4, 0, Math.PI*2); ctx.fillStyle = '#ef4444'; ctx.fill();
                 ctx.font = 'bold 10px Inter'; ctx.fillStyle = '#fff'; ctx.fillText('Efecto 3', ball.x - 30, ball.y - 15);
                 ctx.restore();
             }
 
             function animate() {
-                if (!isAnimating || !isActive || !isPossible) return;
-                animProgress += 0.03; trail.push({x: ball.x, y: ball.y}); if (trail.length > 25) trail.shift(); 
-                const lerp = (s, e, a) => s + (e - s) * MathUtils.easeOut(a);
+                if (!isAnimating || !isActive || !isPossible || isBlocked) return;
+                let prev = animProgress; animProgress += 0.03; 
+                trail.push({x: ball.x, y: ball.y}); if (trail.length > 25) trail.shift(); 
                 
-                if (animProgress <= 1) { ball.x = lerp(originalBallPos.x, ptAttack.x, animProgress); ball.y = lerp(originalBallPos.y, ptAttack.y, animProgress); } 
-                else if (animProgress <= 2) { let ap2 = animProgress - 1; ball.x = lerp(ptAttack.x, ptSecondRail.x, ap2); ball.y = lerp(ptAttack.y, ptSecondRail.y, ap2); } 
-                else if (animProgress <= 3) { let ap3 = animProgress - 2; ball.x = lerp(ptSecondRail.x, ptThirdRail.x, ap3); ball.y = lerp(ptSecondRail.y, ptThirdRail.y, ap3); }
-                else if (animProgress <= 4 && show4thRail) { let ap4 = animProgress - 3; ball.x = lerp(ptThirdRail.x, ptFourthRail.x, ap4); ball.y = lerp(ptThirdRail.y, ptFourthRail.y, ap4); }
-                else if (animProgress <= 4 && !show4thRail) { let ap4 = animProgress - 3; ball.x = lerp(ptThirdRail.x, targetObj.x, ap4); ball.y = lerp(ptThirdRail.y, targetObj.y, ap4); }
+                if (prev === 0) AudioEngine.playCueHit();
+
+                if (animProgress <= 1) { ball.x = MathUtils.lerp(originalBallPos.x, ptAttack.x, animProgress); ball.y = MathUtils.lerp(originalBallPos.y, ptAttack.y, animProgress); } 
+                else if (animProgress <= 2) { 
+                    if (prev < 1 && animProgress >= 1) AudioEngine.playRailHit();
+                    ball.x = MathUtils.lerp(ptAttack.x, ptSecondRail.x, animProgress - 1); ball.y = MathUtils.lerp(ptAttack.y, ptSecondRail.y, animProgress - 1); 
+                } 
+                else if (animProgress <= 3) { 
+                    if (prev < 2 && animProgress >= 2) AudioEngine.playRailHit();
+                    ball.x = MathUtils.lerp(ptSecondRail.x, ptThirdRail.x, animProgress - 2); ball.y = MathUtils.lerp(ptSecondRail.y, ptThirdRail.y, animProgress - 2); 
+                }
+                else if (animProgress <= 4 && show4thRail) { 
+                    if (prev < 3 && animProgress >= 3) AudioEngine.playRailHit();
+                    ball.x = MathUtils.lerp(ptThirdRail.x, ptFourthRail.x, animProgress - 3); ball.y = MathUtils.lerp(ptThirdRail.y, ptFourthRail.y, animProgress - 3); 
+                }
+                else if (animProgress <= 4 && !show4thRail) { 
+                    if (prev < 3 && animProgress >= 3) AudioEngine.playRailHit();
+                    ball.x = MathUtils.lerp(ptThirdRail.x, ptTargetProj.x, animProgress - 3); ball.y = MathUtils.lerp(ptThirdRail.y, ptTargetProj.y, animProgress - 3); 
+                }
                 else {
-                    isAnimating = false; ball.x = show4thRail ? ptFourthRail.x : targetObj.x; ball.y = show4thRail ? ptFourthRail.y : targetObj.y;
-                    setTimeout(() => { ball.x = originalBallPos.x; ball.y = originalBallPos.y; trail = []; animProgress = 0; isAnimating = false; btnAnimar.classList.remove('hidden'); updateMath(); }, 1200);
+                    if (prev < 4 && animProgress >= 4) AudioEngine.playBallHit();
+                    isAnimating = false; ball.x = show4thRail ? ptFourthRail.x : ptTargetProj.x; ball.y = show4thRail ? ptFourthRail.y : ptTargetProj.y;
+                    setTimeout(() => { 
+                        ball.x = originalBallPos.x; ball.y = originalBallPos.y; trail = []; animProgress = 0; isAnimating = false; 
+                        isShotFinished = true;
+                        btnAnimar.classList.remove('hidden'); updateMath(); 
+                    }, 1200);
                     let fade = setInterval(() => { trail.shift(); if(trail.length===0) clearInterval(fade); }, 40);
                 }
             }
 
             canvas.addEventListener('mousedown', handleDown); window.addEventListener('mousemove', handleMove); window.addEventListener('mouseup', () => draggedItem = null);
             canvas.addEventListener('touchstart', handleDown, {passive: false}); window.addEventListener('touchmove', handleMove, {passive: false}); window.addEventListener('touchmove', handleMove, {passive: false}); window.addEventListener('touchend', () => draggedItem = null);
+            
+            btnAnimar.addEventListener('click', () => { 
+                if (isTrainingMode) { 
+                    if (isShotFinished) { randomizePositions(); return; }
+                    if (!solutionRevealed) { solutionRevealed = true; updateMath(); return; }
+                }
+                if(isAnimating || !isPossible || isBlocked) return; 
+                isAnimating = true; animProgress = 0; trail = []; originalBallPos = {x: ball.x, y: ball.y}; btnAnimar.classList.add('hidden'); 
+            });
+
             cuartaBandaToggle.addEventListener('change', e => { show4thRail = e.target.checked; updateMath(); });
             gridToggle.addEventListener('change', e => { showGrid = e.target.checked; updateMath(); });
-            btnAnimar.addEventListener('click', () => { if(isAnimating || !isPossible) return; isAnimating = true; animProgress = 0; trail = []; originalBallPos = {x: ball.x, y: ball.y}; btnAnimar.classList.add('hidden'); });
+            obsToggle.addEventListener('change', e => { 
+                obstacleObj.active = e.target.checked; 
+                updateMath();
+                if(obstacleObj.active) {
+                    let S_pt = getSalidaPoint(calcData.salida);
+                    obstacleObj.x = MathUtils.lerp(S_pt.x, ptAttack.x, 0.5); obstacleObj.y = MathUtils.lerp(S_pt.y, ptAttack.y, 0.5); 
+                }
+                updateMath(); 
+            });
             function loop() { if(isActive) { if(isAnimating) animate(); draw(); } loopId = requestAnimationFrame(loop); }
-            return { init: () => { resetPositions(); loop(); }, pause: () => { isActive = false; cancelAnimationFrame(loopId); }, resume: () => { isActive = true; updateMath(); loop(); }, reset: resetPositions };
+            
+            return { 
+                init: () => { resetPositions(); loop(); }, 
+                pause: () => { isActive = false; cancelAnimationFrame(loopId); }, 
+                resume: () => { isActive = true; updateMath(); loop(); }, 
+                reset: resetPositions,
+                randomize: randomizePositions,
+                getState: () => ({ show4thRail, showGrid, obs: {active: obstacleObj.active, x: obstacleObj.x, y: obstacleObj.y}, ball: {x: ball.x, y: ball.y}, targetObj: {x: targetObj.x, y: targetObj.y} }),
+                loadState: (state) => { 
+                    cuartaBandaToggle.checked = state.show4thRail; show4thRail = state.show4thRail;
+                    gridToggle.checked = state.showGrid; showGrid = state.showGrid;
+                    obsToggle.checked = state.obs.active; obstacleObj.active = state.obs.active; obstacleObj.x = state.obs.x; obstacleObj.y = state.obs.y;
+                    ball.x = state.ball.x; ball.y = state.ball.y; targetObj.x = state.targetObj.x; targetObj.y = state.targetObj.y;
+                    isShotFinished = false; solutionRevealed = false;
+                    CanvasUtils.setupRetina(canvas, ctx, playW + paddingX * 2, playH + paddingYTop + paddingYBot); updateMath();
+                }
+            };
         })();
 
         // Iniciar
@@ -1792,8 +2354,7 @@
         AppSid.init();
         AppBase50.init();
         
-        // Empezar en la pestaña 1
         switchTab('tab-simetria');
     </script>
 </body>
-</html>
+                        </html>
