@@ -152,19 +152,15 @@
     <div id="tab-simetria" class="tab-content w-full max-w-6xl">
         <div class="flex flex-col xl:flex-row gap-4 sm:gap-6 items-center xl:items-start justify-center w-full">
             <div class="w-full xl:w-2/3 flex flex-col items-center flex-shrink-0 canvas-section">
-                
                 <canvas id="canvasSimetria" class="game-canvas max-w-full shadow-[0_15px_40px_rgba(0,0,0,0.6)] sm:rounded-2xl cursor-crosshair border border-slate-700/50 bg-[#0f172a]"></canvas>
-                
                 <button id="btnAnimarSim" class="btn-disparar w-full max-w-md mt-4 mb-2 py-3 rounded-2xl font-black text-xl bg-gradient-to-r from-blue-500 to-cyan-500 text-white hover:from-blue-400 hover:to-cyan-400 transition-all transform active:scale-95 shadow-lg border border-cyan-400 disabled:opacity-50 disabled:cursor-not-allowed">
                     🎱 Disparar
                 </button>
-
                 <div class="mt-2 flex flex-wrap justify-between items-center w-full px-4 gap-4 extra-controls">
                     <select id="mitadesSelect" class="flex-1 min-w-[140px] bg-slate-800 border border-slate-600 text-cyan-300 rounded-xl px-4 py-3 focus:outline-none focus:border-cyan-500 transition-colors cursor-pointer font-bold text-center sm:text-left shadow-lg">
                         <option value="corta" selected>Larga a Corta</option>
                         <option value="larga">Larga a Larga</option>
                     </select>
-                    
                     <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center border-red-900/50 border min-w-[140px]">
                         <span class="mr-2 text-xs font-bold text-red-400 uppercase tracking-wider text-center">🔴 Obstáculo</span>
                         <div class="relative inline-block w-10 mr-1 align-middle select-none">
@@ -172,7 +168,6 @@
                             <div class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-600 cursor-pointer"></div>
                         </div>
                     </label>
-
                     <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px]">
                         <span class="mr-2 text-xs font-bold text-slate-200 uppercase tracking-wider text-center">Grip</span>
                         <div class="relative inline-block w-10 mr-1 align-middle select-none">
@@ -227,20 +222,16 @@
         </div>
     </div>
 
-
     <!-- ==========================================
          PESTAÑA 2: TRIANGULACIÓN (PROPORCIONES)
          ========================================== -->
     <div id="tab-triangulacion" class="tab-content w-full max-w-6xl">
         <div class="flex flex-col xl:flex-row gap-4 sm:gap-6 items-center xl:items-start justify-center w-full">
             <div class="w-full xl:w-2/3 flex flex-col items-center flex-shrink-0 canvas-section">
-                
                 <canvas id="canvasTriangulacion" class="game-canvas max-w-full shadow-[0_15px_40px_rgba(0,0,0,0.6)] sm:rounded-2xl cursor-crosshair border border-slate-700/50 bg-[#0f172a]"></canvas>
-                
                 <button id="btnAnimarTri" class="btn-disparar w-full max-w-md mt-4 mb-2 py-3 rounded-2xl font-black text-xl bg-gradient-to-r from-emerald-500 to-green-500 text-white hover:from-emerald-400 hover:to-green-400 transition-all transform active:scale-95 shadow-lg border border-emerald-400 disabled:opacity-50 disabled:cursor-not-allowed">
                     🎱 Ejecutar Tiro
                 </button>
-
                 <div class="mt-2 flex flex-wrap justify-between w-full px-4 gap-4 items-center extra-controls">
                     <select id="bandaSelect" class="flex-1 min-w-[140px] bg-slate-800 border border-slate-600 text-emerald-300 rounded-xl px-4 py-3 focus:outline-none focus:border-emerald-500 transition-colors cursor-pointer font-bold text-center sm:text-left shadow-lg">
                         <option value="bottom">Banda Inferior</option>
@@ -248,12 +239,10 @@
                         <option value="left">Banda Izquierda</option>
                         <option value="right">Banda Derecha</option>
                     </select>
-                    
                     <select id="triEscalaSelect" class="flex-1 min-w-[140px] bg-slate-800 border border-slate-600 text-emerald-300 rounded-xl px-4 py-3 focus:outline-none focus:border-emerald-500 transition-colors cursor-pointer font-bold text-center sm:text-left shadow-lg">
                         <option value="10" selected>Escala: 10 a 80</option>
                         <option value="1">Escala: 1 a 8</option>
                     </select>
-
                     <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center border-red-900/50 border min-w-[140px]">
                         <span class="mr-2 text-xs font-bold text-red-400 uppercase tracking-wider text-center">🔴 Obstáculo</span>
                         <div class="relative inline-block w-10 mr-1 align-middle select-none">
@@ -261,7 +250,6 @@
                             <div class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-600 cursor-pointer"></div>
                         </div>
                     </label>
-
                     <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px]">
                         <span class="mr-2 text-xs font-bold text-yellow-400 uppercase tracking-wider text-center">Guías</span>
                         <div class="relative inline-block w-10 mr-1 align-middle select-none">
@@ -269,7 +257,6 @@
                             <div class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-600 cursor-pointer"></div>
                         </div>
                     </label>
-
                     <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px]">
                         <span class="mr-2 text-xs font-bold text-slate-200 uppercase tracking-wider text-center">Grip</span>
                         <div class="relative inline-block w-10 mr-1 align-middle select-none">
@@ -290,17 +277,13 @@
                         <button onclick="showHelp('triangulacion')" class="p-1.5 bg-slate-700 hover:bg-slate-600 rounded shadow transition-colors text-sm text-cyan-400 font-bold" title="Ayuda">❓</button>
                     </div>
                 </div>
-
                 <div class="bg-slate-900 rounded-2xl p-4 border border-emerald-800 mb-6 relative overflow-hidden shadow-inner flex flex-col items-start" id="triBox">
                     <div class="absolute top-0 left-0 w-2 h-full bg-emerald-500" id="triDecor"></div>
                     <h3 class="text-emerald-400 text-[11px] font-bold uppercase tracking-widest mb-3 w-full text-center border-b border-slate-800 pb-2" id="triTitle">Cálculo Numérico</h3>
-                    
-                    <!-- FÓRMULA DESTACADA -->
                     <div class="w-full bg-emerald-900/40 border border-emerald-700/50 rounded-lg p-2 mb-3 text-center">
                         <span class="block text-[10px] text-emerald-400/80 uppercase font-bold mb-1">Fórmula General</span>
                         <span class="text-emerald-300 font-mono text-sm font-black">Desplaz. = L × [ A ÷ (A+B) ]</span>
                     </div>
-
                     <div class="flex flex-col gap-2 w-full text-sm">
                         <div class="flex justify-between items-center bg-slate-800/50 p-1.5 rounded">
                             <span class="text-slate-400 text-xs">Separación (L):</span> 
@@ -314,7 +297,6 @@
                             <span class="text-slate-400 text-xs">Alt. Objetivo (B):</span> 
                             <span id="triAlt2" class="text-white font-bold text-xs">0.00</span>
                         </div>
-                        
                         <div class="mt-2 pt-2 border-t border-emerald-900/50">
                             <span class="block text-[10px] text-emerald-400/80 mb-1.5 font-bold uppercase tracking-wider">Paso a Paso</span>
                             <div class="flex flex-col gap-1 text-[10px] font-mono">
@@ -332,7 +314,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="mt-2 pt-2 border-t border-emerald-900/50">
                             <span class="block text-[10px] text-emerald-400/80 mb-1 font-bold text-center">Punto de Ataque Exacto</span>
                             <div class="flex flex-col items-center bg-black/40 p-3 rounded-lg border border-emerald-900/30">
@@ -349,26 +330,21 @@
         </div>
     </div>
 
-
     <!-- ==========================================
          PESTAÑA 3: SISTEMA PLUS (2 BANDAS)
          ========================================== -->
     <div id="tab-plus" class="tab-content w-full max-w-6xl">
         <div class="flex flex-col xl:flex-row gap-4 sm:gap-6 items-center xl:items-start justify-center w-full">
             <div class="w-full xl:w-2/3 flex flex-col items-center flex-shrink-0 canvas-section">
-                
                 <canvas id="canvasPlus" class="game-canvas max-w-full shadow-[0_15px_40px_rgba(0,0,0,0.6)] sm:rounded-2xl cursor-crosshair border border-slate-700/50 bg-[#0f172a]"></canvas>
-                
                 <button id="btnAnimarPlus" class="btn-disparar w-full max-w-md mt-4 mb-2 py-3 rounded-2xl font-black text-xl bg-gradient-to-r from-purple-500 to-fuchsia-500 text-white hover:from-purple-400 hover:to-fuchsia-400 transition-all transform active:scale-95 shadow-lg border border-purple-400 disabled:opacity-50 disabled:cursor-not-allowed">
                     🎱 Ejecutar Tiro
                 </button>
-
                 <div class="mt-2 flex flex-wrap justify-between w-full px-4 gap-4 items-center extra-controls">
                     <select id="plusSelect" class="flex-1 min-w-[140px] bg-slate-800 border border-slate-600 text-purple-300 rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 transition-colors cursor-pointer font-bold text-center sm:text-left shadow-lg">
                         <option value="left" selected>Ataque a Banda Corta Izquierda</option>
                         <option value="right">Ataque a Banda Corta Derecha</option>
                     </select>
-
                     <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center border-red-900/50 border min-w-[140px]">
                         <span class="mr-2 text-xs font-bold text-red-400 uppercase tracking-wider text-center">🔴 Obstáculo</span>
                         <div class="relative inline-block w-10 mr-1 align-middle select-none">
@@ -376,7 +352,6 @@
                             <div class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-600 cursor-pointer"></div>
                         </div>
                     </label>
-
                     <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px]">
                         <span class="mr-2 text-xs font-bold text-yellow-400 uppercase tracking-wider text-center">Guías</span>
                         <div class="relative inline-block w-10 mr-1 align-middle select-none">
@@ -384,7 +359,6 @@
                             <div class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-600 cursor-pointer"></div>
                         </div>
                     </label>
-
                     <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px]">
                         <span class="mr-2 text-xs font-bold text-slate-200 uppercase tracking-wider text-center">Grip</span>
                         <div class="relative inline-block w-10 mr-1 align-middle select-none">
@@ -408,11 +382,9 @@
                 <p class="text-[12px] text-slate-300 font-medium leading-relaxed mb-4">
                     Tiro a 2 bandas en libre 2D. Fórmula: <b>Llegada - Salida = Ataque</b>.
                 </p>
-
                 <div class="bg-slate-900 rounded-2xl p-5 border border-purple-800 mb-6 relative overflow-hidden shadow-inner flex flex-col items-center">
                     <div class="absolute top-0 left-0 w-2 h-full bg-purple-500" id="plusDecor"></div>
                     <h3 class="text-purple-400 text-[11px] font-bold uppercase tracking-widest w-full text-center border-b border-slate-800 pb-2 mb-3" id="plusTitle">Cálculo de 2 Bandas</h3>
-                    
                     <div class="flex w-full items-center justify-between px-2 mb-4">
                         <div class="text-center">
                             <span class="block text-slate-400 text-[10px] uppercase">Llegada</span>
@@ -435,26 +407,21 @@
         </div>
     </div>
 
-
     <!-- ==========================================
          PESTAÑA 4: SISTEMA SID (MULTIPLICACIÓN)
          ========================================== -->
     <div id="tab-sid" class="tab-content w-full max-w-6xl">
         <div class="flex flex-col xl:flex-row gap-4 sm:gap-6 items-center xl:items-start justify-center w-full">
             <div class="w-full xl:w-2/3 flex flex-col items-center flex-shrink-0 canvas-section">
-                
                 <canvas id="canvasSid" class="game-canvas max-w-full shadow-[0_15px_40px_rgba(0,0,0,0.6)] sm:rounded-2xl cursor-crosshair border border-slate-700/50 bg-[#0f172a]"></canvas>
-                
                 <button id="btnAnimarSid" class="btn-disparar w-full max-w-md mt-4 mb-2 py-3 rounded-2xl font-black text-xl bg-gradient-to-r from-orange-500 to-amber-500 text-white hover:from-orange-400 hover:to-amber-400 transition-all transform active:scale-95 shadow-lg border border-orange-400 disabled:opacity-50 disabled:cursor-not-allowed">
                     🎱 Ejecutar Bricole
                 </button>
-
                 <div class="mt-2 flex flex-wrap justify-between w-full px-4 gap-4 items-center extra-controls">
                     <select id="sidSelect" class="flex-1 min-w-[140px] bg-slate-800 border border-slate-600 text-orange-300 rounded-xl px-4 py-3 focus:outline-none focus:border-orange-500 transition-colors cursor-pointer font-bold text-center sm:text-left shadow-lg">
                         <option value="larga" selected>Llegada a Larga (Salida Corta -> Ataque Der)</option>
                         <option value="corta">Llegada a Corta (Salida Larga -> Ataque Sup)</option>
                     </select>
-
                     <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center border-red-900/50 border min-w-[140px]">
                         <span class="mr-2 text-xs font-bold text-red-400 uppercase tracking-wider text-center">🔴 Obstáculo</span>
                         <div class="relative inline-block w-10 mr-1 align-middle select-none">
@@ -462,7 +429,6 @@
                             <div class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-600 cursor-pointer"></div>
                         </div>
                     </label>
-
                     <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px]">
                         <span class="mr-2 text-xs font-bold text-yellow-400 uppercase tracking-wider text-center">Guías</span>
                         <div class="relative inline-block w-10 mr-1 align-middle select-none">
@@ -470,7 +436,6 @@
                             <div class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-600 cursor-pointer"></div>
                         </div>
                     </label>
-
                     <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px]">
                         <span class="mr-2 text-xs font-bold text-slate-200 uppercase tracking-wider text-center">Grip</span>
                         <div class="relative inline-block w-10 mr-1 align-middle select-none">
@@ -494,11 +459,9 @@
                 <p class="text-[12px] text-slate-300 font-medium leading-relaxed mb-4">
                     Motor 2D libre. La fórmula es una multiplicación: <b>Salida × Llegada = Ataque</b>.
                 </p>
-
                 <div class="bg-slate-900 rounded-2xl p-5 border border-orange-800 mb-6 relative overflow-hidden shadow-inner flex flex-col items-center">
                     <div class="absolute top-0 left-0 w-2 h-full bg-orange-500" id="sidDecor"></div>
                     <h3 class="text-orange-400 text-[11px] font-bold uppercase tracking-widest w-full text-center border-b border-slate-800 pb-2 mb-3" id="sidTitle">Ecuación SID</h3>
-                    
                     <div class="flex w-full items-center justify-between px-2 mb-4">
                         <div class="text-center">
                             <span class="block text-slate-400 text-[10px] uppercase">Salida</span>
@@ -521,20 +484,16 @@
         </div>
     </div>
 
-
     <!-- ==========================================
          PESTAÑA 5: BASE 50 (SISTEMA DIAMANTE LKL)
          ========================================== -->
     <div id="tab-base50" class="tab-content active w-full max-w-6xl">
         <div class="flex flex-col xl:flex-row gap-4 sm:gap-6 items-center xl:items-start justify-center w-full">
             <div class="w-full xl:w-2/3 flex flex-col items-center flex-shrink-0 canvas-section">
-                
                 <canvas id="canvasBase50" class="game-canvas max-w-full shadow-[0_15px_40px_rgba(0,0,0,0.6)] sm:rounded-2xl cursor-crosshair border border-slate-700/50 bg-[#0f172a]"></canvas>
-                
                 <button id="btnAnimarBase50" class="btn-disparar w-full max-w-md mt-4 mb-2 py-3 rounded-2xl font-black text-xl bg-gradient-to-r from-indigo-500 to-blue-500 text-white hover:from-indigo-400 hover:to-blue-400 transition-all transform active:scale-95 shadow-lg border border-indigo-400 disabled:opacity-50 disabled:cursor-not-allowed">
                     🎱 Tiro a 3/4 Bandas
                 </button>
-
                 <div class="mt-2 flex flex-wrap justify-between w-full px-4 gap-4 items-center extra-controls">
                     <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[140px]">
                         <span class="mr-2 text-xs font-bold text-slate-200 uppercase tracking-wider text-center">4ta Banda</span>
@@ -543,7 +502,6 @@
                             <div class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-600 cursor-pointer"></div>
                         </div>
                     </label>
-
                     <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center border-red-900/50 border min-w-[140px]">
                         <span class="mr-2 text-xs font-bold text-red-400 uppercase tracking-wider text-center">🔴 Obstáculo</span>
                         <div class="relative inline-block w-10 mr-1 align-middle select-none">
@@ -551,7 +509,6 @@
                             <div class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-600 cursor-pointer"></div>
                         </div>
                     </label>
-
                     <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px]">
                         <span class="mr-2 text-xs font-bold text-yellow-400 uppercase tracking-wider text-center">Guías</span>
                         <div class="relative inline-block w-10 mr-1 align-middle select-none">
@@ -559,7 +516,6 @@
                             <div class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-600 cursor-pointer"></div>
                         </div>
                     </label>
-
                     <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px]">
                         <span class="mr-2 text-xs font-bold text-slate-200 uppercase tracking-wider text-center">Grip</span>
                         <div class="relative inline-block w-10 mr-1 align-middle select-none">
@@ -583,11 +539,9 @@
                 <p class="text-[12px] text-slate-300 font-medium leading-relaxed mb-4">
                     El rey de los sistemas (LKL). Fórmula: <b>Salida (CB) - Llegada (3R) = Ataque (1R)</b>.
                 </p>
-
                 <div class="bg-slate-900 rounded-2xl p-5 border border-indigo-800 mb-6 relative overflow-hidden shadow-inner flex flex-col items-center">
                     <div class="absolute top-0 left-0 w-2 h-full bg-indigo-500" id="base50Decor"></div>
                     <h3 class="text-indigo-400 text-[11px] font-bold uppercase tracking-widest w-full text-center border-b border-slate-800 pb-2 mb-3" id="base50Title">Cálculo de Sistema</h3>
-                    
                     <div class="flex w-full items-center justify-between px-2 mb-4">
                         <div class="text-center">
                             <span class="block text-slate-400 text-[10px] uppercase">Salida</span>
@@ -610,7 +564,7 @@
         </div>
     </div>
 
-    <!-- Modal de Ayuda (UX) -->
+    <!-- Modales -->
     <div id="helpModal" class="fixed inset-0 z-50 hidden bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-slate-800 rounded-2xl shadow-2xl border border-slate-600 max-w-lg w-full p-6 relative">
             <button onclick="closeHelp()" class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-slate-700 text-slate-400 hover:text-white hover:bg-red-500 transition-colors">✕</button>
@@ -619,7 +573,6 @@
         </div>
     </div>
 
-    <!-- Modal Guardar Tiro -->
     <div id="saveModal" class="fixed inset-0 z-[60] hidden bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-slate-800 rounded-2xl shadow-2xl border border-slate-600 max-w-sm w-full p-6 relative">
             <button onclick="closeSaveModal()" class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-slate-700 text-slate-400 hover:text-white hover:bg-red-500 transition-colors">✕</button>
@@ -630,7 +583,6 @@
         </div>
     </div>
 
-    <!-- Modal Mis Tiros -->
     <div id="shotsModal" class="fixed inset-0 z-[60] hidden bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-slate-800 rounded-2xl shadow-2xl border border-slate-600 max-w-md w-full p-6 relative flex flex-col max-h-[85vh]">
             <button onclick="closeShotsModal()" class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-slate-700 text-slate-400 hover:text-white hover:bg-red-500 transition-colors">✕</button>
@@ -648,7 +600,7 @@
 
     <script>
         // ==========================================
-        // MOTOR DE AUDIO (SIN ARCHIVOS EXTERNOS)
+        // MOTOR DE AUDIO
         // ==========================================
         let isAudioEnabled = true;
         const AudioEngine = {
@@ -855,7 +807,26 @@
             'triangulacion': { title: 'Proporciones por Triangulación', content: '<p><b>Solución de la fórmula:</b><br>1. Suma la distancia a la banda de ambas bolas (A+B).<br>2. Divide la altura de la blanca (A) entre esa suma.<br>3. Multiplica por la separación lateral (L).</p><div class="mt-3 p-3 bg-emerald-900/50 rounded-lg border border-emerald-700"><p class="text-emerald-300 font-bold mb-1">💡 ¿Cómo evitar fracciones complejas jugando?</p><p class="mb-2"><b>1. Método de la "X" (Sin números):</b> Imagina una línea de la Blanca al reflejo del Objetivo en la banda, y otra del Objetivo al reflejo de la Blanca. Donde se cruzan, traza una línea recta a la banda. ¡Ese es el ataque exacto!</p><p><b>2. Proporciones a ojo:</b><br>- Ambas a la misma distancia = Ataca a la <b>mitad</b>.<br>- Blanca al doble de lejos = Ataca a <b>2/3</b> de la separación.<br>- Blanca a la mitad de distancia = Ataca a <b>1/3</b>.</p></div>' },
             'plus': { title: 'Sistema Plus (2 Bandas)', content: '<p>Diseñado para tiros en donde necesitas rebotar en dos bandas consecutivas antes de llegar al objetivo.</p><p>La fórmula es estricta: <b>Llegada - Salida = Ataque</b>. Con este sistema puedes saber a qué diamante de la primera banda debes apuntar para alcanzar cualquier punto de la mesa.</p>' },
             'sid': { title: 'Sistema SID (Bricole Múltiple)', content: '<p>Este es un sistema multiplicativo especializado en tiros de bricole (donde tocas banda antes que a cualquier bola).</p><p>La fórmula <b>Salida × Llegada = Ataque</b> te indica el punto proyectado exacto. En esta app, la simulación calcula el punto real de ataque (1ra banda) para lograr la llegada deseada (3ra banda).</p>' },
-            'base50': { title: 'Sistema Base 50 (LKL Diamantes)', content: '<p>El sistema más famoso del billar a tres bandas. Se le llama "Base 50" porque la esquina inferior derecha vale 50 puntos de salida.</p><p>La fórmula clásica es: <b>Salida (Bola Blanca) - Llegada (3ra Banda) = Ataque (1ra Banda)</b>. Activa las líneas de la 4ta banda para predecir recorridos más largos.</p>' }
+            'base50': { 
+                title: 'Sistema Base 50 (LKL Diamantes)', 
+                content: `<p>El sistema clásico Base 50. Fórmula: <b>Salida (CB) - Llegada (3R) = Ataque (1R)</b>.</p>
+                          <h4 class="text-indigo-300 font-bold mt-3 mb-1">1. Las 4 Cabañas (Física Real)</h4>
+                          <p class="mb-2 text-xs">El recorrido a la 4ta banda se altera según la zona de ataque:</p>
+                          <ul class="list-disc pl-4 space-y-1 mb-2 text-xs">
+                            <li><span class="text-cyan-400 font-bold">C. Pequeña (0-20):</span> La bola se alarga. El 25 va al rincón.</li>
+                            <li><span class="text-emerald-400 font-bold">C. Mediana (20-40):</span> Estándar. El 20 va al rincón.</li>
+                            <li><span class="text-yellow-400 font-bold">C. Grande (40-60):</span> Se acorta. El 15 va al rincón.</li>
+                            <li><span class="text-red-400 font-bold">C. Súper (60+):</span> Se frena más. El 10 va al rincón.</li>
+                          </ul>
+                          <h4 class="text-indigo-300 font-bold mt-3 mb-1">2. Efecto Recomendado</h4>
+                          <p class="text-xs mb-2">Ajusta tu efecto según el punto de llegada a la 3ra banda:</p>
+                          <ul class="list-disc pl-4 space-y-1 text-xs">
+                            <li>Llegada del 0 al 10: <b>Efecto 1</b> (1 casquillo)</li>
+                            <li>Llegada del 11 al 19: <b>Efecto 2</b> (2 casquillos)</li>
+                            <li>Llegada del 20 al 30: <b>Efecto 3</b> (Estándar máximo lateral)</li>
+                            <li>Llegada > 30: <b>Efecto 4</b> (Máximo abajo derecha/izquierda)</li>
+                          </ul>` 
+            }
         };
 
         function showHelp(systemId) {
@@ -2229,35 +2200,76 @@
                 else { p.x = playX + 4 * segmentX + ((L - 40) / 20) * segmentX; }
                 return p;
             }
-            function getFourthRailPoint(L) {
+
+            // Física Real: "Las 4 Cabañas"
+            function getFourthRailPoint(L, A) {
+                let cornerL = 20;
+                if (A <= 20) cornerL = 25;       // Pequeña (Alarga)
+                else if (A <= 40) cornerL = 20;  // Mediana (Normal)
+                else if (A <= 60) cornerL = 15;  // Grande (Acorta)
+                else cornerL = 10;               // Súper Grande (Frena)
+                
+                let diff = L - cornerL;
+                let nominalL = 20 + diff; // Mapeado base a la esquina (20)
+
                 let p = {x: 0, y: 0};
-                if (L <= 20) { p.x = playX + playW - ((20 - L) / 10) * segmentX; p.y = playY; } 
-                else if (L <= 30) { p.x = playX + playW; p.y = playY + ((L - 20) / 10) * segmentY; }
-                else { p.x = playX + playW; p.y = playY + segmentY + ((L - 30) / 20) * segmentY; } 
+                if (nominalL <= 20) { p.x = playX + playW - ((20 - nominalL) / 10) * segmentX; p.y = playY; } 
+                else if (nominalL <= 30) { p.x = playX + playW; p.y = playY + ((nominalL - 20) / 10) * segmentY; }
+                else { p.x = playX + playW; p.y = playY + segmentY + ((nominalL - 30) / 20) * segmentY; } 
                 return p;
             }
 
             let calcData = { salida: 0, llegada: 0, ataque: 0 };
             function updateMath() {
-                let bestL = 0; let minDistL = Infinity;
-                for (let L = 0; L <= 100; L += 0.5) {
-                    let p3 = getThirdRailPoint(L); let p4 = getFourthRailPoint(L);
-                    let dist = MathUtils.distToSegment(targetObj, p3, p4);
-                    if (dist < minDistL) { minDistL = dist; bestL = L; }
+                // Iteración para encontrar la mejor combinación (O(10k) = ~1ms de cálculo)
+                let fineA = 0, fineL = 0; let minErr = Infinity;
+                for(let A = 0; A <= 100; A += 1) {
+                    let pA = getAttackPoint(A);
+                    for(let L = 0; L <= 100; L += 1) {
+                        let S = A + L;
+                        if(S > 110) continue;
+                        let pS = getSalidaPoint(S);
+                        let dist1 = MathUtils.distToSegment(ball, pS, pA);
+                        let p3 = getThirdRailPoint(L);
+                        let dist2;
+                        if(show4thRail) {
+                            let p4 = getFourthRailPoint(L, A);
+                            dist2 = MathUtils.distToSegment(targetObj, p3, p4);
+                        } else {
+                            dist2 = Math.hypot(targetObj.x - p3.x, targetObj.y - p3.y);
+                        }
+                        let err = dist1 + dist2;
+                        if(err < minErr) { minErr = err; fineA = A; fineL = L; }
+                    }
                 }
-                calcData.llegada = bestL; ptThirdRail = getThirdRailPoint(bestL); ptFourthRail = getFourthRailPoint(bestL);
 
-                let bestA = 0; let minDistA = Infinity;
-                for (let A = 0; A <= 100; A += 0.5) {
-                    let S = A + bestL;
-                    if (S > 110) continue; 
-                    let pA = getAttackPoint(A); let pS = getSalidaPoint(S);
-                    let dist = MathUtils.distToSegment(ball, pS, pA);
-                    if (dist < minDistA) { minDistA = dist; bestA = A; }
+                // Refinamiento de precisión (+/- 2 grados)
+                let bestA = fineA, bestL = fineL; minErr = Infinity;
+                for(let A = Math.max(0, fineA - 2); A <= Math.min(100, fineA + 2); A += 0.2) {
+                    let pA = getAttackPoint(A);
+                    for(let L = Math.max(0, fineL - 2); L <= Math.min(100, fineL + 2); L += 0.2) {
+                        let S = A + L;
+                        if(S > 110) continue;
+                        let pS = getSalidaPoint(S);
+                        let dist1 = MathUtils.distToSegment(ball, pS, pA);
+                        let p3 = getThirdRailPoint(L);
+                        let dist2;
+                        if(show4thRail) {
+                            let p4 = getFourthRailPoint(L, A);
+                            dist2 = MathUtils.distToSegment(targetObj, p3, p4);
+                        } else {
+                            dist2 = Math.hypot(targetObj.x - p3.x, targetObj.y - p3.y);
+                        }
+                        let err = dist1 + dist2;
+                        if(err < minErr) { minErr = err; bestA = A; bestL = L; }
+                    }
                 }
-                calcData.ataque = bestA;
-                calcData.salida = bestA + bestL;
+
+                calcData.ataque = bestA; calcData.llegada = bestL; calcData.salida = bestA + bestL;
+
                 ptAttack = getAttackPoint(bestA);
+                ptThirdRail = getThirdRailPoint(bestL);
+                ptFourthRail = getFourthRailPoint(bestL, bestA);
 
                 let ux = playX - (ptThirdRail.x - playX); 
                 if (ux !== ptAttack.x) { ptSecondRail.y = ptAttack.y + (playX - ptAttack.x) * (ptThirdRail.y - ptAttack.y) / (ux - ptAttack.x); } 
@@ -2289,8 +2301,8 @@
                     btnAnimar.innerHTML = '👀 Ver Solución'; btnAnimar.disabled = false;
                     btnAnimar.className = "btn-disparar w-full max-w-md mt-4 mb-2 py-3 rounded-2xl font-black text-xl bg-gradient-to-r from-yellow-500 to-orange-500 text-white hover:from-yellow-400 hover:to-orange-400 transition-all transform active:scale-95 shadow-lg border border-yellow-400";
                 } else {
-                    uiSalida.textContent = calcData.salida.toFixed(0); uiLlegada.textContent = calcData.llegada.toFixed(0);
-                    uiAtaque.textContent = calcData.ataque.toFixed(0); uiAtaqueText.textContent = calcData.ataque.toFixed(0);
+                    uiSalida.textContent = calcData.salida.toFixed(1); uiLlegada.textContent = calcData.llegada.toFixed(1);
+                    uiAtaque.textContent = calcData.ataque.toFixed(1); uiAtaqueText.textContent = calcData.ataque.toFixed(1);
 
                     if (isTrainingMode && isShotFinished) {
                         btnAnimar.innerHTML = '🎯 Siguiente Tiro'; btnAnimar.disabled = false;
@@ -2315,6 +2327,14 @@
             function drawTable() {
                 CanvasUtils.drawBaseTable(ctx, playX, playY, playW, playH);
                 CanvasUtils.drawStandardDiamonds(ctx, playX, playY, playW, playH, showGrid);
+
+                // ZONAS DE CABAÑAS (Física Real visualización)
+                ctx.lineWidth = 6;
+                ctx.strokeStyle = 'rgba(34, 211, 238, 0.7)'; ctx.beginPath(); ctx.moveTo(playX, playY-3); ctx.lineTo(playX + 2*segmentX, playY-3); ctx.stroke(); // Cabaña Pequeña (0-20)
+                ctx.strokeStyle = 'rgba(52, 211, 153, 0.7)'; ctx.beginPath(); ctx.moveTo(playX + 2*segmentX, playY-3); ctx.lineTo(playX + 4*segmentX, playY-3); ctx.stroke(); // Cabaña Mediana (20-40)
+                ctx.strokeStyle = 'rgba(250, 204, 21, 0.7)'; ctx.beginPath(); ctx.moveTo(playX + 4*segmentX, playY-3); ctx.lineTo(playX + 5.5*segmentX, playY-3); ctx.stroke(); // Cabaña Grande (40-60)
+                ctx.strokeStyle = 'rgba(239, 68, 68, 0.7)'; ctx.beginPath(); ctx.moveTo(playX + 5.5*segmentX, playY-3); ctx.lineTo(playX + playW, playY-3); ctx.stroke(); // Cabaña Súper Grande (60+)
+                
                 ctx.font = 'bold 16px Inter'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
 
                 for(let i=0; i<=8; i++) {
@@ -2334,7 +2354,8 @@
                     [20, 15, 10, 5, 0].forEach((v, i) => ctx.fillText(v, playX + playW + (i===0?65:-0.5*i*segmentX), playY - 65));
                     [30, 40, 50].forEach((v, i) => ctx.fillText(v, playX + playW + 65, playY + (i+1)*segmentY));
                     ctx.strokeStyle = 'rgba(56, 189, 248, 0.3)'; ctx.lineWidth = 1.5; ctx.setLineDash([4, 4]);
-                    [0, 5, 10, 15, 20, 30, 40, 50].forEach(val => { let p3 = getThirdRailPoint(val); let p4 = getFourthRailPoint(val); ctx.beginPath(); ctx.moveTo(p3.x, p3.y); ctx.lineTo(p4.x, p4.y); ctx.stroke(); }); ctx.setLineDash([]);
+                    // Trazamos las líneas guía estáticas de la 4ta banda usando A=30 (para que no cambie el fondo bruscamente)
+                    [0, 5, 10, 15, 20, 30, 40, 50].forEach(val => { let p3 = getThirdRailPoint(val); let p4 = getFourthRailPoint(val, 30); ctx.beginPath(); ctx.moveTo(p3.x, p3.y); ctx.lineTo(p4.x, p4.y); ctx.stroke(); }); ctx.setLineDash([]);
                 }
             }
 
@@ -2373,9 +2394,17 @@
                 trail.forEach((t, i) => { ctx.beginPath(); ctx.arc(t.x, t.y, ball.radius * 0.7, 0, Math.PI*2); ctx.fillStyle = `rgba(255, 255, 255, ${(i / trail.length) * 0.4})`; ctx.fill(); });
                 ctx.beginPath(); ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI*2); ctx.fillStyle = '#fff'; ctx.fill(); ctx.strokeStyle = '#94a3b8'; ctx.lineWidth=2; ctx.stroke();
                 
-                let spinAngle = Math.PI - 0.2; let dotX = ball.x + Math.cos(spinAngle) * (ball.radius * 0.6); let dotY = ball.y + Math.sin(spinAngle) * (ball.radius * 0.6);
+                // Cálculo Inteligente de Efecto (Basado en la Llegada en 3ra banda)
+                let arr = calcData.llegada; let efectoText = "Efecto 3"; let dx = 0.7, dy = 0;
+                if (arr <= 10) { efectoText = "Efecto 1"; dx = 0.3; dy = 0; }
+                else if (arr < 20) { efectoText = "Efecto 2"; dx = 0.5; dy = 0; }
+                else if (arr <= 30) { efectoText = "Efecto 3"; dx = 0.7; dy = 0; }
+                else { efectoText = "Efecto 4"; dx = 0.5; dy = 0.4; } // Efecto 4: Abajo a la derecha
+
+                let dotX = ball.x + ball.radius * dx; let dotY = ball.y + ball.radius * dy;
                 ctx.beginPath(); ctx.arc(dotX, dotY, 4, 0, Math.PI*2); ctx.fillStyle = '#ef4444'; ctx.fill();
-                ctx.font = 'bold 10px Inter'; ctx.fillStyle = '#fff'; ctx.fillText('Efecto 3', ball.x - 30, ball.y - 15);
+                ctx.font = 'bold 10px Inter'; ctx.fillStyle = '#fff'; ctx.fillText(efectoText, ball.x, ball.y - 20);
+
                 ctx.restore();
             }
 
