@@ -181,6 +181,13 @@
                         </div>
                     </label>
                     <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px]">
+                        <span class="mr-2 text-xs font-bold text-yellow-400 uppercase tracking-wider text-center">Guías</span>
+                        <div class="relative inline-block w-10 mr-1 align-middle select-none">
+                            <input type="checkbox" id="projToggleSim" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+                            <div class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-600 cursor-pointer"></div>
+                        </div>
+                    </label>
+                    <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px]">
                         <span class="mr-2 text-xs font-bold text-slate-200 uppercase tracking-wider text-center">Espejo</span>
                         <div class="relative inline-block w-10 mr-1 align-middle select-none">
                             <input type="checkbox" id="espejoToggle" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
@@ -195,6 +202,7 @@
                     <h2 class="text-xl font-black text-white">Sistema de Mitades</h2>
                     <div class="flex gap-2">
                         <button onclick="AppSimetria.reset()" class="p-1.5 bg-slate-700 hover:bg-slate-600 rounded shadow transition-colors text-sm" title="Restaurar Posiciones">🔄</button>
+                        <button onclick="AppSimetria.randomize()" class="p-1.5 bg-slate-700 hover:bg-slate-600 rounded shadow transition-colors text-sm text-yellow-400" title="Generar Caso Aleatorio">🎲</button>
                         <button onclick="openSaveModal('simetria')" class="p-1.5 bg-indigo-700 hover:bg-indigo-600 rounded shadow transition-colors text-sm text-white" title="Guardar Jugada">💾</button>
                         <button onclick="showHelp('mitades')" class="p-1.5 bg-slate-700 hover:bg-slate-600 rounded shadow transition-colors text-sm text-cyan-400 font-bold" title="Ayuda">❓</button>
                     </div>
@@ -255,6 +263,14 @@
                     </label>
 
                     <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px]">
+                        <span class="mr-2 text-xs font-bold text-yellow-400 uppercase tracking-wider text-center">Guías</span>
+                        <div class="relative inline-block w-10 mr-1 align-middle select-none">
+                            <input type="checkbox" id="projToggleTri" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer" />
+                            <div class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-600 cursor-pointer"></div>
+                        </div>
+                    </label>
+
+                    <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px]">
                         <span class="mr-2 text-xs font-bold text-slate-200 uppercase tracking-wider text-center">Grip</span>
                         <div class="relative inline-block w-10 mr-1 align-middle select-none">
                             <input type="checkbox" id="gridToggle" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer" checked/>
@@ -269,6 +285,7 @@
                     <h2 class="text-xl font-black text-emerald-400">Estrategias de Apunte</h2>
                     <div class="flex gap-2">
                         <button onclick="AppTriangulacion.reset()" class="p-1.5 bg-slate-700 hover:bg-slate-600 rounded shadow transition-colors text-sm" title="Restaurar Posiciones">🔄</button>
+                        <button onclick="AppTriangulacion.randomize()" class="p-1.5 bg-slate-700 hover:bg-slate-600 rounded shadow transition-colors text-sm text-yellow-400" title="Generar Caso Aleatorio">🎲</button>
                         <button onclick="openSaveModal('triangulacion')" class="p-1.5 bg-indigo-700 hover:bg-indigo-600 rounded shadow transition-colors text-sm text-white" title="Guardar Jugada">💾</button>
                         <button onclick="showHelp('triangulacion')" class="p-1.5 bg-slate-700 hover:bg-slate-600 rounded shadow transition-colors text-sm text-cyan-400 font-bold" title="Ayuda">❓</button>
                     </div>
@@ -361,6 +378,14 @@
                     </label>
 
                     <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px]">
+                        <span class="mr-2 text-xs font-bold text-yellow-400 uppercase tracking-wider text-center">Guías</span>
+                        <div class="relative inline-block w-10 mr-1 align-middle select-none">
+                            <input type="checkbox" id="projTogglePlus" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer" />
+                            <div class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-600 cursor-pointer"></div>
+                        </div>
+                    </label>
+
+                    <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px]">
                         <span class="mr-2 text-xs font-bold text-slate-200 uppercase tracking-wider text-center">Grip</span>
                         <div class="relative inline-block w-10 mr-1 align-middle select-none">
                             <input type="checkbox" id="gridTogglePlus" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer" />
@@ -375,6 +400,7 @@
                     <h2 class="text-xl font-black text-purple-400">Sistema Plus</h2>
                     <div class="flex gap-2">
                         <button onclick="AppPlus.reset()" class="p-1.5 bg-slate-700 hover:bg-slate-600 rounded shadow transition-colors text-sm" title="Restaurar Posiciones">🔄</button>
+                        <button onclick="AppPlus.randomize()" class="p-1.5 bg-slate-700 hover:bg-slate-600 rounded shadow transition-colors text-sm text-yellow-400" title="Generar Caso Aleatorio">🎲</button>
                         <button onclick="openSaveModal('plus')" class="p-1.5 bg-indigo-700 hover:bg-indigo-600 rounded shadow transition-colors text-sm text-white" title="Guardar Jugada">💾</button>
                         <button onclick="showHelp('plus')" class="p-1.5 bg-slate-700 hover:bg-slate-600 rounded shadow transition-colors text-sm text-cyan-400 font-bold" title="Ayuda">❓</button>
                     </div>
@@ -438,6 +464,14 @@
                     </label>
 
                     <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px]">
+                        <span class="mr-2 text-xs font-bold text-yellow-400 uppercase tracking-wider text-center">Guías</span>
+                        <div class="relative inline-block w-10 mr-1 align-middle select-none">
+                            <input type="checkbox" id="projToggleSid" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer" />
+                            <div class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-600 cursor-pointer"></div>
+                        </div>
+                    </label>
+
+                    <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px]">
                         <span class="mr-2 text-xs font-bold text-slate-200 uppercase tracking-wider text-center">Grip</span>
                         <div class="relative inline-block w-10 mr-1 align-middle select-none">
                             <input type="checkbox" id="gridToggleSid" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer" />
@@ -452,6 +486,7 @@
                     <h2 class="text-xl font-black text-orange-400">Sistema SID</h2>
                     <div class="flex gap-2">
                         <button onclick="AppSid.reset()" class="p-1.5 bg-slate-700 hover:bg-slate-600 rounded shadow transition-colors text-sm" title="Restaurar Posiciones">🔄</button>
+                        <button onclick="AppSid.randomize()" class="p-1.5 bg-slate-700 hover:bg-slate-600 rounded shadow transition-colors text-sm text-yellow-400" title="Generar Caso Aleatorio">🎲</button>
                         <button onclick="openSaveModal('sid')" class="p-1.5 bg-indigo-700 hover:bg-indigo-600 rounded shadow transition-colors text-sm text-white" title="Guardar Jugada">💾</button>
                         <button onclick="showHelp('sid')" class="p-1.5 bg-slate-700 hover:bg-slate-600 rounded shadow transition-colors text-sm text-cyan-400 font-bold" title="Ayuda">❓</button>
                     </div>
@@ -518,6 +553,14 @@
                     </label>
 
                     <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px]">
+                        <span class="mr-2 text-xs font-bold text-yellow-400 uppercase tracking-wider text-center">Guías</span>
+                        <div class="relative inline-block w-10 mr-1 align-middle select-none">
+                            <input type="checkbox" id="projToggleBase50" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer" />
+                            <div class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-600 cursor-pointer"></div>
+                        </div>
+                    </label>
+
+                    <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px]">
                         <span class="mr-2 text-xs font-bold text-slate-200 uppercase tracking-wider text-center">Grip</span>
                         <div class="relative inline-block w-10 mr-1 align-middle select-none">
                             <input type="checkbox" id="gridToggleBase" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer" />
@@ -532,6 +575,7 @@
                     <h2 class="text-xl font-black text-indigo-400">Sistema Base 50</h2>
                     <div class="flex gap-2">
                         <button onclick="AppBase50.reset()" class="p-1.5 bg-slate-700 hover:bg-slate-600 rounded shadow transition-colors text-sm" title="Restaurar Posiciones">🔄</button>
+                        <button onclick="AppBase50.randomize()" class="p-1.5 bg-slate-700 hover:bg-slate-600 rounded shadow transition-colors text-sm text-yellow-400" title="Generar Caso Aleatorio">🎲</button>
                         <button onclick="openSaveModal('base50')" class="p-1.5 bg-indigo-700 hover:bg-indigo-600 rounded shadow transition-colors text-sm text-white" title="Guardar Jugada">💾</button>
                         <button onclick="showHelp('base50')" class="p-1.5 bg-slate-700 hover:bg-slate-600 rounded shadow transition-colors text-sm text-cyan-400 font-bold" title="Ayuda">❓</button>
                     </div>
@@ -860,7 +904,11 @@
             getTouchPos: (canvas, e) => {
                 const rect = canvas.getBoundingClientRect(); let cX = e.clientX, cY = e.clientY;
                 if(e.touches && e.touches.length > 0) { cX = e.touches[0].clientX; cY = e.touches[0].clientY; }
-                return { x: (cX - rect.left) * (canvas._logW / rect.width), y: (cY - rect.top) * (canvas._logH / rect.height) };
+                const iW = canvas._logW, iH = canvas._logH;
+                const scale = Math.min(rect.width / iW, rect.height / iH);
+                const rW = iW * scale, rH = iH * scale;
+                const oX = (rect.width - rW) / 2, oY = (rect.height - rH) / 2;
+                return { x: (cX - rect.left - oX) / scale, y: (cY - rect.top - oY) / scale };
             },
             drawBaseTable: (ctx, playX, playY, playW, playH, opacity = 1) => {
                 ctx.save(); ctx.globalAlpha = opacity;
@@ -945,17 +993,18 @@
             const mitadesSelect = document.getElementById('mitadesSelect'); const uiDecor = document.getElementById('simDecor'); 
             const uiTitle = document.getElementById('simTitle'); const gridToggle = document.getElementById('gridToggleSim');
             const espejoToggle = document.getElementById('espejoToggle'); const obsToggle = document.getElementById('obsToggleSim');
+            const projToggle = document.getElementById('projToggleSim');
 
             const padding = 60; const playW = 800; const playH = 400; const playX = padding; 
             const segmentX = playW / 8; const segmentY = playH / 8; 
             const cwSingle = playW + padding * 2; const cwDouble = playW * 2 + padding * 2; 
             const ch = playH + padding * 2; const chDouble = playH * 2 + padding * 2;
 
-            let playY = padding; let showGrid = false; let isAnimating = false; let showMirror = false; let animProgress = 0;
+            let playY = padding; let showGrid = false; let isAnimating = false; let showMirror = false; let showProj = false; let animProgress = 0;
             let trail = []; let isActive = false; let loopId; let isPossible = true; let isBlocked = false; let isInPocket = false;
             let isShotFinished = false;
 
-            let ball = { x: 0, y: 0, radius: 15 }; let targetObj = { x: 0, y: 0, radius: 18 }; 
+            let ball = { x: 0, y: 0, radius: 15 }; let targetObj = { x: 0, y: 0, radius: 15 }; 
             let obstacleObj = { active: false, x: playX + playW/2, y: playY + playH/2, radius: 16 };
             let ptStart = {x: 0, y: 0}; let ptAttack = {x: 0, y: 0}; let ptTarget = {x: 0, y: 0};
             let draggedItem = null; let originalBallPos = {x:0, y:0};
@@ -1147,13 +1196,21 @@
 
                 const pulse = 3 * Math.sin(Date.now() / 200);
                 ctx.beginPath(); ctx.arc(targetObj.x, targetObj.y, targetObj.radius + pulse, 0, Math.PI*2); ctx.fillStyle = 'rgba(239, 68, 68, 0.3)'; ctx.fill();
-                ctx.beginPath(); ctx.arc(targetObj.x, targetObj.y, 8, 0, Math.PI*2); ctx.fillStyle = '#ef4444'; ctx.fill(); ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
+                ctx.beginPath(); ctx.arc(targetObj.x, targetObj.y, targetObj.radius, 0, Math.PI*2); ctx.fillStyle = '#ef4444'; ctx.fill(); ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
 
                 if (!isAnimating && animProgress === 0) {
                     if (!isTrainingMode || solutionRevealed) {
                         let strokeBase = !isPossible ? 'rgba(239, 68, 68, 0.15)' : (isBlocked ? 'rgba(249, 115, 22, 0.15)' : 'rgba(34, 211, 238, 0.15)');
                         let strokeLine = !isPossible ? '#ef4444' : (isBlocked ? '#f97316' : 'rgba(34, 211, 238, 0.8)');
                         
+                        if (showProj) {
+                            ctx.strokeStyle = '#fde047'; ctx.lineWidth = 2; ctx.setLineDash([5, 5]);
+                            ctx.beginPath(); ctx.moveTo(ball.x, ball.y); ctx.lineTo(ball.x, playY + playH); ctx.stroke();
+                            ctx.beginPath(); ctx.moveTo(targetObj.x, targetObj.y); ctx.lineTo(targetObj.x, playY + playH); ctx.stroke();
+                            if (modo === 'corta') { ctx.beginPath(); ctx.moveTo(targetObj.x, targetObj.y); ctx.lineTo(playX + playW, targetObj.y); ctx.stroke(); }
+                            ctx.setLineDash([]);
+                        }
+
                         if (showMirror) {
                             ctx.beginPath(); ctx.moveTo(ptStart.x, ptStart.y); ctx.lineTo(ptAttack.x, ptAttack.y); ctx.lineTo(ptTarget.x, ptTarget.y);
                             ctx.strokeStyle = strokeBase; ctx.lineWidth = 24; ctx.stroke();
@@ -1174,6 +1231,10 @@
 
                 trail.forEach((t, i) => { ctx.beginPath(); ctx.arc(t.x, t.y, ball.radius * 0.7, 0, Math.PI*2); ctx.fillStyle = `rgba(255, 255, 255, ${(i / trail.length) * 0.4})`; ctx.fill(); });
                 ctx.beginPath(); ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI*2); ctx.fillStyle = '#e2e8f0'; ctx.fill(); ctx.strokeStyle = '#94a3b8'; ctx.lineWidth=1; ctx.stroke();
+                
+                ctx.beginPath(); ctx.arc(ball.x, ball.y, 4, 0, Math.PI*2); ctx.fillStyle = '#ef4444'; ctx.fill();
+                ctx.font = 'bold 10px Inter'; ctx.fillStyle = '#fff'; ctx.fillText('Sin efecto', ball.x, ball.y - 20);
+                
                 ctx.restore(); 
             }
 
@@ -1216,6 +1277,7 @@
             espejoToggle.addEventListener('change', e => { showMirror = e.target.checked; setCanvasSize(); });
             mitadesSelect.addEventListener('change', () => { resetPositions(); setCanvasSize(); });
             gridToggle.addEventListener('change', e => { showGrid = e.target.checked; updateMath(); });
+            projToggle.addEventListener('change', e => { showProj = e.target.checked; updateMath(); });
             obsToggle.addEventListener('change', e => { 
                 obstacleObj.active = e.target.checked; 
                 if(obstacleObj.active) { obstacleObj.x = MathUtils.lerp(ptStart.x, ptAttack.x, 0.5); obstacleObj.y = MathUtils.lerp(ptStart.y, ptAttack.y, 0.5); }
@@ -1229,9 +1291,10 @@
                 resume: () => { isActive = true; setCanvasSize(); updateMath(); loop(); }, 
                 reset: resetPositions,
                 randomize: randomizePositions,
-                getState: () => ({ modo: mitadesSelect.value, showGrid, showMirror, obs: {active: obstacleObj.active, x: obstacleObj.x, y: obstacleObj.y}, ball: {x: ptStart.x, y: ptStart.y}, targetObj: {x: ptTarget.x, y: ptTarget.y} }),
+                getState: () => ({ modo: mitadesSelect.value, showGrid, showProj, showMirror, obs: {active: obstacleObj.active, x: obstacleObj.x, y: obstacleObj.y}, ball: {x: ptStart.x, y: ptStart.y}, targetObj: {x: ptTarget.x, y: ptTarget.y} }),
                 loadState: (state) => { 
                     mitadesSelect.value = state.modo; gridToggle.checked = state.showGrid; showGrid = state.showGrid;
+                    projToggle.checked = state.showProj || false; showProj = state.showProj || false;
                     espejoToggle.checked = state.showMirror; showMirror = state.showMirror;
                     obsToggle.checked = state.obs.active; obstacleObj.active = state.obs.active; obstacleObj.x = state.obs.x; obstacleObj.y = state.obs.y;
                     ball.x = state.ball.x; ball.y = state.ball.y; targetObj.x = state.targetObj.x; targetObj.y = state.targetObj.y;
@@ -1255,12 +1318,13 @@
             const uiDecor = document.getElementById('triDecor'); const uiTitle = document.getElementById('triTitle');
             const gridToggle = document.getElementById('gridToggle'); const escalaSelect = document.getElementById('triEscalaSelect');
             const obsToggle = document.getElementById('obsToggleTri');
+            const projToggle = document.getElementById('projToggleTri');
 
             const padding = 80; const playW = 840; const playH = 420; const playX = padding; const playY = padding; const dia = playW / 8;
             let isActive = false; let isAnimating = false; let animProgress = 0; let trail = []; let loopId; let isPossible = true; let isBlocked = false; let isInPocket = false;
-            let showGrid = true; let isShotFinished = false;
+            let showGrid = true; let showProj = false; let isShotFinished = false;
             let ball = { x: playX + dia*1.5, y: playY + playH - dia*1.5, radius: 15 };
-            let targetObj = { x: playX + dia*6.5, y: playY + playH - dia*3.5, radius: 18 };
+            let targetObj = { x: playX + dia*6.5, y: playY + playH - dia*3.5, radius: 15 };
             let obstacleObj = { active: false, x: playX + playW/2, y: playY + playH/2, radius: 16 };
             let ptAttack = { x: 0, y: playY }; let draggedItem = null; let originalBallPos = {x: 0, y: 0};
 
@@ -1398,6 +1462,17 @@
                     if (!isTrainingMode || solutionRevealed) {
                         let bx = ball.x, by = ball.y, tx = targetObj.x, ty = targetObj.y, ax = ptAttack.x, ay = ptAttack.y;
                         let cx, cy, bx_c, by_c, tx_c, ty_c;
+                        
+                        if (showProj) {
+                            ctx.strokeStyle = '#fde047'; ctx.lineWidth = 2; ctx.setLineDash([5, 5]);
+                            let rX, rY;
+                            if (calcData.banda === 'bottom') { rX = ball.x; rY = playY + playH; ctx.beginPath(); ctx.moveTo(ball.x, ball.y); ctx.lineTo(rX, rY); ctx.stroke(); ctx.beginPath(); ctx.moveTo(targetObj.x, targetObj.y); ctx.lineTo(targetObj.x, playY + playH); ctx.stroke(); }
+                            else if (calcData.banda === 'top') { rX = ball.x; rY = playY; ctx.beginPath(); ctx.moveTo(ball.x, ball.y); ctx.lineTo(rX, rY); ctx.stroke(); ctx.beginPath(); ctx.moveTo(targetObj.x, targetObj.y); ctx.lineTo(targetObj.x, playY); ctx.stroke(); }
+                            else if (calcData.banda === 'left') { rX = playX; rY = ball.y; ctx.beginPath(); ctx.moveTo(ball.x, ball.y); ctx.lineTo(rX, rY); ctx.stroke(); ctx.beginPath(); ctx.moveTo(targetObj.x, targetObj.y); ctx.lineTo(playX, targetObj.y); ctx.stroke(); }
+                            else if (calcData.banda === 'right') { rX = playX + playW; rY = ball.y; ctx.beginPath(); ctx.moveTo(ball.x, ball.y); ctx.lineTo(rX, rY); ctx.stroke(); ctx.beginPath(); ctx.moveTo(targetObj.x, targetObj.y); ctx.lineTo(playX + playW, targetObj.y); ctx.stroke(); }
+                            ctx.setLineDash([]);
+                        }
+
                         if (calcData.banda === 'bottom' || calcData.banda === 'top') {
                             bx_c = bx; by_c = ay; tx_c = tx; ty_c = ay; cx = ax; 
                             if (Math.abs(tx - bx_c) > 0.01) { let m1 = (ty - by_c) / (tx - bx_c); cy = by_c + m1 * (cx - bx_c); } else { cy = by_c + (ty - by_c) / 2; }
@@ -1428,9 +1503,13 @@
                 }
 
                 ctx.beginPath(); ctx.arc(targetObj.x, targetObj.y, targetObj.radius + Math.sin(Date.now()/150)*4, 0, Math.PI*2); ctx.fillStyle = 'rgba(239, 68, 68, 0.4)'; ctx.fill();
-                ctx.beginPath(); ctx.arc(targetObj.x, targetObj.y, targetObj.radius - 4, 0, Math.PI*2); ctx.fillStyle = '#ef4444'; ctx.fill();
+                ctx.beginPath(); ctx.arc(targetObj.x, targetObj.y, targetObj.radius, 0, Math.PI*2); ctx.fillStyle = '#ef4444'; ctx.fill();
                 trail.forEach((t, i) => { ctx.beginPath(); ctx.arc(t.x, t.y, ball.radius * 0.7, 0, Math.PI*2); ctx.fillStyle = `rgba(255, 255, 255, ${(i / trail.length) * 0.4})`; ctx.fill(); });
                 ctx.beginPath(); ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI*2); ctx.fillStyle = '#fff'; ctx.fill(); ctx.strokeStyle = '#94a3b8'; ctx.lineWidth=1; ctx.stroke();
+                
+                ctx.beginPath(); ctx.arc(ball.x, ball.y, 4, 0, Math.PI*2); ctx.fillStyle = '#ef4444'; ctx.fill();
+                ctx.font = 'bold 10px Inter'; ctx.fillStyle = '#fff'; ctx.fillText('Sin efecto', ball.x, ball.y - 20);
+                
                 ctx.restore();
             }
 
@@ -1472,6 +1551,7 @@
 
             selectBanda.addEventListener('change', updateMath); escalaSelect.addEventListener('change', updateMath);
             gridToggle.addEventListener('change', e => { showGrid = e.target.checked; updateMath(); });
+            projToggle.addEventListener('change', e => { showProj = e.target.checked; updateMath(); });
             obsToggle.addEventListener('change', e => { 
                 obstacleObj.active = e.target.checked; 
                 if(obstacleObj.active) { obstacleObj.x = MathUtils.lerp(ball.x, ptAttack.x, 0.5); obstacleObj.y = MathUtils.lerp(ball.y, ptAttack.y, 0.5); }
@@ -1485,9 +1565,10 @@
                 resume: () => { isActive = true; updateMath(); loop(); }, 
                 reset: resetPositions,
                 randomize: randomizePositions,
-                getState: () => ({ banda: selectBanda.value, escala: escalaSelect.value, showGrid, obs: {active: obstacleObj.active, x: obstacleObj.x, y: obstacleObj.y}, ball: {x: ball.x, y: ball.y}, targetObj: {x: targetObj.x, y: targetObj.y} }),
+                getState: () => ({ banda: selectBanda.value, escala: escalaSelect.value, showGrid, showProj, obs: {active: obstacleObj.active, x: obstacleObj.x, y: obstacleObj.y}, ball: {x: ball.x, y: ball.y}, targetObj: {x: targetObj.x, y: targetObj.y} }),
                 loadState: (state) => { 
                     selectBanda.value = state.banda; escalaSelect.value = state.escala; gridToggle.checked = state.showGrid; showGrid = state.showGrid;
+                    projToggle.checked = state.showProj || false; showProj = state.showProj || false;
                     obsToggle.checked = state.obs.active; obstacleObj.active = state.obs.active; obstacleObj.x = state.obs.x; obstacleObj.y = state.obs.y;
                     ball.x = state.ball.x; ball.y = state.ball.y; targetObj.x = state.targetObj.x; targetObj.y = state.targetObj.y;
                     isShotFinished = false; solutionRevealed = false;
@@ -1504,18 +1585,19 @@
             const uiSalida = document.getElementById('plusSalida'); const uiAtaque = document.getElementById('plusAtaque'); const uiAtaqueText = document.getElementById('plusAtaqueText');
             const uiLlegada = document.getElementById('plusLlegada'); const btnAnimar = document.getElementById('btnAnimarPlus');
             const plusSelect = document.getElementById('plusSelect'); const gridToggle = document.getElementById('gridTogglePlus');
-            const obsToggle = document.getElementById('obsTogglePlus');
+            const obsToggle = document.getElementById('obsTogglePlus'); const projToggle = document.getElementById('projTogglePlus');
             const uiDecor = document.getElementById('plusDecor'); const uiTitle = document.getElementById('plusTitle');
             
             const padding = 60; const playW = 800; const playH = 400; const playX = padding; const playY = padding; 
             const segmentX = playW / 8; const segmentY = playH / 4; 
 
             let isActive = false; let isAnimating = false; let animProgress = 0; let trail = []; let loopId; let isPossible = true; let isBlocked = false; let isInPocket = false;
-            let showGrid = false; let isShotFinished = false;
+            let showGrid = false; let showProj = false; let isShotFinished = false;
             let ball = { x: playX + segmentX * 5, y: playY + playH - 15, radius: 15 }; 
-            let targetObj = { x: playX + segmentX * 1, y: playY + segmentY * 1, radius: 18 }; 
+            let targetObj = { x: playX + segmentX * 1, y: playY + segmentY * 1, radius: 15 }; 
             let obstacleObj = { active: false, x: playX + playW/2, y: playY + playH/2, radius: 16 };
             let ptAttack = { x: playX, y: playY }; let ptTopRail = { x: playX + playW/2, y: playY }; let ptTargetProj = { x:0, y:0 };
+            let ptSalidaProj = {x:0, y:0}; let ptLlegadaProj = {x:0, y:0};
             let draggedItem = null; let originalBallPos = {x:0, y:0};
 
             function resetPositions() {
@@ -1596,6 +1678,9 @@
 
                 calcData.ataque = bestA; calcData.salida = finalS; calcData.llegada = bestD;
                 
+                ptSalidaProj = {x: isLeft ? playX + (finalS / 10) * segmentX : playX + playW - (finalS / 10) * segmentX, y: playY + playH};
+                ptLlegadaProj = {x: isLeft ? playX + (bestD / 10) * segmentX : playX + playW - (bestD / 10) * segmentX, y: playY + playH};
+
                 if (isLeft) { ptAttack.x = playX; ptAttack.y = playY + ((bestA - 10) / 20) * segmentY; } 
                 else { ptAttack.x = playX + playW; ptAttack.y = playY + ((bestA - 10) / 20) * segmentY; }
 
@@ -1666,6 +1751,13 @@
 
                 if (!isAnimating && animProgress === 0) {
                     if (!isTrainingMode || solutionRevealed) {
+                        if (showProj) {
+                            ctx.strokeStyle = '#fde047'; ctx.lineWidth = 2; ctx.setLineDash([5, 5]);
+                            ctx.beginPath(); ctx.moveTo(ptSalidaProj.x, ptSalidaProj.y); ctx.lineTo(ball.x, ball.y); ctx.stroke();
+                            ctx.beginPath(); ctx.moveTo(ptTopRail.x, ptTopRail.y); ctx.lineTo(ptLlegadaProj.x, ptLlegadaProj.y); ctx.stroke();
+                            ctx.setLineDash([]);
+                        }
+
                         let strokeBase = !isPossible ? 'rgba(239, 68, 68, 0.15)' : (isBlocked ? 'rgba(249, 115, 22, 0.15)' : 'rgba(232, 121, 249, 0.25)');
                         let strokeLine = !isPossible ? '#ef4444' : (isBlocked ? '#f97316' : '#e879f9');
 
@@ -1679,7 +1771,7 @@
                 }
 
                 ctx.beginPath(); ctx.arc(targetObj.x, targetObj.y, targetObj.radius + Math.sin(Date.now()/150)*4, 0, Math.PI*2); ctx.fillStyle = 'rgba(239, 68, 68, 0.3)'; ctx.fill();
-                ctx.beginPath(); ctx.arc(targetObj.x, targetObj.y, targetObj.radius - 4, 0, Math.PI*2); ctx.fillStyle = '#ef4444'; ctx.fill();
+                ctx.beginPath(); ctx.arc(targetObj.x, targetObj.y, targetObj.radius, 0, Math.PI*2); ctx.fillStyle = '#ef4444'; ctx.fill();
 
                 trail.forEach((t, i) => { ctx.beginPath(); ctx.arc(t.x, t.y, ball.radius * 0.7, 0, Math.PI*2); ctx.fillStyle = `rgba(255, 255, 255, ${(i / trail.length) * 0.4})`; ctx.fill(); });
                 ctx.beginPath(); ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI*2); ctx.fillStyle = '#fff'; ctx.fill(); ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 2; ctx.stroke();
@@ -1733,6 +1825,7 @@
 
             plusSelect.addEventListener('change', resetPositions);
             gridToggle.addEventListener('change', e => { showGrid = e.target.checked; updateMath(); });
+            projToggle.addEventListener('change', e => { showProj = e.target.checked; updateMath(); });
             obsToggle.addEventListener('change', e => { 
                 obstacleObj.active = e.target.checked; 
                 updateMath();
@@ -1747,9 +1840,10 @@
                 resume: () => { isActive = true; updateMath(); loop(); }, 
                 reset: resetPositions,
                 randomize: randomizePositions,
-                getState: () => ({ select: plusSelect.value, showGrid, obs: {active: obstacleObj.active, x: obstacleObj.x, y: obstacleObj.y}, ball: {x: ball.x, y: ball.y}, targetObj: {x: targetObj.x, y: targetObj.y} }),
+                getState: () => ({ select: plusSelect.value, showGrid, showProj, obs: {active: obstacleObj.active, x: obstacleObj.x, y: obstacleObj.y}, ball: {x: ball.x, y: ball.y}, targetObj: {x: targetObj.x, y: targetObj.y} }),
                 loadState: (state) => { 
                     plusSelect.value = state.select; gridToggle.checked = state.showGrid; showGrid = state.showGrid;
+                    projToggle.checked = state.showProj || false; showProj = state.showProj || false;
                     obsToggle.checked = state.obs.active; obstacleObj.active = state.obs.active; obstacleObj.x = state.obs.x; obstacleObj.y = state.obs.y;
                     ball.x = state.ball.x; ball.y = state.ball.y; targetObj.x = state.targetObj.x; targetObj.y = state.targetObj.y;
                     isShotFinished = false; solutionRevealed = false;
@@ -1769,13 +1863,14 @@
             const btnAnimar = document.getElementById('btnAnimarSid'); const sidSelect = document.getElementById('sidSelect');
             const uiDecor = document.getElementById('sidDecor'); const uiTitle = document.getElementById('sidTitle');
             const gridToggle = document.getElementById('gridToggleSid'); const obsToggle = document.getElementById('obsToggleSid');
+            const projToggle = document.getElementById('projToggleSid');
             
             const padding = 60; const playW = 800; const playH = 400; const playX = padding; const playY = padding; 
             const segmentX = playW / 8; const segmentY = playH / 4; 
 
             let isActive = false; let isAnimating = false; let animProgress = 0; let trail = []; let loopId; let isPossible = true; let isBlocked = false; let isInPocket = false;
-            let showGrid = false; let isShotFinished = false;
-            let ball = { x: 0, y: 0, radius: 15 }; let targetObj = { x: 0, y: 0, radius: 18 }; 
+            let showGrid = false; let showProj = false; let isShotFinished = false;
+            let ball = { x: 0, y: 0, radius: 15 }; let targetObj = { x: 0, y: 0, radius: 15 };
             let obstacleObj = { active: false, x: playX + playW/2, y: playY + playH/2, radius: 16 };
             let ptAttack = { x: playX + playW/2, y: playY }; let ptLlegada_phys = {x: 0, y: 0}; let ptTargetProj = {x: 0, y: 0};
             let draggedItem = null; let originalBallPos = {x:0, y:0};
@@ -1940,6 +2035,13 @@
                         if (modo === 'larga') { S_pt = {x: playX, y: playY + playH - calcData.salida * segmentY}; } 
                         else { S_pt = {x: playX + playW - calcData.salida * segmentX, y: playY + playH}; }
 
+                        if (showProj) {
+                            ctx.strokeStyle = '#fde047'; ctx.lineWidth = 2; ctx.setLineDash([5, 5]);
+                            ctx.beginPath(); ctx.moveTo(S_pt.x, S_pt.y); ctx.lineTo(ball.x, ball.y); ctx.stroke();
+                            ctx.beginPath(); ctx.moveTo(ptAttack.x, ptAttack.y); ctx.lineTo(ptLlegada_phys.x, ptLlegada_phys.y); ctx.stroke();
+                            ctx.setLineDash([]);
+                        }
+
                         let strokeBase = !isPossible ? 'rgba(239, 68, 68, 0.15)' : (isBlocked ? 'rgba(249, 115, 22, 0.15)' : 'rgba(249, 115, 22, 0.15)');
                         let strokeLine = !isPossible ? '#ef4444' : (isBlocked ? '#f97316' : '#fb923c');
 
@@ -1953,14 +2055,13 @@
                 }
 
                 ctx.beginPath(); ctx.arc(targetObj.x, targetObj.y, targetObj.radius + Math.sin(Date.now()/150)*4, 0, Math.PI*2); ctx.fillStyle = 'rgba(239, 68, 68, 0.4)'; ctx.fill();
-                ctx.beginPath(); ctx.arc(targetObj.x, targetObj.y, targetObj.radius - 4, 0, Math.PI*2); ctx.fillStyle = '#ef4444'; ctx.fill();
+                ctx.beginPath(); ctx.arc(targetObj.x, targetObj.y, targetObj.radius, 0, Math.PI*2); ctx.fillStyle = '#ef4444'; ctx.fill();
 
                 trail.forEach((t, i) => { ctx.beginPath(); ctx.arc(t.x, t.y, ball.radius * 0.7, 0, Math.PI*2); ctx.fillStyle = `rgba(255, 255, 255, ${(i / trail.length) * 0.4})`; ctx.fill(); });
                 ctx.beginPath(); ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI*2); ctx.fillStyle = '#fff'; ctx.fill(); ctx.strokeStyle = '#94a3b8'; ctx.lineWidth=2; ctx.stroke();
                 
-                let spinAngle = Math.PI - 0.2; let dotX = ball.x + Math.cos(spinAngle) * (ball.radius * 0.6); let dotY = ball.y + Math.sin(spinAngle) * (ball.radius * 0.6);
-                ctx.beginPath(); ctx.arc(dotX, dotY, 4, 0, Math.PI*2); ctx.fillStyle = '#ef4444'; ctx.fill();
-                ctx.font = 'bold 10px Inter'; ctx.fillStyle = '#fff'; ctx.fillText('Efecto 3', ball.x - 30, ball.y - 15);
+                ctx.beginPath(); ctx.arc(ball.x, ball.y, 4, 0, Math.PI*2); ctx.fillStyle = '#ef4444'; ctx.fill();
+                ctx.font = 'bold 10px Inter'; ctx.fillStyle = '#fff'; ctx.fillText('Sin efecto', ball.x, ball.y - 20);
                 ctx.restore();
             }
 
@@ -2005,6 +2106,7 @@
 
             sidSelect.addEventListener('change', resetPositions);
             gridToggle.addEventListener('change', e => { showGrid = e.target.checked; updateMath(); });
+            projToggle.addEventListener('change', e => { showProj = e.target.checked; updateMath(); });
             obsToggle.addEventListener('change', e => { 
                 obstacleObj.active = e.target.checked; updateMath();
                 if(obstacleObj.active) {
@@ -2021,9 +2123,10 @@
                 resume: () => { isActive = true; updateMath(); loop(); }, 
                 reset: resetPositions,
                 randomize: randomizePositions,
-                getState: () => ({ select: sidSelect.value, showGrid, obs: {active: obstacleObj.active, x: obstacleObj.x, y: obstacleObj.y}, ball: {x: ball.x, y: ball.y}, targetObj: {x: targetObj.x, y: targetObj.y} }),
+                getState: () => ({ select: sidSelect.value, showGrid, showProj, obs: {active: obstacleObj.active, x: obstacleObj.x, y: obstacleObj.y}, ball: {x: ball.x, y: ball.y}, targetObj: {x: targetObj.x, y: targetObj.y} }),
                 loadState: (state) => { 
                     sidSelect.value = state.select; gridToggle.checked = state.showGrid; showGrid = state.showGrid;
+                    projToggle.checked = state.showProj || false; showProj = state.showProj || false;
                     obsToggle.checked = state.obs.active; obstacleObj.active = state.obs.active; obstacleObj.x = state.obs.x; obstacleObj.y = state.obs.y;
                     ball.x = state.ball.x; ball.y = state.ball.y; targetObj.x = state.targetObj.x; targetObj.y = state.targetObj.y;
                     isShotFinished = false; solutionRevealed = false;
@@ -2042,16 +2145,16 @@
             const uiAtaque = document.getElementById('base50Ataque'); const uiAtaqueText = document.getElementById('base50AtaqueText');
             const btnAnimar = document.getElementById('btnAnimarBase50'); const uiDecor = document.getElementById('base50Decor'); const uiTitle = document.getElementById('base50Title');
             const cuartaBandaToggle = document.getElementById('cuartaBandaToggle'); const gridToggle = document.getElementById('gridToggleBase');
-            const obsToggle = document.getElementById('obsToggleBase50');
+            const obsToggle = document.getElementById('obsToggleBase50'); const projToggle = document.getElementById('projToggleBase50');
             
             const paddingX = 90; const paddingYTop = 110; const paddingYBot = 90; 
             const playW = 800; const playH = 400; const playX = paddingX; const playY = paddingYTop; 
             const segmentX = playW / 8; const segmentY = playH / 4; 
 
             let isActive = false; let isAnimating = false; let animProgress = 0; let trail = []; let loopId; let isPossible = true; let isBlocked = false; let isInPocket = false;
-            let show4thRail = false; let showGrid = false; let isShotFinished = false;
+            let show4thRail = false; let showGrid = false; let showProj = false; let isShotFinished = false;
             let ball = { x: playX + playW - 20, y: playY + playH - 20, radius: 15 }; 
-            let targetObj = { x: playX + segmentX * 2, y: playY + playH - 20, radius: 18 }; 
+            let targetObj = { x: playX + segmentX * 2, y: playY + playH - 20, radius: 15 }; 
             let obstacleObj = { active: false, x: playX + playW/2, y: playY + playH/2, radius: 16 };
             let ptAttack = { x: playX, y: playY }; let ptSecondRail = { x: playX, y: playY + playH/2 }; let ptThirdRail = { x: playX, y: playY + playH }; let ptFourthRail = { x: playX + playW, y: playY + playH };
             let ptTargetProj = {x: 0, y: 0};
@@ -2243,6 +2346,14 @@
                 if (!isAnimating && animProgress === 0) {
                     if (!isTrainingMode || solutionRevealed) {
                         let S_pt = getSalidaPoint(calcData.salida);
+                        
+                        if (showProj) {
+                            ctx.strokeStyle = '#fde047'; ctx.lineWidth = 2; ctx.setLineDash([5, 5]);
+                            ctx.beginPath(); ctx.moveTo(S_pt.x, S_pt.y); ctx.lineTo(ball.x, ball.y); ctx.stroke();
+                            ctx.beginPath(); ctx.moveTo(ptSecondRail.x, ptSecondRail.y); ctx.lineTo(ptThirdRail.x, ptThirdRail.y); ctx.stroke();
+                            ctx.setLineDash([]);
+                        }
+
                         let strokeBase = !isPossible ? 'rgba(239, 68, 68, 0.15)' : (isBlocked ? 'rgba(249, 115, 22, 0.15)' : 'rgba(99, 102, 241, 0.15)');
                         let strokeLine = !isPossible ? '#ef4444' : (isBlocked ? '#f97316' : '#6366f1');
 
@@ -2257,7 +2368,7 @@
                 }
 
                 ctx.beginPath(); ctx.arc(targetObj.x, targetObj.y, targetObj.radius + Math.sin(Date.now()/150)*4, 0, Math.PI*2); ctx.fillStyle = 'rgba(16, 185, 129, 0.4)'; ctx.fill();
-                ctx.beginPath(); ctx.arc(targetObj.x, targetObj.y, targetObj.radius - 4, 0, Math.PI*2); ctx.fillStyle = '#10b981'; ctx.fill();
+                ctx.beginPath(); ctx.arc(targetObj.x, targetObj.y, targetObj.radius, 0, Math.PI*2); ctx.fillStyle = '#10b981'; ctx.fill();
 
                 trail.forEach((t, i) => { ctx.beginPath(); ctx.arc(t.x, t.y, ball.radius * 0.7, 0, Math.PI*2); ctx.fillStyle = `rgba(255, 255, 255, ${(i / trail.length) * 0.4})`; ctx.fill(); });
                 ctx.beginPath(); ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI*2); ctx.fillStyle = '#fff'; ctx.fill(); ctx.strokeStyle = '#94a3b8'; ctx.lineWidth=2; ctx.stroke();
@@ -2318,6 +2429,7 @@
 
             cuartaBandaToggle.addEventListener('change', e => { show4thRail = e.target.checked; updateMath(); });
             gridToggle.addEventListener('change', e => { showGrid = e.target.checked; updateMath(); });
+            projToggle.addEventListener('change', e => { showProj = e.target.checked; updateMath(); });
             obsToggle.addEventListener('change', e => { 
                 obstacleObj.active = e.target.checked; 
                 updateMath();
@@ -2335,10 +2447,11 @@
                 resume: () => { isActive = true; updateMath(); loop(); }, 
                 reset: resetPositions,
                 randomize: randomizePositions,
-                getState: () => ({ show4thRail, showGrid, obs: {active: obstacleObj.active, x: obstacleObj.x, y: obstacleObj.y}, ball: {x: ball.x, y: ball.y}, targetObj: {x: targetObj.x, y: targetObj.y} }),
+                getState: () => ({ show4thRail, showGrid, showProj, obs: {active: obstacleObj.active, x: obstacleObj.x, y: obstacleObj.y}, ball: {x: ball.x, y: ball.y}, targetObj: {x: targetObj.x, y: targetObj.y} }),
                 loadState: (state) => { 
                     cuartaBandaToggle.checked = state.show4thRail; show4thRail = state.show4thRail;
                     gridToggle.checked = state.showGrid; showGrid = state.showGrid;
+                    projToggle.checked = state.showProj || false; showProj = state.showProj || false;
                     obsToggle.checked = state.obs.active; obstacleObj.active = state.obs.active; obstacleObj.x = state.obs.x; obstacleObj.y = state.obs.y;
                     ball.x = state.ball.x; ball.y = state.ball.y; targetObj.x = state.targetObj.x; targetObj.y = state.targetObj.y;
                     isShotFinished = false; solutionRevealed = false;
@@ -2357,4 +2470,4 @@
         switchTab('tab-simetria');
     </script>
 </body>
-                        </html>
+</html>
