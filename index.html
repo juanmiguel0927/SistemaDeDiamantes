@@ -1049,8 +1049,7 @@
                 let boundY = Math.max(playY + 15, Math.min(playY + playH - 15, pos.y));
                 
                 let modo = mitadesSelect.value;
-                if (modo === 'larga' && draggedItem === 'target') { boundY = playY + playH - 20; }
-
+                
                 if (showGrid && draggedItem !== 'obstacle') {
                     boundX = MathUtils.applySnapping(boundX - playX, segmentX / 2) + playX;
                     boundY = MathUtils.applySnapping(boundY - playY, segmentY / 2) + playY;
@@ -1176,9 +1175,18 @@
                         
                         if (showProj) {
                             ctx.strokeStyle = '#fde047'; ctx.lineWidth = 2; ctx.setLineDash([5, 5]);
-                            ctx.beginPath(); ctx.moveTo(ball.x, ball.y); ctx.lineTo(ball.x, playY + playH); ctx.stroke();
-                            ctx.beginPath(); ctx.moveTo(targetObj.x, targetObj.y); ctx.lineTo(targetObj.x, playY + playH); ctx.stroke();
-                            if (modo === 'corta') { ctx.beginPath(); ctx.moveTo(targetObj.x, targetObj.y); ctx.lineTo(playX + playW, targetObj.y); ctx.stroke(); }
+                            
+                            // Línea entre blanca y objetivo para encontrar la mitad
+                            ctx.beginPath(); ctx.moveTo(ball.x, ball.y); ctx.lineTo(targetObj.x, targetObj.y); ctx.stroke();
+                            
+                            // Punto medio
+                            let midX = (ball.x + targetObj.x) / 2;
+                            let midY = (ball.y + targetObj.y) / 2;
+                            ctx.beginPath(); ctx.arc(midX, midY, 5, 0, Math.PI*2); ctx.fillStyle = '#fde047'; ctx.fill();
+                            
+                            // Línea desde el punto medio hasta el punto de ataque
+                            ctx.beginPath(); ctx.moveTo(midX, midY); ctx.lineTo(ptAttack.x, ptAttack.y); ctx.stroke();
+                            
                             ctx.setLineDash([]);
                         }
 
