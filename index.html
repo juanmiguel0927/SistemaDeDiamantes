@@ -1044,6 +1044,7 @@
                 else if (obstacleObj.active && dist(pos, obstacleObj) <= obstacleObj.radius * 4) { draggedItem = 'obstacle'; e.preventDefault(); }
             }
             function handleMove(e) {
+                if (e.touches && e.touches.length > 1) return; // Permitir zoom natural
                 if (!draggedItem || isAnimating || !isActive) return; e.preventDefault(); const pos = CanvasUtils.getTouchPos(canvas, e);
                 let boundX = Math.max(playX + 15, Math.min(playX + playW - 15, pos.x));
                 let boundY = Math.max(playY + 15, Math.min(playY + playH - 15, pos.y));
@@ -1343,6 +1344,7 @@
                 else if (obstacleObj.active && dist(pos, obstacleObj) <= obstacleObj.radius * 4) { draggedItem = 'obstacle'; e.preventDefault(); }
             }
             function handleMove(e) {
+                if (e.touches && e.touches.length > 1) return; // Permitir zoom natural
                 if (!draggedItem || isAnimating || !isActive) return; e.preventDefault(); const pos = CanvasUtils.getTouchPos(canvas, e);
                 pos.x = Math.max(playX + 15, Math.min(playX + playW - 15, pos.x)); pos.y = Math.max(playY + 15, Math.min(playY + playH - 15, pos.y));
 
@@ -1617,6 +1619,7 @@
                 else if (obstacleObj.active && Math.hypot(pos.x - obstacleObj.x, pos.y - obstacleObj.y) <= obstacleObj.radius * 4) { draggedItem = 'obstacle'; e.preventDefault(); }
             }
             function handleMove(e) {
+                if (e.touches && e.touches.length > 1) return; // Permitir zoom natural
                 if (!draggedItem || isAnimating || !isActive) return; e.preventDefault(); const pos = CanvasUtils.getTouchPos(canvas, e);
                 let boundX = Math.max(playX + 15, Math.min(playX + playW - 15, pos.x)); let boundY = Math.max(playY + 15, Math.min(playY + playH - 15, pos.y));
                 
@@ -1888,6 +1891,7 @@
                 else if (obstacleObj.active && Math.hypot(pos.x - obstacleObj.x, pos.y - obstacleObj.y) <= obstacleObj.radius * 4) { draggedItem = 'obstacle'; e.preventDefault(); }
             }
             function handleMove(e) {
+                if (e.touches && e.touches.length > 1) return; // Permitir zoom natural
                 if (!draggedItem || isAnimating || !isActive) return; e.preventDefault(); const pos = CanvasUtils.getTouchPos(canvas, e);
                 let boundX = Math.max(playX + 15, Math.min(playX + playW - 15, pos.x)); let boundY = Math.max(playY + 15, Math.min(playY + playH - 15, pos.y));
                 
@@ -2174,6 +2178,7 @@
                 else if (obstacleObj.active && Math.hypot(pos.x - obstacleObj.x, pos.y - obstacleObj.y) <= obstacleObj.radius * 4) { draggedItem = 'obstacle'; e.preventDefault(); }
             }
             function handleMove(e) {
+                if (e.touches && e.touches.length > 1) return; // Permitir zoom natural
                 if (!draggedItem || isAnimating || !isActive) return; e.preventDefault(); const pos = CanvasUtils.getTouchPos(canvas, e);
                 let boundX = Math.max(playX + 15, Math.min(playX + playW - 15, pos.x));
                 let boundY = Math.max(playY + 15, Math.min(playY + playH - 15, pos.y));
@@ -2227,9 +2232,9 @@
                 return p;
             }
 
-            let calcData = { salida: 0, llegada: 0, ataque: 0 };
+            let calcData = { salida: 0, llegada: 0, ataque: 0, targetSegment: 3, animPath: [] };
             function updateMath() {
-                // Iteración para encontrar la mejor combinación (O(10k) = ~1ms de cálculo)
+                // Iteración gruesa para encontrar la mejor combinación
                 let fineA = 0, fineL = 0; let minErr = Infinity;
                 for(let A = 0; A <= 100; A += 1) {
                     let pA = getAttackPoint(A);
@@ -2238,15 +2243,21 @@
                         if(S > 110) continue;
                         let pS = getSalidaPoint(S);
                         let dist1 = MathUtils.distToSegment(ball, pS, pA);
+                        
                         let p3 = getThirdRailPoint(L);
-                        let dist2;
-                        if(show4thRail) {
-                            let p4 = getFourthRailPoint(L, A);
-                            dist2 = MathUtils.distToSegment(targetObj, p3, p4);
-                        } else {
-                            dist2 = Math.hypot(targetObj.x - p3.x, targetObj.y - p3.y);
-                        }
-                        let err = dist1 + dist2;
+                        let p4 = getFourthRailPoint(L, A);
+                        
+                        let ux = playX - (p3.x - playX); 
+                        let p2 = {x: playX, y: pA.y + (playX - pA.x) * (p3.y - pA.y) / (ux - pA.x)};
+                        if (ux === pA.x) p2.y = playY + playH/2;
+
+                        let dA2 = MathUtils.distToSegment(targetObj, pA, p2);
+                        let d23 = MathUtils.distToSegment(targetObj, p2, p3);
+                        let d34 = MathUtils.distToSegment(targetObj, p3, p4);
+                        
+                        let distTarget = Math.min(dA2, d23, d34);
+                        
+                        let err = dist1 + distTarget;
                         if(err < minErr) { minErr = err; fineA = A; fineL = L; }
                     }
                 }
@@ -2260,15 +2271,21 @@
                         if(S > 110) continue;
                         let pS = getSalidaPoint(S);
                         let dist1 = MathUtils.distToSegment(ball, pS, pA);
+                        
                         let p3 = getThirdRailPoint(L);
-                        let dist2;
-                        if(show4thRail) {
-                            let p4 = getFourthRailPoint(L, A);
-                            dist2 = MathUtils.distToSegment(targetObj, p3, p4);
-                        } else {
-                            dist2 = Math.hypot(targetObj.x - p3.x, targetObj.y - p3.y);
-                        }
-                        let err = dist1 + dist2;
+                        let p4 = getFourthRailPoint(L, A);
+                        
+                        let ux = playX - (p3.x - playX); 
+                        let p2 = {x: playX, y: pA.y + (playX - pA.x) * (p3.y - pA.y) / (ux - pA.x)};
+                        if (ux === pA.x) p2.y = playY + playH/2;
+
+                        let dA2 = MathUtils.distToSegment(targetObj, pA, p2);
+                        let d23 = MathUtils.distToSegment(targetObj, p2, p3);
+                        let d34 = MathUtils.distToSegment(targetObj, p3, p4);
+                        
+                        let distTarget = Math.min(dA2, d23, d34);
+                        
+                        let err = dist1 + distTarget;
                         if(err < minErr) { minErr = err; bestA = A; bestL = L; }
                     }
                 }
@@ -2280,13 +2297,46 @@
                 ptFourthRail = getFourthRailPoint(bestL, bestA);
 
                 let ux = playX - (ptThirdRail.x - playX); 
-                if (ux !== ptAttack.x) { ptSecondRail.y = ptAttack.y + (playX - ptAttack.x) * (ptThirdRail.y - ptAttack.y) / (ux - ptAttack.x); } 
-                else { ptSecondRail.y = playY + playH/2; }
-                ptSecondRail.x = playX;
+                ptSecondRail = {x: playX, y: ptAttack.y + (playX - ptAttack.x) * (ptThirdRail.y - ptAttack.y) / (ux - ptAttack.x)};
+                if (ux === ptAttack.x) ptSecondRail.y = playY + playH/2;
+
+                // Determinar en qué segmento se sitúa el objetivo (Pool: a 1, 2, 3 o 4 bandas)
+                let dA2 = MathUtils.distToSegment(targetObj, ptAttack, ptSecondRail);
+                let d23 = MathUtils.distToSegment(targetObj, ptSecondRail, ptThirdRail);
+                let d34 = MathUtils.distToSegment(targetObj, ptThirdRail, ptFourthRail);
+                
+                let minDistToPath = Math.min(dA2, d23, d34);
+                if (minDistToPath === dA2) {
+                    ptTargetProj = MathUtils.projectPointOnSegment(targetObj, ptAttack, ptSecondRail);
+                    calcData.targetSegment = 1;
+                } else if (minDistToPath === d23) {
+                    ptTargetProj = MathUtils.projectPointOnSegment(targetObj, ptSecondRail, ptThirdRail);
+                    calcData.targetSegment = 2;
+                } else {
+                    ptTargetProj = MathUtils.projectPointOnSegment(targetObj, ptThirdRail, ptFourthRail);
+                    calcData.targetSegment = 3;
+                }
+
+                // Snap la bola al punto exacto sobre la trayectoria calculada
+                targetObj.x = ptTargetProj.x;
+                targetObj.y = ptTargetProj.y;
+
+                // Construir la ruta de animación real y dinámica
+                calcData.animPath = [ {x: originalBallPos.x, y: originalBallPos.y}, {x: ptAttack.x, y: ptAttack.y} ];
+                if (calcData.targetSegment === 1 && !show4thRail) {
+                    calcData.animPath.push({x: targetObj.x, y: targetObj.y});
+                } else {
+                    calcData.animPath.push({x: ptSecondRail.x, y: ptSecondRail.y});
+                    if (calcData.targetSegment === 2 && !show4thRail) {
+                        calcData.animPath.push({x: targetObj.x, y: targetObj.y});
+                    } else {
+                        calcData.animPath.push({x: ptThirdRail.x, y: ptThirdRail.y});
+                        calcData.animPath.push(show4thRail ? {x: ptFourthRail.x, y: ptFourthRail.y} : {x: targetObj.x, y: targetObj.y});
+                    }
+                }
 
                 isPossible = (ptAttack.x >= playX && ptAttack.x <= playX + playW && ptSecondRail.y >= playY && ptSecondRail.y <= playY + playH);
-                ptTargetProj = MathUtils.projectPointOnSegment(targetObj, ptThirdRail, ptFourthRail);
-
+                
                 isInPocket = false;
                 if(isPossible) {
                     isInPocket = MathUtils.isPointInPocket(ptAttack, playX, playY, playW, playH) || 
@@ -2297,7 +2347,7 @@
                 }
 
                 let S_pt = getSalidaPoint(calcData.salida);
-                let pEnd = show4thRail ? ptFourthRail : ptTargetProj;
+                let pEnd = show4thRail ? ptFourthRail : targetObj;
                 isBlocked = false;
                 if (obstacleObj.active) {
                     if (MathUtils.distToSegment(obstacleObj, S_pt, ptAttack) < 30 || MathUtils.distToSegment(obstacleObj, ptAttack, ptSecondRail) < 30 || MathUtils.distToSegment(obstacleObj, ptSecondRail, ptThirdRail) < 30 || MathUtils.distToSegment(obstacleObj, ptThirdRail, pEnd) < 30) isBlocked = true;
@@ -2362,7 +2412,6 @@
                     [20, 15, 10, 5, 0].forEach((v, i) => ctx.fillText(v, playX + playW + (i===0?65:-0.5*i*segmentX), playY - 65));
                     [30, 40, 50].forEach((v, i) => ctx.fillText(v, playX + playW + 65, playY + (i+1)*segmentY));
                     ctx.strokeStyle = 'rgba(56, 189, 248, 0.3)'; ctx.lineWidth = 1.5; ctx.setLineDash([4, 4]);
-                    // Trazamos las líneas guía estáticas de la 4ta banda usando A=30 (para que no cambie el fondo bruscamente)
                     [0, 5, 10, 15, 20, 30, 40, 50].forEach(val => { let p3 = getThirdRailPoint(val); let p4 = getFourthRailPoint(val, 30); ctx.beginPath(); ctx.moveTo(p3.x, p3.y); ctx.lineTo(p4.x, p4.y); ctx.stroke(); }); ctx.setLineDash([]);
                 }
             }
@@ -2386,13 +2435,25 @@
                         let strokeBase = !isPossible ? 'rgba(239, 68, 68, 0.15)' : (isBlocked ? 'rgba(249, 115, 22, 0.15)' : 'rgba(99, 102, 241, 0.15)');
                         let strokeLine = !isPossible ? '#ef4444' : (isBlocked ? '#f97316' : '#6366f1');
 
-                        ctx.beginPath(); ctx.moveTo(S_pt.x, S_pt.y); ctx.lineTo(ptAttack.x, ptAttack.y); ctx.lineTo(ptSecondRail.x, ptSecondRail.y); ctx.lineTo(ptThirdRail.x, ptThirdRail.y); 
-                        if (show4thRail) { ctx.lineTo(ptFourthRail.x, ptFourthRail.y); } else { ctx.lineTo(ptTargetProj.x, ptTargetProj.y); }
+                        ctx.beginPath();
+                        ctx.moveTo(S_pt.x, S_pt.y); 
+                        for(let i=1; i<calcData.animPath.length; i++) {
+                            ctx.lineTo(calcData.animPath[i].x, calcData.animPath[i].y);
+                        }
+                        
                         ctx.strokeStyle = strokeBase; ctx.lineWidth = 24; ctx.stroke();
                         ctx.strokeStyle = strokeLine; ctx.setLineDash([8, 8]); ctx.lineWidth = 4; ctx.stroke(); ctx.setLineDash([]);
-                        ctx.beginPath(); ctx.arc(ptAttack.x, ptAttack.y, 7, 0, Math.PI*2); ctx.fillStyle = strokeLine; ctx.fill();
-                        if (show4thRail) { ctx.beginPath(); ctx.arc(ptFourthRail.x, ptFourthRail.y, 7, 0, Math.PI*2); ctx.fillStyle = isPossible ? '#38bdf8' : '#ef4444'; ctx.fill(); }
-                        if(isPossible && !isBlocked) CanvasUtils.drawPostImpact(ctx, ptThirdRail.x, ptThirdRail.y, ptTargetProj.x, ptTargetProj.y);
+                        
+                        for(let i=1; i<calcData.animPath.length-1; i++) {
+                            ctx.beginPath(); ctx.arc(calcData.animPath[i].x, calcData.animPath[i].y, 7, 0, Math.PI*2); ctx.fillStyle = strokeLine; ctx.fill();
+                        }
+                        if (show4thRail && calcData.targetSegment === 3) { ctx.beginPath(); ctx.arc(ptFourthRail.x, ptFourthRail.y, 7, 0, Math.PI*2); ctx.fillStyle = isPossible ? '#38bdf8' : '#ef4444'; ctx.fill(); }
+                        
+                        if(isPossible && !isBlocked) {
+                            let lastP = calcData.animPath[calcData.animPath.length-2];
+                            let endP = calcData.animPath[calcData.animPath.length-1];
+                            CanvasUtils.drawPostImpact(ctx, lastP.x, lastP.y, endP.x, endP.y);
+                        }
                     }
                 }
 
@@ -2423,30 +2484,24 @@
                 
                 if (prev === 0) AudioEngine.playCueHit();
 
-                if (animProgress <= 1) { ball.x = MathUtils.lerp(originalBallPos.x, ptAttack.x, animProgress); ball.y = MathUtils.lerp(originalBallPos.y, ptAttack.y, animProgress); } 
-                else if (animProgress <= 2) { 
-                    if (prev < 1 && animProgress >= 1) AudioEngine.playRailHit();
-                    ball.x = MathUtils.lerp(ptAttack.x, ptSecondRail.x, animProgress - 1); ball.y = MathUtils.lerp(ptAttack.y, ptSecondRail.y, animProgress - 1); 
-                } 
-                else if (animProgress <= 3) { 
-                    if (prev < 2 && animProgress >= 2) AudioEngine.playRailHit();
-                    ball.x = MathUtils.lerp(ptSecondRail.x, ptThirdRail.x, animProgress - 2); ball.y = MathUtils.lerp(ptSecondRail.y, ptThirdRail.y, animProgress - 2); 
-                }
-                else if (animProgress <= 4 && show4thRail) { 
-                    if (prev < 3 && animProgress >= 3) AudioEngine.playRailHit();
-                    ball.x = MathUtils.lerp(ptThirdRail.x, ptFourthRail.x, animProgress - 3); ball.y = MathUtils.lerp(ptThirdRail.y, ptFourthRail.y, animProgress - 3); 
-                }
-                else if (animProgress <= 4 && !show4thRail) { 
-                    if (prev < 3 && animProgress >= 3) AudioEngine.playRailHit();
-                    ball.x = MathUtils.lerp(ptThirdRail.x, ptTargetProj.x, animProgress - 3); ball.y = MathUtils.lerp(ptThirdRail.y, ptTargetProj.y, animProgress - 3); 
-                }
-                else {
-                    if (prev < 4 && animProgress >= 4) AudioEngine.playBallHit();
-                    isAnimating = false; ball.x = show4thRail ? ptFourthRail.x : ptTargetProj.x; ball.y = show4thRail ? ptFourthRail.y : ptTargetProj.y;
+                let totalSegments = calcData.animPath.length - 1;
+                
+                let currentSeg = Math.floor(animProgress);
+                if (currentSeg < totalSegments) {
+                    if (prev < currentSeg && animProgress >= currentSeg && currentSeg > 0) AudioEngine.playRailHit();
+                    let t = animProgress - currentSeg;
+                    let pA = calcData.animPath[currentSeg];
+                    let pB = calcData.animPath[currentSeg + 1];
+                    ball.x = MathUtils.lerp(pA.x, pB.x, t);
+                    ball.y = MathUtils.lerp(pA.y, pB.y, t);
+                } else {
+                    if (prev < totalSegments && animProgress >= totalSegments) AudioEngine.playBallHit();
+                    isAnimating = false; 
+                    let endP = calcData.animPath[calcData.animPath.length-1];
+                    ball.x = endP.x; ball.y = endP.y;
                     setTimeout(() => { 
                         ball.x = originalBallPos.x; ball.y = originalBallPos.y; trail = []; animProgress = 0; isAnimating = false; 
-                        isShotFinished = true;
-                        btnAnimar.classList.remove('hidden'); updateMath(); 
+                        isShotFinished = true; btnAnimar.classList.remove('hidden'); updateMath(); 
                     }, 1200);
                     let fade = setInterval(() => { trail.shift(); if(trail.length===0) clearInterval(fade); }, 40);
                 }
@@ -2468,8 +2523,7 @@
             gridToggle.addEventListener('change', e => { showGrid = e.target.checked; updateMath(); });
             projToggle.addEventListener('change', e => { showProj = e.target.checked; updateMath(); });
             obsToggle.addEventListener('change', e => { 
-                obstacleObj.active = e.target.checked; 
-                updateMath();
+                obstacleObj.active = e.target.checked; updateMath();
                 if(obstacleObj.active) {
                     let S_pt = getSalidaPoint(calcData.salida);
                     obstacleObj.x = MathUtils.lerp(S_pt.x, ptAttack.x, 0.5); obstacleObj.y = MathUtils.lerp(S_pt.y, ptAttack.y, 0.5); 
