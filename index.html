@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Tiro Maestro | Sistema de Diamantes</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -54,6 +54,7 @@
             background-color: #0f172a;
             padding: 0 !important; margin: 0 !important;
             display: flex; flex-direction: column; justify-content: flex-start;
+            overflow: auto !important; /* Allow scroll when zoomed */
         }
         body.is-fullscreen header,
         body.is-fullscreen .global-options,
@@ -687,11 +688,17 @@
         // ==========================================
         function toggleFullscreen() {
             const isFs = document.body.classList.contains('is-fullscreen');
+            const isMobile = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+            
             if (!isFs) {
-                if (document.documentElement.requestFullscreen) { document.documentElement.requestFullscreen().catch(err => console.log(err)); }
+                if (!isMobile && document.documentElement.requestFullscreen) { 
+                    document.documentElement.requestFullscreen().catch(err => console.log(err)); 
+                }
                 document.body.classList.add('is-fullscreen');
             } else {
-                if (document.exitFullscreen && document.fullscreenElement) { document.exitFullscreen(); }
+                if (document.exitFullscreen && document.fullscreenElement) { 
+                    document.exitFullscreen(); 
+                }
                 document.body.classList.remove('is-fullscreen');
             }
         }
@@ -1037,7 +1044,9 @@
             }
 
             function handleDown(e) {
-                if(isAnimating || !isActive) return; const pos = CanvasUtils.getTouchPos(canvas, e);
+                if (e.touches && e.touches.length > 1) return; // Permitir zoom natural
+                if(isAnimating || !isActive) return; 
+                const pos = CanvasUtils.getTouchPos(canvas, e);
                 const dist = (p1, p2) => Math.hypot(p2.x - p1.x, p2.y - p1.y);
                 if (dist(pos, ptStart) <= ball.radius * 4) { draggedItem = 'ball'; e.preventDefault(); }
                 else if (dist(pos, targetObj) <= targetObj.radius * 4) { draggedItem = 'target'; e.preventDefault(); }
@@ -1338,7 +1347,9 @@
             }
 
             function handleDown(e) {
-                if(isAnimating || !isActive) return; const pos = CanvasUtils.getTouchPos(canvas, e); const dist = (p1, p2) => Math.hypot(p2.x - p1.x, p2.y - p1.y);
+                if (e.touches && e.touches.length > 1) return; // Permitir zoom natural
+                if(isAnimating || !isActive) return; 
+                const pos = CanvasUtils.getTouchPos(canvas, e); const dist = (p1, p2) => Math.hypot(p2.x - p1.x, p2.y - p1.y);
                 if (dist(pos, ball) <= ball.radius * 4) { draggedItem = 'ball'; e.preventDefault(); }
                 else if (dist(pos, targetObj) <= targetObj.radius * 4) { draggedItem = 'target'; e.preventDefault(); }
                 else if (obstacleObj.active && dist(pos, obstacleObj) <= obstacleObj.radius * 4) { draggedItem = 'obstacle'; e.preventDefault(); }
@@ -1613,7 +1624,9 @@
             }
 
             function handleDown(e) {
-                if(isAnimating || !isActive) return; const pos = CanvasUtils.getTouchPos(canvas, e);
+                if (e.touches && e.touches.length > 1) return; // Permitir zoom natural
+                if(isAnimating || !isActive) return; 
+                const pos = CanvasUtils.getTouchPos(canvas, e);
                 if (Math.hypot(pos.x - ball.x, pos.y - ball.y) <= ball.radius * 4) { draggedItem = 'ball'; e.preventDefault(); }
                 else if (Math.hypot(pos.x - targetObj.x, pos.y - targetObj.y) <= targetObj.radius * 4) { draggedItem = 'target'; e.preventDefault(); }
                 else if (obstacleObj.active && Math.hypot(pos.x - obstacleObj.x, pos.y - obstacleObj.y) <= obstacleObj.radius * 4) { draggedItem = 'obstacle'; e.preventDefault(); }
@@ -1699,7 +1712,7 @@
                         btnAnimar.className = "btn-disparar w-full max-w-md mt-4 mb-2 py-3 rounded-2xl font-black text-xl bg-indigo-600 text-white hover:bg-indigo-500 transition-all transform active:scale-95 shadow-lg border border-indigo-500";
                     } else {
                         btnAnimar.innerHTML = '🎱 Ejecutar Tiro'; btnAnimar.disabled = !isPossible || isBlocked;
-                        btnAnimar.className = "btn-disparar w-full max-w-md mt-4 mb-2 py-3 rounded-2xl font-black text-xl bg-gradient-to-r from-purple-500 to-fuchsia-500 text-white hover:from-purple-400 hover:to-fuchsia-400 transition-all transform active:scale-95 shadow-lg border border-purple-400 disabled:opacity-50 disabled:cursor-not-allowed";
+                        btnAnimar.className = "btn-disparar w-full max-w-md mt-4 mb-2 py-3 rounded-2xl font-black text-xl bg-gradient-to-r from-purple-500 to-fuchsia-500 text-white hover:from-purple-400 hover:to-green-400 transition-all transform active:scale-95 shadow-lg border border-purple-400 disabled:opacity-50 disabled:cursor-not-allowed";
                     }
 
                     if (!isPossible) {
@@ -1885,7 +1898,9 @@
             }
 
             function handleDown(e) {
-                if(isAnimating || !isActive) return; const pos = CanvasUtils.getTouchPos(canvas, e);
+                if (e.touches && e.touches.length > 1) return; // Permitir zoom natural
+                if(isAnimating || !isActive) return; 
+                const pos = CanvasUtils.getTouchPos(canvas, e);
                 if (Math.hypot(pos.x - ball.x, pos.y - ball.y) <= ball.radius * 4) { draggedItem = 'ball'; e.preventDefault(); }
                 else if (Math.hypot(pos.x - targetObj.x, pos.y - targetObj.y) <= targetObj.radius * 4) { draggedItem = 'target'; e.preventDefault(); }
                 else if (obstacleObj.active && Math.hypot(pos.x - obstacleObj.x, pos.y - obstacleObj.y) <= obstacleObj.radius * 4) { draggedItem = 'obstacle'; e.preventDefault(); }
@@ -2172,7 +2187,9 @@
             }
 
             function handleDown(e) {
-                if(isAnimating || !isActive) return; const pos = CanvasUtils.getTouchPos(canvas, e);
+                if (e.touches && e.touches.length > 1) return; // Permitir zoom natural
+                if(isAnimating || !isActive) return; 
+                const pos = CanvasUtils.getTouchPos(canvas, e);
                 if (Math.hypot(pos.x - ball.x, pos.y - ball.y) <= ball.radius * 4) { draggedItem = 'ball'; e.preventDefault(); }
                 else if (Math.hypot(pos.x - targetObj.x, pos.y - targetObj.y) <= targetObj.radius * 4) { draggedItem = 'target'; e.preventDefault(); }
                 else if (obstacleObj.active && Math.hypot(pos.x - obstacleObj.x, pos.y - obstacleObj.y) <= obstacleObj.radius * 4) { draggedItem = 'obstacle'; e.preventDefault(); }
@@ -2412,6 +2429,7 @@
                     [20, 15, 10, 5, 0].forEach((v, i) => ctx.fillText(v, playX + playW + (i===0?65:-0.5*i*segmentX), playY - 65));
                     [30, 40, 50].forEach((v, i) => ctx.fillText(v, playX + playW + 65, playY + (i+1)*segmentY));
                     ctx.strokeStyle = 'rgba(56, 189, 248, 0.3)'; ctx.lineWidth = 1.5; ctx.setLineDash([4, 4]);
+                    // Trazamos las líneas guía estáticas de la 4ta banda usando A=30 (para que no cambie el fondo bruscamente)
                     [0, 5, 10, 15, 20, 30, 40, 50].forEach(val => { let p3 = getThirdRailPoint(val); let p4 = getFourthRailPoint(val, 30); ctx.beginPath(); ctx.moveTo(p3.x, p3.y); ctx.lineTo(p4.x, p4.y); ctx.stroke(); }); ctx.setLineDash([]);
                 }
             }
