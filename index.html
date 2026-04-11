@@ -53,7 +53,7 @@
         body.is-fullscreen {
             height: 100vh; /* Fallback */
             height: 100dvh; /* Dynamic viewport height para barra de móviles */
-            width: 100vw;
+            width: 100%;
             background-color: #0f172a;
             padding: 0 !important; margin: 0 !important;
             display: flex; flex-direction: column; justify-content: flex-start;
@@ -63,8 +63,7 @@
         body.is-fullscreen header,
         body.is-fullscreen .global-options,
         body.is-fullscreen footer,
-        body.is-fullscreen .info-panel,
-        body.is-fullscreen .extra-controls { display: none !important; }
+        body.is-fullscreen .info-panel { display: none !important; }
 
         body.is-fullscreen .tab-content.active { 
             display: flex; flex-direction: column; flex: 1; min-height: 0;
@@ -87,13 +86,47 @@
         }
         body.is-fullscreen .canvas-wrapper {
             flex: 1; width: 100%; min-height: 0; display: flex; align-items: center; justify-content: center;
-            padding: 5px; padding-bottom: 90px !important; box-sizing: border-box; overflow: visible;
+            padding: 5px; padding-bottom: 145px !important; box-sizing: border-box; overflow: visible;
         }
         body.is-fullscreen .game-canvas { 
-            width: 100% !important; height: 100% !important; 
-            max-width: 100% !important; max-height: 100% !important;
+            flex: 1; min-height: 0; min-width: 0;
+            width: 100% !important; max-width: 100% !important; 
+            height: 100% !important; max-height: 100% !important;
             object-fit: contain !important; border: none !important; border-radius: 0 !important; 
         }
+        
+        /* Controles Extra Visibles en Fullscreen */
+        body.is-fullscreen .extra-controls {
+            display: flex !important;
+            position: fixed !important;
+            bottom: 85px !important;
+            left: 50% !important;
+            transform: translateX(-50%) !important;
+            width: 100% !important;
+            max-width: 600px !important;
+            z-index: 100;
+            justify-content: center !important;
+            flex-wrap: nowrap !important;
+            gap: 8px !important;
+            padding: 0 12px !important;
+        }
+        body.is-fullscreen .extra-controls > * {
+            display: none !important; /* Oculta selectores y obstáculos por defecto en FS */
+        }
+        body.is-fullscreen .extra-controls > .fs-show {
+            display: flex !important;
+            flex: 1 1 0px !important;
+            min-width: 0 !important;
+            padding: 8px !important;
+        }
+        body.is-fullscreen .extra-controls .fs-show span {
+            font-size: 10px !important;
+            margin-right: 4px !important;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
         body.is-fullscreen .action-buttons { 
             position: fixed !important; bottom: 20px !important; left: 50% !important; transform: translateX(-50%) !important;
             display: flex !important; width: 90% !important; max-width: 400px;
@@ -228,14 +261,14 @@
                             <div class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-600 cursor-pointer"></div>
                         </div>
                     </label>
-                    <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px]">
+                    <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px] fs-show">
                         <span class="mr-2 text-xs font-bold text-slate-200 uppercase tracking-wider text-center">Grip</span>
                         <div class="relative inline-block w-10 mr-1 align-middle select-none">
                             <input type="checkbox" id="gridToggleSim" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
                             <div class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-600 cursor-pointer"></div>
                         </div>
                     </label>
-                    <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px]">
+                    <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px] fs-show">
                         <span class="mr-2 text-xs font-bold text-yellow-400 uppercase tracking-wider text-center">Guías</span>
                         <div class="relative inline-block w-10 mr-1 align-middle select-none">
                             <input type="checkbox" id="projToggleSim" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
@@ -323,14 +356,14 @@
                             <div class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-600 cursor-pointer"></div>
                         </div>
                     </label>
-                    <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px]">
+                    <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px] fs-show">
                         <span class="mr-2 text-xs font-bold text-yellow-400 uppercase tracking-wider text-center">Guías</span>
                         <div class="relative inline-block w-10 mr-1 align-middle select-none">
                             <input type="checkbox" id="projToggleTri" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer" />
                             <div class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-600 cursor-pointer"></div>
                         </div>
                     </label>
-                    <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px]">
+                    <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px] fs-show">
                         <span class="mr-2 text-xs font-bold text-slate-200 uppercase tracking-wider text-center">Grip</span>
                         <div class="relative inline-block w-10 mr-1 align-middle select-none">
                             <input type="checkbox" id="gridToggle" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer" checked/>
@@ -438,14 +471,14 @@
                             <div class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-600 cursor-pointer"></div>
                         </div>
                     </label>
-                    <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px]">
+                    <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px] fs-show">
                         <span class="mr-2 text-xs font-bold text-yellow-400 uppercase tracking-wider text-center">Guías</span>
                         <div class="relative inline-block w-10 mr-1 align-middle select-none">
                             <input type="checkbox" id="projTogglePlus" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer" />
                             <div class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-600 cursor-pointer"></div>
                         </div>
                     </label>
-                    <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px]">
+                    <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px] fs-show">
                         <span class="mr-2 text-xs font-bold text-slate-200 uppercase tracking-wider text-center">Grip</span>
                         <div class="relative inline-block w-10 mr-1 align-middle select-none">
                             <input type="checkbox" id="gridTogglePlus" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer" />
@@ -528,14 +561,14 @@
                             <div class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-600 cursor-pointer"></div>
                         </div>
                     </label>
-                    <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px]">
+                    <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px] fs-show">
                         <span class="mr-2 text-xs font-bold text-yellow-400 uppercase tracking-wider text-center">Guías</span>
                         <div class="relative inline-block w-10 mr-1 align-middle select-none">
                             <input type="checkbox" id="projToggleSid" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer" />
                             <div class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-600 cursor-pointer"></div>
                         </div>
                     </label>
-                    <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px]">
+                    <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px] fs-show">
                         <span class="mr-2 text-xs font-bold text-slate-200 uppercase tracking-wider text-center">Grip</span>
                         <div class="relative inline-block w-10 mr-1 align-middle select-none">
                             <input type="checkbox" id="gridToggleSid" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer" />
@@ -607,7 +640,7 @@
                 </div>
 
                 <div class="mt-2 flex flex-wrap justify-between w-full px-4 gap-4 items-center extra-controls">
-                    <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[140px]">
+                    <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[140px] fs-show">
                         <span class="mr-2 text-xs font-bold text-slate-200 uppercase tracking-wider text-center">4ta Banda</span>
                         <div class="relative inline-block w-10 mr-1 align-middle select-none">
                             <input type="checkbox" id="cuartaBandaToggle" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer" />
@@ -621,14 +654,14 @@
                             <div class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-600 cursor-pointer"></div>
                         </div>
                     </label>
-                    <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px]">
+                    <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px] fs-show">
                         <span class="mr-2 text-xs font-bold text-yellow-400 uppercase tracking-wider text-center">Guías</span>
                         <div class="relative inline-block w-10 mr-1 align-middle select-none">
                             <input type="checkbox" id="projToggleBase50" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer" />
                             <div class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-600 cursor-pointer"></div>
                         </div>
                     </label>
-                    <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px]">
+                    <label class="flex items-center glass-panel px-3 py-3 rounded-2xl shadow-lg cursor-pointer hover:bg-slate-700/80 transition flex-1 justify-center min-w-[120px] fs-show">
                         <span class="mr-2 text-xs font-bold text-slate-200 uppercase tracking-wider text-center">Grip</span>
                         <div class="relative inline-block w-10 mr-1 align-middle select-none">
                             <input type="checkbox" id="gridToggleBase" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer" />
@@ -1839,7 +1872,7 @@
                         btnAnimar.className = "btn-disparar w-full max-w-md mt-4 mb-2 py-3 rounded-2xl font-black text-xl bg-indigo-600 text-white hover:bg-indigo-500 transition-all transform active:scale-95 shadow-lg border border-indigo-500";
                     } else {
                         btnAnimar.innerHTML = '🎱 Ejecutar Tiro'; btnAnimar.disabled = !isPossible || isBlocked;
-                        btnAnimar.className = "btn-disparar w-full max-w-md mt-4 mb-2 py-3 rounded-2xl font-black text-xl bg-gradient-to-r from-purple-500 to-fuchsia-500 text-white hover:from-purple-400 hover:to-fuchsia-400 transition-all transform active:scale-95 shadow-lg border border-purple-400 disabled:opacity-50 disabled:cursor-not-allowed";
+                        btnAnimar.className = "btn-disparar w-full max-w-md mt-4 mb-2 py-3 rounded-2xl font-black text-xl bg-gradient-to-r from-emerald-500 to-green-500 text-white hover:from-emerald-400 hover:to-green-400 transition-all transform active:scale-95 shadow-lg border border-emerald-400 disabled:opacity-50 disabled:cursor-not-allowed";
                     }
 
                     if (!isPossible) {
@@ -2144,7 +2177,7 @@
                 ctx.font = 'bold 16px Inter'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; let modo = sidSelect.value;
                 if (modo === 'larga') {
                     for(let i=0; i<=4; i++) { ctx.fillStyle='#fde047'; ctx.fillText(i, playX-35, playY + playH - i*segmentY); }
-                    for(let i=0; i<=8; i++) { let val = i <= 2 ? i : 2 + (i-2)*0.5; ctx.fillStyle='#f87171'; ctx.fillText(val.toFixed(1), playX + playW - i*segmentX, playY+playH+35); }
+                    for(let i=0; i<=8; i++) { let val = i <= 2 ? i : 2 + (i-2)*0.5; ctx.fillStyle='#f87171'; ctx.fillText(Math.round(val), playX + playW - i*segmentX, playY+playH+35); }
                     for(let i=0; i<=4; i++) { ctx.fillStyle='#fb923c'; ctx.fillText(i*10, playX+playW+35, playY + playH - i*segmentY); }
                 } else {
                     for(let i=0; i<=8; i++) { ctx.fillStyle='#fde047'; ctx.fillText(i, playX + playW - i*segmentX, playY+playH+35); }
