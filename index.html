@@ -61,7 +61,6 @@
     <header class="text-center mb-2 w-full max-w-4xl px-4 relative">
         <h1 class="text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400 mb-2 tracking-tight">Tiro Maestro: Sistema de Diamantes</h1>
         <p class="text-slate-400 text-sm md:text-base max-w-2xl mx-auto font-medium mb-1">Ve las líneas que tu rival no ve. Sistemas numéricos avanzados y geometría de campeonato.</p>
-        <p class="text-emerald-500/70 text-xs font-bold uppercase tracking-widest mb-4"></p>
     </header>
 
     <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-4 w-full max-w-4xl px-4 global-options">
@@ -985,8 +984,8 @@
                     if(s4 && cD.targetSegment===3){ cx.beginPath(); cx.arc(mX(p4R.x), mY(p4R.y), 7, 0, Math.PI*2); cx.fillStyle=isP?'#38bdf8':'#ef4444'; cx.fill(); }
                     if(isP && !isB) CanvasUtils.drawPostImpact(cx, mX(cD.animPath[cD.animPath.length-2].x), mY(cD.animPath[cD.animPath.length-2].y), mX(cD.animPath[cD.animPath.length-1].x), mY(cD.animPath[cD.animPath.length-1].y));
                 }
-                cx.beginPath(); cx.arc(mX(tg.x), mY(tg.y), tg.radius + Math.sin(Date.now() / 150) * 4, 0, Math.PI * 2); cx.fillStyle='rgba(16, 185, 129, 0.4)'; cx.fill(); cx.beginPath(); cx.arc(mX(tg.x), mY(tg.y), tg.radius, 0, Math.PI * 2); cx.fillStyle='#10b981'; cx.fill();
-                tr.forEach((t, i) => { cx.beginPath(); cx.arc(mX(t.x), mY(t.y), bl.radius * 0.7, 0, Math.PI * 2); cx.fillStyle=`rgba(255, 255, 255, ${(i / tr.length) * 0.4})`; cx.fill(); }); cx.beginPath(); cx.arc(mX(bl.x), mY(bl.y), bl.radius, 0, Math.PI * 2); cx.fillStyle='#fff'; cx.fill(); cx.strokeStyle='#94a3b8'; cx.lineWidth=2; cx.stroke();
+                cx.beginPath(); cx.arc(mX(tg.x), mY(tg.y), tg.radius + Math.sin(Date.now() / 150) * 4, 0, Math.PI*2); cx.fillStyle='rgba(16, 185, 129, 0.4)'; cx.fill(); cx.beginPath(); cx.arc(mX(tg.x), mY(tg.y), tg.radius, 0, Math.PI*2); cx.fillStyle='#10b981'; cx.fill();
+                tr.forEach((t, i) => { cx.beginPath(); cx.arc(mX(t.x), mY(t.y), bl.radius * 0.7, 0, Math.PI*2); cx.fillStyle=`rgba(255, 255, 255, ${(i / tr.length) * 0.4})`; cx.fill(); }); cx.beginPath(); cx.arc(mX(bl.x), mY(bl.y), bl.radius, 0, Math.PI*2); cx.fillStyle='#fff'; cx.fill(); cx.strokeStyle='#94a3b8'; cx.lineWidth=2; cx.stroke();
                 let ar = cD.llegada, eT = "Efecto 3", dx = -0.7, dy = 0;
                 if(ar<=10){eT="Efecto 1"; dx=-0.3;} else if(ar<20){eT="Efecto 2"; dx=-0.5;} else if(ar<=30){eT="Efecto 3"; dx=-0.7;} else{eT="Efecto 4"; dx=-0.5; dy=0.4;}
                 cx.beginPath(); cx.arc(mX(bl.x+bl.radius*dx), mY(bl.y+bl.radius*dy), 4, 0, Math.PI*2); cx.fillStyle='#ef4444'; cx.fill(); cx.font='bold 10px Inter'; cx.fillStyle='#fff'; cx.fillText(eT, mX(bl.x), mY(bl.y-20)); cx.restore();
